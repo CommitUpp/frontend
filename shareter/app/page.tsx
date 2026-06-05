@@ -3,7 +3,10 @@
 export default function Home() {
   return (
     <>
-      <p>トップページ</p>
+      <div>
+        <div ></div>
+        <div></div>
+      </div>
     </>
   );
 }
