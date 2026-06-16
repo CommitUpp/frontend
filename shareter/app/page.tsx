@@ -1,4 +1,4 @@
-feature/GroupCreateModal
+
 import GroupCreateModal from "./components/GroupCreateModal";
 
 import styles from "./page.module.css";
