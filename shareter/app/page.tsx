@@ -33,7 +33,7 @@ export default function Home() {
           </div>
 
           <section className={styles.channel_wrap}>
-            <h1 className={styles.channel_title}>⬇︎ movieチャンネル</h1>
+            <h1 className={styles.channel_title}>↓ movieチャンネル</h1>
 
             <div className={styles.tag_list}>
               {tags.map((tag, index) => (

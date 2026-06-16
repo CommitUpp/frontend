@@ -13,8 +13,8 @@
 }
 
 .group_wrap {
-    width: 196px;
-    height: 44px;
+    width: 200px;
+    height: 54px;
     background: #e8e8e8;
     border-radius: 100px;
     display: flex;
@@ -37,13 +37,12 @@
 }
 
 .group_label {
-    font-size: 8px;
+    font-size: 14px;
     color: #444;
 }
 
 .group_name {
-    font-size: 16px;
-    font-weight: 500;
+    font-size: 22px;
     color: #111;
 }
 
@@ -52,7 +51,7 @@
 
 .channel_title {
     color: white;
-    font-size: 20px;
+    font-size: 24px;
     font-weight: 700;
     margin-bottom: 40px;
     margin-left: 20px;
@@ -69,7 +68,7 @@
 
 .tag_item {
     color: white;
-    font-size: 16px;
+    font-size: 18px;
     font-weight: 300;
 }
 
@@ -109,7 +108,7 @@
 
     h3 {
         color: #FFF;
-        font-size: 24px;
+        font-size: 30px;
         font-weight: 500;
         padding: 30px 40px;
     }
