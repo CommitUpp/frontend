@@ -1,4 +1,4 @@
-export default function PremiumGuide() {
+export default function SelectMovie() {
     return (
         <>
 
