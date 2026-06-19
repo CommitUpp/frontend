@@ -1,5 +1,7 @@
 "use client";
 
+import GroupCreateModal from "./components/GroupCreateModal";
+import LiveArea from "./components/live/LiveArea";
 import GroupCreateModal from "./components/GroupCreateModal/GroupCreateModal";
 import AddFriendsModal from "./components/AddFriendsModal/AddFriendsModal";
 import GroupNameModal from "./components/GroupNameModal/GroupNameModal";
@@ -8,6 +10,7 @@ import styles from "./page.module.css";
 import Image from "next/image";
 
 export default function Home() {
+
 
   const [isOpen, setIsOpen] = useState(false);
   const [isAddFriendsOpen, setIsAddFriendsOpen] = useState(false);
@@ -18,6 +21,7 @@ export default function Home() {
     "アベンジャーズシビルウォー",
     "アイアンマン3",
   ];
+
 
   type Group = {
     id: number;
@@ -59,6 +63,14 @@ export default function Home() {
 
   const [selectedFriends, setSelectedFriends] = useState<Friend[]>([]);
 
+  // 後にAPIに差し替える
+  const mockUser = {
+    id: "u1",
+    name: "テストユーザー",
+    initials: "テ",
+    avatarUrl: undefined,
+  };
+
   return (
     <>
       <div className={styles.page_wrap}>
@@ -79,7 +91,7 @@ export default function Home() {
           </div>
 
           <section className={styles.channel_wrap}>
-            <h1 className={styles.channel_title}>⬇︎ movieチャンネル</h1>
+            <h1 className={styles.channel_title}>↓ movieチャンネル</h1>
 
             <div className={styles.tag_list}>
               {tags.map((tag, index) => (
@@ -97,7 +109,11 @@ export default function Home() {
         <div className={styles.main_wrap}>
 
           <div className={styles.live_wrap}>
-
+            <LiveArea
+              currentUser={mockUser}
+              remainingWatchCount={1}
+              isPremium={false}
+            />
           </div>
 
           <div className={styles.recommend_wrap}>
@@ -183,9 +199,7 @@ export default function Home() {
 
 
 
-            <h3>
-              誰かに"グッ"と来た
-            </h3>
+            <h3>誰かにグッと来た</h3>
             <div className={styles.movies_container}>
               <div className={styles.movie_wrap}>
                 <Image
