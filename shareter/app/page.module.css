@@ -91,14 +91,12 @@
     display: flex;
     flex-direction: column;
     overflow-y: auto;
-    background-color: aquamarine;
 }
 
 .live_wrap {
     width: 100%;
     height: 760px;
     flex-shrink: 0;
-    background-color: blue;
 }
 
 .recommend_wrap {

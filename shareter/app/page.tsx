@@ -1,17 +1,24 @@
-feature/GroupCreateModal
+
 import GroupCreateModal from "./components/GroupCreateModal";
+import LiveArea from "./components/live/LiveArea";
 
 import styles from "./page.module.css";
 import Image from "next/image";
 
 export default function Home() {
-
   const tags = [
     "ハリーポッター賢者の石",
     "アベンジャーズシビルウォー",
     "アイアンマン3",
   ];
 
+  // 後にAPIに差し替える
+  const mockUser = {
+    id: "u1",
+    name: "テストユーザー",
+    initials: "テ",
+    avatarUrl: undefined,
+  };
 
   return (
     <>
@@ -51,7 +58,11 @@ export default function Home() {
         <div className={styles.main_wrap}>
 
           <div className={styles.live_wrap}>
-
+            <LiveArea
+              currentUser={mockUser}
+              remainingWatchCount={1}
+              isPremium={false}
+            />
           </div>
 
           <div className={styles.recommend_wrap}>
@@ -137,9 +148,7 @@ export default function Home() {
 
 
 
-            <h3>
-              誰かに"グッ"と来た
-            </h3>
+            <h3>誰かにグッと来た</h3>
             <div className={styles.movies_container}>
               <div className={styles.movie_wrap}>
                 <Image
