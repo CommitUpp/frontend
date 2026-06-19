@@ -1,16 +1,67 @@
+"use client";
 
 import GroupCreateModal from "./components/GroupCreateModal";
 import LiveArea from "./components/live/LiveArea";
-
+import GroupCreateModal from "./components/GroupCreateModal/GroupCreateModal";
+import AddFriendsModal from "./components/AddFriendsModal/AddFriendsModal";
+import GroupNameModal from "./components/GroupNameModal/GroupNameModal";
+import { useState } from "react";
 import styles from "./page.module.css";
 import Image from "next/image";
 
 export default function Home() {
+
+
+  const [isOpen, setIsOpen] = useState(false);
+  const [isAddFriendsOpen, setIsAddFriendsOpen] = useState(false);
+  const [isGroupNameOpen, setIsGroupNameOpen] = useState(false);
+
   const tags = [
     "ハリーポッター賢者の石",
     "アベンジャーズシビルウォー",
     "アイアンマン3",
   ];
+
+
+  type Group = {
+    id: number;
+    name: string;
+    count: number;
+    image: string;
+  }
+
+  const [groups, setGroups] = useState<Group[]>([
+    {
+      id: 1,
+      name: "ECCメンツ",
+      count: 12,
+      image: "/image/dami1.png",
+    },
+  ]);
+
+  const addGroup = (name: string, count: number) => {
+    if (groups.length >= 3) {
+      alert("グループは3つまでしか作成できません");
+      return;
+    }
+
+    const newGroup = {
+      id: Date.now(),
+      name: name,
+      count: count,
+      image: "/image/dami1.png",
+    };
+
+    setGroups([...groups, newGroup]);
+  };
+
+  type Friend = {
+    id: number;
+    name: string;
+    image: string;
+  };
+
+  const [selectedFriends, setSelectedFriends] = useState<Friend[]>([]);
 
   // 後にAPIに差し替える
   const mockUser = {
@@ -33,7 +84,7 @@ export default function Home() {
               className={styles.group_image}
             />
 
-            <div className={styles.group_info}>
+            <div className={styles.group_info} onClick={() => setIsOpen(true)}>
               <p className={styles.group_label}>グループ名</p>
               <h2 className={styles.group_name}>ECCメンツ</h2>
             </div>
@@ -229,6 +280,54 @@ export default function Home() {
 
       </div> {/* page_wrap閉じタグ */}
 
-    </>
+
+      {isOpen && (
+        <GroupCreateModal
+          groups={groups}
+          onClose={() => setIsOpen(false)}
+          onAddClick={() => {
+            if (groups.length >= 3) {
+              alert("グループは3つまでしか作成できません");
+              return;
+            }
+
+            setIsOpen(false);
+            setIsAddFriendsOpen(true);
+          }}
+        />
+      )}
+
+
+      {isAddFriendsOpen && (
+        <AddFriendsModal
+          onClose={() => setIsAddFriendsOpen(false)}
+          onNextClick={(friends) => {
+            setSelectedFriends(friends);
+            setIsAddFriendsOpen(false);
+            setIsGroupNameOpen(true);
+          }}
+        />
+      )}
+
+      {isGroupNameOpen && (
+        <GroupNameModal
+          selectedFriends={selectedFriends}
+          onClose={() => setIsGroupNameOpen(false)}
+          onCreateGroup={(name, image) => {
+            setGroups([
+              ...groups,
+              {
+                id: Date.now(),
+                name,
+                count: selectedFriends.length,
+                image,
+              },
+            ]);
+
+            setIsGroupNameOpen(false);
+            setIsOpen(true);
+          }}
+        />
+      )}    </>
   );
 }
