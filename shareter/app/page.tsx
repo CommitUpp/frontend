@@ -1,6 +1,4 @@
 "use client";
-
-import GroupCreateModal from "./components/GroupCreateModal";
 import LiveArea from "./components/live/LiveArea";
 import GroupCreateModal from "./components/GroupCreateModal/GroupCreateModal";
 import AddFriendsModal from "./components/AddFriendsModal/AddFriendsModal";
