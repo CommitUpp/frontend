@@ -1,4 +1,5 @@
 "use client";
+
 import LiveArea from "./components/live/LiveArea";
 import GroupCreateModal from "./components/GroupCreateModal/GroupCreateModal";
 import AddFriendsModal from "./components/AddFriendsModal/AddFriendsModal";
@@ -7,7 +8,11 @@ import { useState } from "react";
 import styles from "./page.module.css";
 import Image from "next/image";
 
-export default function Home() {
+type Props = {
+  onSelectMovie: () => void;
+};
+
+export default function Home({ onSelectMovie, }: Props) {
 
 
   const [isOpen, setIsOpen] = useState(false);
@@ -20,6 +25,72 @@ export default function Home() {
     "アイアンマン3",
   ];
 
+  const movies = [
+    {
+      id: 1,
+      title: "ハリー・ポッター",
+      image: "/image/dami2.jpg",
+    },
+    {
+      id: 2,
+      title: "アベンジャーズ",
+      image: "/image/dami2.jpg",
+    },
+    {
+      id: 3,
+      title: "アイアンマン3",
+      image: "/image/dami2.jpg",
+    },
+
+    {
+      id: 4,
+      title: "アイアンマン3",
+      image: "/image/dami2.jpg",
+    },
+
+    {
+      id: 5,
+      title: "アイアンマン3",
+      image: "/image/dami2.jpg",
+    },
+
+    {
+      id: 6,
+      title: "アイアンマン3",
+      image: "/image/dami2.jpg",
+    },
+
+    {
+      id: 7,
+      title: "アイアンマン3",
+      image: "/image/dami2.jpg",
+    },
+
+    {
+      id: 8,
+      title: "アイアンマン3",
+      image: "/image/dami2.jpg",
+    },
+  ];
+
+  const movieRows = [
+    {
+      title: "今夜何を見る？",
+      movies,
+    },
+    {
+      title: "アクション映画",
+      movies,
+    },
+    {
+      title: "感動する映画",
+      movies,
+    },
+    {
+      title: "アニメ映画",
+      movies,
+    },
+  ];
 
   type Group = {
     id: number;
@@ -39,7 +110,7 @@ export default function Home() {
 
   const addGroup = (name: string, count: number) => {
     if (groups.length >= 3) {
-      alert("グループは3つまでしか作成できません");
+      alert("グループは3つまでしか作成できません。有料プランに変更してください");
       return;
     }
 
@@ -89,7 +160,10 @@ export default function Home() {
           </div>
 
           <section className={styles.channel_wrap}>
-            <h1 className={styles.channel_title}>↓ movieチャンネル</h1>
+            <div className={styles.channel_header}>
+              <Image src="/image/toggle.png" alt="トグル" width={16} height={16} />
+              <h1 className={styles.channel_title}>movieチャンネル</h1>
+            </div>
 
             <div className={styles.tag_list}>
               {tags.map((tag, index) => (
@@ -107,171 +181,44 @@ export default function Home() {
         <div className={styles.main_wrap}>
 
           <div className={styles.live_wrap}>
+
             <LiveArea
               currentUser={mockUser}
               remainingWatchCount={1}
               isPremium={false}
             />
+
           </div>
 
           <div className={styles.recommend_wrap}>
-            <h3>
-              今夜何を見る？
-            </h3>
 
-            <div className={styles.movies_container}>
-              <div className={styles.movie_wrap}>
-                <Image
-                  src="/image/dami2.jpg"
-                  alt="映画サムネ"
-                  width={250}
-                  height={180}
-                  className={styles.movie_image}
-                />
-                <div></div>
-                <p className={styles.movie_name}>タイトル</p>
-              </div>
+            {movieRows.map((row, index) => (
+              <section key={index} className={styles.row_section}>
+                <div className={styles.row_header}>
+                  <h3>{row.title}</h3>
+                </div>
 
-              <div className={styles.movie_wrap}>
-                <Image
-                  src="/image/dami2.jpg"
-                  alt="映画サムネ"
-                  width={250}
-                  height={180}
-                  className={styles.movie_image}
-                />
-                <div></div>
-                <p className={styles.movie_name}>タイトル</p>
-              </div>
+                <div className={styles.movies_container}>
+                  {row.movies.map((movie) => (
+                    <div
+                      key={movie.id}
+                      className={styles.movie_wrap}
+                      onClick={onSelectMovie}
+                    >
+                      <Image
+                        src={"/image/dami2.jpg"}
+                        alt={movie.title}
+                        width={220}
+                        height={320}
+                        className={styles.movie_image}
+                      />
 
-              <div className={styles.movie_wrap}>
-                <Image
-                  src="/image/dami2.jpg"
-                  alt="映画サムネ"
-                  width={250}
-                  height={180}
-                  className={styles.movie_image}
-                />
-                <div></div>
-                <p className={styles.movie_name}>タイトル</p>
-              </div>
-
-              <div className={styles.movie_wrap}>
-                <Image
-                  src="/image/dami2.jpg"
-                  alt="映画サムネ"
-                  width={250}
-                  height={180}
-                  className={styles.movie_image}
-                />
-                <div></div>
-                <p className={styles.movie_name}>タイトル</p>
-              </div>
-
-              <div className={styles.movie_wrap}>
-                <Image
-                  src="/image/dami2.jpg"
-                  alt="映画サムネ"
-                  width={250}
-                  height={180}
-                  className={styles.movie_image}
-                />
-                <div></div>
-                <p className={styles.movie_name}>タイトル</p>
-              </div>
-
-              <div className={styles.movie_wrap}>
-                <Image
-                  src="/image/dami2.jpg"
-                  alt="映画サムネ"
-                  width={250}
-                  height={180}
-                  className={styles.movie_image}
-                />
-                <div></div>
-                <p className={styles.movie_name}>タイトル</p>
-              </div>
-
-
-            </div > {/* movie_container閉じタグ */}
-
-
-
-            <h3>誰かにグッと来た</h3>
-            <div className={styles.movies_container}>
-              <div className={styles.movie_wrap}>
-                <Image
-                  src="/image/dami2.jpg"
-                  alt="映画サムネ"
-                  width={250}
-                  height={180}
-                  className={styles.movie_image}
-                />
-                <div></div>
-                <p className={styles.movie_name}>タイトル</p>
-              </div>
-
-              <div className={styles.movie_wrap}>
-                <Image
-                  src="/image/dami2.jpg"
-                  alt="映画サムネ"
-                  width={250}
-                  height={180}
-                  className={styles.movie_image}
-                />
-                <div></div>
-                <p className={styles.movie_name}>タイトル</p>
-              </div>
-
-              <div className={styles.movie_wrap}>
-                <Image
-                  src="/image/dami2.jpg"
-                  alt="映画サムネ"
-                  width={250}
-                  height={180}
-                  className={styles.movie_image}
-                />
-                <div></div>
-                <p className={styles.movie_name}>タイトル</p>
-              </div>
-
-              <div className={styles.movie_wrap}>
-                <Image
-                  src="/image/dami2.jpg"
-                  alt="映画サムネ"
-                  width={250}
-                  height={180}
-                  className={styles.movie_image}
-                />
-                <div></div>
-                <p className={styles.movie_name}>タイトル</p>
-              </div>
-
-              <div className={styles.movie_wrap}>
-                <Image
-                  src="/image/dami2.jpg"
-                  alt="映画サムネ"
-                  width={250}
-                  height={180}
-                  className={styles.movie_image}
-                />
-                <div></div>
-                <p className={styles.movie_name}>タイトル</p>
-              </div>
-
-              <div className={styles.movie_wrap}>
-                <Image
-                  src="/image/dami2.jpg"
-                  alt="映画サムネ"
-                  width={250}
-                  height={180}
-                  className={styles.movie_image}
-                />
-                <div></div>
-                <p className={styles.movie_name}>タイトル</p>
-              </div>
-            </div > {/* movie_container閉じタグ */}
-
+                      <p className={styles.movie_name}>{movie.title}</p>
+                    </div>
+                  ))}
+                </div>
+              </section>
+            ))}
           </div> {/* recommend_wrap閉じタグ */}
 
         </div> {/* main_wrap閉じタグ */}
