@@ -1,11 +1,14 @@
 "use client";
 
-import { useRouter } from "next/navigation";
 import styles from "./SelectMovie.module.css";
 
-export default function SelectMovie() {
 
-    const router = useRouter();
+type Props = {
+    onSearch: () => void;
+};
+
+export default function SelectMovie({ onSearch }: Props) {
+
 
     return (
 
@@ -22,7 +25,8 @@ export default function SelectMovie() {
 
                 <button
                     className={styles.select_button}
-                    onClick={() => router.push("/movie-search")}
+                    onClick={onSearch}
+
                 >
 
                     選択する
