@@ -3,7 +3,7 @@
 import { useState } from "react";
 
 import SelectMovie from "./SelectMovie";
-import MovieSearch from "@/app/movie-search/page";
+import MovieSearch from "./MovieSearch";
 import JoinRoom from "./JoinRoom";
 import WatchReady from "./WatchReady";
 import WatchRoom from "./WatchRoom";
