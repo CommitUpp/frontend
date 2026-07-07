@@ -5,12 +5,12 @@ import Image from "next/image";
 
 
 type Props = {
-    onSelectMovie: () => void;
-    onBack?: () => void;
+    onStartWatch: () => void;
+    onBack: () => void;
 };
 
 export default function MovieSearch({
-    onSelectMovie,
+    onStartWatch, onBack
 }: Props) {
 
 
@@ -23,10 +23,14 @@ export default function MovieSearch({
             <div className={styles.main_container}>
 
                 <button
-                    className={styles.next_button}
-                    onClick={onSelectMovie}
+                    className={styles.select_button}
+                    onClick={onStartWatch}
                 >
-                    次へ進む
+                    同時視聴を開始する
+                    <span>
+                        ▶
+                    </span>
+
                 </button>
 
                 <div className={styles.mvsearch_wrap}>
