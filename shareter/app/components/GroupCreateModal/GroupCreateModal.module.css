@@ -1,0 +1,110 @@
+.overlay {
+    position: fixed;
+    inset: 0;
+    background: rgba(0, 0, 0, 0.65);
+    z-index: 99;
+
+    .modal_wrap {
+        position: fixed;
+        top: 0;
+        left: 0;
+        width: 344px;
+        height: 100vh;
+        background: #F8F8F8;
+
+        animation: slideIn 1s ease forwards;
+
+        .title_wrap {
+            height: 66px;
+            display: flex;
+            align-items: center;
+            gap: 10px;
+            padding: 0 28px;
+            border-bottom: 1px solid #999;
+
+            .back_button {
+                background: none;
+                border: none;
+                padding: 0;
+                cursor: pointer;
+                display: flex;
+                align-items: center;
+            }
+
+            .title {
+                font-size: 2rem;
+                font-weight: 500;
+                margin: 0;
+            }
+        }
+
+        .group_wrap {
+            margin-top: 30px;
+            margin-left: 30px;
+            line-height: 4;
+
+            img {
+                width: 52px;
+                height: 52px;
+                border-radius: 50%;
+            }
+
+            .group_card {
+                display: flex;
+                align-items: center;
+                justify-content: left;
+                gap: 7px;
+
+                .text {
+                    display: flex;
+
+                    p {
+                        font-size: 2rem;
+                    }
+                }
+            }
+        }
+
+        .add_button {
+            width: 60px;
+            height: 60px;
+            border-radius: 50%;
+            border: none;
+            background: #ff4045;
+            position: absolute;
+            right: 35px;
+            bottom: 50px;
+            cursor: pointer;
+
+            &::before,
+            &::after {
+                content: "";
+                position: absolute;
+                background: #fff;
+                left: 50%;
+                top: 50%;
+                transform: translate(-50%, -50%);
+            }
+
+            &::before {
+                width: 20px;
+                height: 1.5px;
+            }
+
+            &::after {
+                width: 1.5px;
+                height: 20px;
+            }
+        }
+    }
+}
+
+@keyframes slideIn {
+    from {
+        transform: translateX(-100%);
+    }
+
+    to {
+        transform: translateX(0);
+    }
+}
