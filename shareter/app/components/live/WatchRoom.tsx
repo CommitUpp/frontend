@@ -79,6 +79,23 @@ export default function WatchRoom({ onFinish }: Props) {
     };
 
 
+    const [effects, setEffects] = useState<
+        {
+            id: number;
+            image: string;
+        }[]
+    >([]);
+
+    const showReaction = (image: string) => {
+        const id = Date.now();
+
+        setEffects((prev) => [...prev, { id, image }]);
+
+        setTimeout(() => {
+            setEffects((prev) => prev.filter((e) => e.id !== id));
+        }, 1500);
+    };
+
     return (
         <div className={styles.container}>
 
@@ -93,11 +110,11 @@ export default function WatchRoom({ onFinish }: Props) {
                 </h2>
 
                 <button
-                    className={styles.leave}
+                    className={styles.exit}
                     onClick={onFinish}
                 >
                     <Image
-                        src="/image/loveStamp.svg"
+                        src="/image/exit.png"
                         alt="退出"
                         width={28}
                         height={28}
@@ -157,6 +174,7 @@ export default function WatchRoom({ onFinish }: Props) {
                     alt=""
                     width={34}
                     height={34}
+                    onClick={() => showReaction("/image/loveStamp.svg")}
                 />
 
                 <Image
@@ -164,6 +182,7 @@ export default function WatchRoom({ onFinish }: Props) {
                     alt=""
                     width={34}
                     height={34}
+                    onClick={() => showReaction("/image/sadStamp.svg")}
                 />
 
                 <Image
@@ -171,7 +190,21 @@ export default function WatchRoom({ onFinish }: Props) {
                     alt=""
                     width={34}
                     height={34}
+                    onClick={() => showReaction("/image/repeatStamp.svg")}
                 />
+
+                <div className={styles.effectArea}>
+                    {effects.map((effect) => (
+                        <Image
+                            key={effect.id}
+                            src={effect.image}
+                            alt=""
+                            width={70}
+                            height={70}
+                            className={styles.effect}
+                        />
+                    ))}
+                </div>
 
             </div>
 
@@ -179,10 +212,10 @@ export default function WatchRoom({ onFinish }: Props) {
 
                 <div className={styles.members}>
 
-                    <Image src="/image/dami1.png" alt="" width={42} height={42} className={styles.member} />
-                    <Image src="/image/dami1.png" alt="" width={42} height={42} className={styles.member} />
-                    <Image src="/image/dami1.png" alt="" width={42} height={42} className={styles.member} />
-                    <Image src="/image/dami1.png" alt="" width={42} height={42} className={styles.member} />
+                    <Image src="/image/dami1.png" alt="" width={34} height={34} className={styles.member} />
+                    <Image src="/image/dami1.png" alt="" width={34} height={34} className={styles.member} />
+                    <Image src="/image/dami1.png" alt="" width={34} height={34} className={styles.member} />
+                    <Image src="/image/dami1.png" alt="" width={34} height={34} className={styles.member} />
 
                 </div>
 
@@ -199,7 +232,7 @@ export default function WatchRoom({ onFinish }: Props) {
                         className={styles.send}
                         onClick={send}
                     >
-                        <Image src="/image/loveStamp.svg"
+                        <Image src="/image/textSend.png"
                             alt=""
                             width={42}
                             height={42}

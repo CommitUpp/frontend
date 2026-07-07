@@ -5,7 +5,6 @@ import { useState } from "react";
 import SelectMovie from "./SelectMovie";
 import MovieSearch from "./MovieSearch";
 import JoinRoom from "./JoinRoom";
-import WatchReady from "./WatchReady";
 import WatchRoom from "./WatchRoom";
 import PremiumGuide from "./PremiumGuide";
 
@@ -13,14 +12,12 @@ export type LiveStep =
     | "select"   // 作品を選ぶ前
     | "search"   // 作品検索中
     | "join"     // 同時視聴に参加
-    | "ready"    // 作品決定後の確認
     | "room"     // 同時視聴中
     | "premium"; // 無料枠終了
 
 export default function LiveArea() {
 
     const [status, setStatus] = useState<LiveStep>("select");
-
 
     const renderContent = () => {
         switch (status) {
@@ -35,7 +32,7 @@ export default function LiveArea() {
             case "search":
                 return (
                     <MovieSearch
-                        onSelectMovie={() => setStatus("ready")}
+                        onStartWatch={() => setStatus("room")}
                         onBack={() => setStatus("select")}
                     />
                 );
@@ -45,13 +42,6 @@ export default function LiveArea() {
                     <JoinRoom
                         onJoin={() => setStatus("room")}
                         onBack={() => setStatus("select")}
-                    />
-                );
-
-            case "ready":
-                return (
-                    <WatchReady
-                        onStart={() => setStatus("room")}
                     />
                 );
 
@@ -71,7 +61,6 @@ export default function LiveArea() {
                 return null;
         }
     };
-
 
     return (
         <>
