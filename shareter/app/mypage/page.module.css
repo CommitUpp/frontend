@@ -1,0 +1,149 @@
+.container {
+    min-height: 100vh;
+    background: #252525;
+    display: flex;
+}
+
+.account_wrap {
+    width: 320px;
+    height: 100vh;
+    display: flex;
+    flex-direction: column;
+    background: #f9f9f9;
+    padding-top: 96px;
+    padding-left: 20px;
+    gap: 8px;
+
+    img {
+        border-radius: 50%;
+    }
+
+    p {
+        margin: 8px 0 0;
+        font-size: 2rem;
+        letter-spacing: .08em;
+
+        &:last-child {
+            font-size: 3.6rem;
+            border-bottom: 1px solid #252525;
+            margin-top: 6px;
+        }
+    }
+}
+
+.movie_list_wrap {
+    color: #fff;
+    width: 900px;
+    margin: 80px auto 0;
+}
+
+.movie_list_title {
+    text-align: center;
+    font-size: 5rem;
+    font-weight: 400;
+    font-family: serif;
+    background: linear-gradient(109deg, #f00 -41.22%, #7e7e7e 77%, #fff 150.04%);
+    background-clip: text;
+    -webkit-background-clip: text;
+    -webkit-text-fill-color: transparent;
+    margin-bottom: 30px;
+}
+
+.tabs {
+    position: relative;
+    display: flex;
+    justify-content: center;
+    gap: 120px;
+    padding-top: 24px;
+    margin-bottom: 300px;
+}
+
+.tabs::after {
+    content: "";
+    position: absolute;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 2px;
+    background: #6c6c6c;
+}
+
+.tabs::before {
+    content: "";
+    position: absolute;
+    top: 0;
+    left: 0;
+    width: 320px;
+    height: 2px;
+    background: #ff3b30;
+    z-index: 1;
+}
+
+.tabs details {
+    position: static;
+}
+
+.tab {
+    display: block;
+    padding: 10px 18px;
+    border: 1px dashed #8c8c8c;
+    border-radius: 999px;
+    background: transparent;
+    color: #fff;
+    font-size: 16px;
+    cursor: pointer;
+    transition: .3s;
+}
+
+.tabs details[open] .tab {
+    border: 1px solid #ff3b30;
+}
+
+.movie_list {
+    display: none;
+    position: absolute;
+    top: 70px;
+    left: 50%;
+    transform: translateX(-50%);
+    width: 900px;
+    justify-content: center;
+    gap: 70px;
+}
+
+details[open] .movie_list {
+    display: flex;
+}
+
+.movie_card {
+    width: 232px;
+    flex-shrink: 0;
+}
+
+.thumbnail_wrap {
+    width: 232px;
+}
+
+.thumbnail {
+    width: 232px;
+    height: 180px;
+    background: #d9d9d9;
+    margin-top: 28px;
+}
+
+.icons {
+    display: flex;
+    justify-content: flex-end;
+    gap: 8px;
+    margin-top: -26px;
+    padding-right: 8px;
+    font-size: 15px;
+    color: #111;
+}
+
+.title {
+    margin-top: 18px;
+    text-align: center;
+    font-size: 26px;
+    letter-spacing: .08em;
+    color: #f5f5f5;
+}
