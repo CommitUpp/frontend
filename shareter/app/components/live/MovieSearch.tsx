@@ -6,11 +6,10 @@ import Image from "next/image";
 
 type Props = {
     onStartWatch: () => void;
-    onBack: () => void;
 };
 
 export default function MovieSearch({
-    onStartWatch, onBack
+    onStartWatch
 }: Props) {
 
 

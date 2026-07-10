@@ -4,7 +4,10 @@ import LiveArea from "./components/live/LiveArea";
 import GroupCreateModal from "./components/GroupCreateModal/GroupCreateModal";
 import AddFriendsModal from "./components/AddFriendsModal/AddFriendsModal";
 import GroupNameModal from "./components/GroupNameModal/GroupNameModal";
-import { useState } from "react";
+import { useMemo, useState } from "react";
+import { mockGroupMoviesResponse } from "@/mock/group-movies";
+import { mockMoviesResponse } from "@/mock/movies";
+import { movieRows } from "@/constants/movieRows";
 import styles from "./page.module.css";
 import Image from "next/image";
 
@@ -13,83 +16,26 @@ type Props = {
 };
 
 export default function Home({ onSelectMovie, }: Props) {
-
-
   const [isOpen, setIsOpen] = useState(false);
   const [isAddFriendsOpen, setIsAddFriendsOpen] = useState(false);
   const [isGroupNameOpen, setIsGroupNameOpen] = useState(false);
+  const groupMovies = mockGroupMoviesResponse.movies;
+  const movies = mockMoviesResponse.movies;
+
+  // ジャンルごとの映画リストを作成
+  const rows = useMemo(() => {
+    return movieRows
+      .map((row) => ({
+        title: row.displayName,
+        movies: movies.filter((movie) => movie.genres.includes(row.genre)),
+      }))
+      .filter((row) => row.movies.length > 0);
+  }, [movies]);
 
   const tags = [
     "ハリーポッター賢者の石",
     "アベンジャーズシビルウォー",
     "アイアンマン3",
-  ];
-
-  const movies = [
-    {
-      id: 1,
-      title: "ハリー・ポッター",
-      image: "/image/dami2.jpg",
-    },
-    {
-      id: 2,
-      title: "アベンジャーズ",
-      image: "/image/dami2.jpg",
-    },
-    {
-      id: 3,
-      title: "アイアンマン3",
-      image: "/image/dami2.jpg",
-    },
-
-    {
-      id: 4,
-      title: "アイアンマン3",
-      image: "/image/dami2.jpg",
-    },
-
-    {
-      id: 5,
-      title: "アイアンマン3",
-      image: "/image/dami2.jpg",
-    },
-
-    {
-      id: 6,
-      title: "アイアンマン3",
-      image: "/image/dami2.jpg",
-    },
-
-    {
-      id: 7,
-      title: "アイアンマン3",
-      image: "/image/dami2.jpg",
-    },
-
-    {
-      id: 8,
-      title: "アイアンマン3",
-      image: "/image/dami2.jpg",
-    },
-  ];
-
-  const movieRows = [
-    {
-      title: "今夜何を見る？",
-      movies,
-    },
-    {
-      title: "アクション映画",
-      movies,
-    },
-    {
-      title: "感動する映画",
-      movies,
-    },
-    {
-      title: "アニメ映画",
-      movies,
-    },
   ];
 
   type Group = {
@@ -191,8 +137,35 @@ export default function Home({ onSelectMovie, }: Props) {
           </div>
 
           <div className={styles.recommend_wrap}>
+            {/* グループの誰かが視聴済み */}
+            <section className={styles.row_section}>
+              <div className={styles.row_header}>
+                <h3>今夜何見る？</h3>
+              </div>
 
-            {movieRows.map((row, index) => (
+              <div className={styles.movies_container}>
+                {groupMovies.map((movie) => (
+                  <div
+                    key={movie.movie_id}
+                    className={styles.movie_wrap}
+                    onClick={onSelectMovie}
+                  >
+                    <Image
+                      src={movie.trailer_url}
+                      alt={movie.title}
+                      width={220}
+                      height={320}
+                      className={styles.movie_image}
+                    />
+
+                    <p className={styles.movie_name}>{movie.title}</p>
+                  </div>
+                ))}
+              </div>
+            </section>
+
+            {/* ジャンル別 */}
+            {rows.map((row, index) => (
               <section key={index} className={styles.row_section}>
                 <div className={styles.row_header}>
                   <h3>{row.title}</h3>
@@ -201,12 +174,12 @@ export default function Home({ onSelectMovie, }: Props) {
                 <div className={styles.movies_container}>
                   {row.movies.map((movie) => (
                     <div
-                      key={movie.id}
+                      key={movie.movie_id}
                       className={styles.movie_wrap}
                       onClick={onSelectMovie}
                     >
                       <Image
-                        src={"/image/dami2.jpg"}
+                        src={movie.trailer_url}
                         alt={movie.title}
                         width={220}
                         height={320}
