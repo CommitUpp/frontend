@@ -39,14 +39,14 @@ export default function LoginPage() {
                     />
 
                     <div className={styles.google_login}>
-                        <span className={styles.checkbox_text}>
+                        <button type="button" className={styles.checkbox_text} onClick={loginHandler}>
                             Googleでログイン
-                        </span>
+                        </button>
                     </div>
                     <button
-                        type="button"
+                        // type="button"
                         className={styles.login_button}
-                        onClick={loginHandler}
+                    // onClick={loginHandler}
                     >
                         ログイン
                     </button>
