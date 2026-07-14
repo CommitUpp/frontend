@@ -1,0 +1,201 @@
+.container {
+    background: #181818;
+    min-height: 100vh;
+    color: white;
+}
+
+/* 上画像 */
+
+.hero {
+    position: relative;
+    width: 100%;
+    height: 700px;
+    overflow: hidden;
+}
+
+.heroImage {
+    object-fit: cover;
+}
+
+.hero::after {
+    content: "";
+    position: absolute;
+    inset: 0;
+    background: linear-gradient(to top,
+            rgba(24, 24, 24, 1),
+            rgba(24, 24, 24, .35) 35%,
+            transparent 65%);
+    pointer-events: none;
+}
+
+.backButton {
+    position: absolute;
+    top: 24px;
+    left: 24px;
+    z-index: 2;
+
+    width: 44px;
+    height: 44px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    border-radius: 50%;
+
+    background: rgba(0, 0, 0, .35);
+    border: none;
+    color: white;
+    font-size: 24px;
+    cursor: pointer;
+}
+
+/* 左 */
+
+.leftArea {
+    position: absolute;
+    left: 30px;
+    bottom: 24px;
+    z-index: 2;
+}
+
+.watchButton {
+    display: block;
+    width: 260px;
+    height: 52px;
+    border: none;
+    background: #ffffff;
+    border-radius: 10px;
+    margin-bottom: 14px;
+    font-size: 16px;
+    font-weight: 700;
+    color: #181818;
+    cursor: pointer;
+}
+
+.watchButton:hover {
+    background: #dbdbdb;
+
+}
+
+.serviceList {
+    display: flex;
+    gap: 14px;
+    padding: 14px 16px;
+    border-radius: 14px;
+    background: rgba(255, 255, 255, .15);
+    backdrop-filter: blur(10px);
+    width: fit-content;
+}
+
+.serviceItem {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    gap: 6px;
+}
+
+.serviceItem img {
+    border-radius: 12px;
+}
+
+.serviceName {
+    font-size: 12px;
+    color: #e6e6e6;
+    white-space: nowrap;
+}
+
+/* 右 */
+
+.rightArea {
+    position: absolute;
+    right: 25px;
+    bottom: 24px;
+    z-index: 2;
+    display: flex;
+    flex-direction: column;
+    align-items: flex-end;
+}
+
+.memberList {
+    display: flex;
+    flex-direction: column;
+    align-items: flex-end;
+    gap: 14px;
+    margin-bottom: 22px;
+}
+
+.memberAvatar {
+    position: relative;
+    width: 52px;
+    height: 52px;
+}
+
+.memberAvatar img {
+    border-radius: 50%;
+    border: 2px solid rgba(255, 255, 255, .5);
+}
+
+.memberBadge {
+    position: absolute;
+    bottom: -4px;
+    right: -4px;
+    width: 20px;
+    height: 20px;
+    border-radius: 50%;
+    background: #181818;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-size: 11px;
+    border: 1px solid rgba(255, 255, 255, .4);
+}
+
+.actionList {
+    display: flex;
+    gap: 22px;
+}
+
+.actionItem {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    gap: 6px;
+    background: none;
+    border: none;
+    color: white;
+    cursor: pointer;
+    padding: 0;
+}
+
+.actionLabel {
+    font-size: 12px;
+    white-space: nowrap;
+    color: #e6e6e6;
+}
+
+/* 下 */
+
+.detail {
+    max-width: 1100px;
+    margin: auto;
+    padding: 40px 35px 80px;
+}
+
+.detail h1 {
+    font-size: 34px;
+    line-height: 1.4;
+    font-weight: 700;
+    margin: 0 0 40px;
+}
+
+.detail h2 {
+    font-size: 26px;
+    font-weight: 700;
+    margin: 0 0 20px;
+}
+
+.story {
+    color: #d0d0d0;
+    line-height: 2;
+    font-size: 17px;
+    white-space: pre-line;
+}

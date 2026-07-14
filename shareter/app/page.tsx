@@ -8,6 +8,7 @@ import { useMemo, useState } from "react";
 import { mockGroupMoviesResponse } from "@/mock/group-movies";
 import { mockMoviesResponse } from "@/mock/movies";
 import { movieRows } from "@/constants/movieRows";
+import { useRouter } from "next/navigation";
 import styles from "./page.module.css";
 import Image from "next/image";
 
@@ -21,6 +22,7 @@ export default function Home({ onSelectMovie, }: Props) {
   const [isGroupNameOpen, setIsGroupNameOpen] = useState(false);
   const groupMovies = mockGroupMoviesResponse.movies;
   const movies = mockMoviesResponse.movies;
+  const router = useRouter();
 
   // ジャンルごとの映画リストを作成
   const rows = useMemo(() => {
@@ -148,7 +150,7 @@ export default function Home({ onSelectMovie, }: Props) {
                   <div
                     key={movie.movie_id}
                     className={styles.movie_wrap}
-                    onClick={onSelectMovie}
+                    onClick={() => router.push(`/movie/${movie.movie_id}`)}
                   >
                     <Image
                       src={movie.trailer_url}
