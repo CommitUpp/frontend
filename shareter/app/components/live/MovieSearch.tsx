@@ -1,37 +1,13 @@
 "use client";
 
+import Link from "next/link";
+import { mockMoviesResponse } from "@/mock/movies";
 import styles from "./MovieSearch.module.css";
-import Image from "next/image";
 
-
-type Props = {
-    onStartWatch: () => void;
-};
-
-export default function MovieSearch({
-    onStartWatch
-}: Props) {
-
-
-
+export default function MovieSearch() {
     return (
         <div className={styles.search_wrap}>
-
-
-
             <div className={styles.main_container}>
-
-                <button
-                    className={styles.select_button}
-                    onClick={onStartWatch}
-                >
-                    同時視聴を開始する
-                    <span>
-                        ▶
-                    </span>
-
-                </button>
-
                 <div className={styles.mvsearch_wrap}>
                     <h2>
                         作品検索
@@ -43,8 +19,19 @@ export default function MovieSearch({
                         className={styles.search_input}
                     />
                 </div>
+
+                <div className={styles.result_list}>
+                    {mockMoviesResponse.movies.map((movie) => (
+                        <Link
+                            key={movie.movie_id}
+                            href={`/movie/${movie.movie_id}`}
+                            className={styles.result_item}
+                        >
+                            {movie.title}
+                        </Link>
+                    ))}
+                </div>
             </div>
         </div>
-
     );
 }

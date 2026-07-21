@@ -1,6 +1,7 @@
 import type { Metadata } from "next";
 import { Geist, Geist_Mono } from "next/font/google";
 import Header from "./components/Header/Header";
+import { WatchTogetherProvider } from "@/contexts/WatchTogetherContext";
 import "./globals.css";
 
 const geistSans = Geist({
@@ -30,7 +31,9 @@ export default function RootLayout({
     >
       <body className="min-h-full flex flex-col">
         <Header />
-        {children}
+        <WatchTogetherProvider>
+          {children}
+        </WatchTogetherProvider>
       </body>
     </html>
   );
