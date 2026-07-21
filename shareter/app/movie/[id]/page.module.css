@@ -76,6 +76,12 @@
 
 }
 
+.watchButton:disabled {
+    opacity: 0.4;
+    cursor: not-allowed;
+    pointer-events: none;
+}
+
 .serviceList {
     display: flex;
     gap: 14px;
@@ -116,42 +122,55 @@
 }
 
 .memberList {
-    display: flex;
-    flex-direction: column;
-    align-items: flex-end;
-    gap: 14px;
-    margin-bottom: 22px;
+    position: relative;
+    width: 160px;
+    height: 150px;
+    margin-bottom: 30px;
 }
 
 .memberAvatar {
-    position: relative;
-    width: 52px;
-    height: 52px;
+    position: absolute;
+    width: 60px;
+    height: 60px;
 }
 
 .memberAvatar img {
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
     border-radius: 50%;
-    border: 2px solid rgba(255, 255, 255, .5);
+    border: 2px solid #fff;
+}
+
+.memberAvatar:nth-child(1) {
+    top: 0;
+    left: 46px;
+    z-index: 3;
+}
+
+.memberAvatar:nth-child(2) {
+    top: 60px;
+    left: 10px;
+    z-index: 2;
+}
+
+.memberAvatar:nth-child(3) {
+    top: 60px;
+    left: 82px;
+    z-index: 1;
 }
 
 .memberBadge {
     position: absolute;
     bottom: -4px;
-    right: -4px;
-    width: 20px;
-    height: 20px;
-    border-radius: 50%;
-    background: #181818;
-    display: flex;
-    align-items: center;
-    justify-content: center;
-    font-size: 11px;
-    border: 1px solid rgba(255, 255, 255, .4);
+    right: 0;
+    width: 18px;
+    height: 22px;
 }
 
 .actionList {
     display: flex;
-    gap: 22px;
+    gap: 16px;
 }
 
 .actionItem {

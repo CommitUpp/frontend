@@ -1,11 +1,14 @@
 "use client";
 
-import { useState } from "react";
+import { useState, use } from "react";
+import { useRouter } from "next/navigation";
 import Image from "next/image";
-import styles from "./WatchRoom.module.css";
+import styles from "./page.module.css";
 
 type Props = {
-    onFinish: () => void;
+    params: Promise<{
+        id: string;
+    }>;
 };
 
 const initialMessages = [
@@ -53,15 +56,15 @@ const initialMessages = [
     },
 ];
 
-
-export default function WatchRoom({ onFinish }: Props) {
+export default function RoomPage({ params }: Props) {
+    const { id } = use(params);
+    const router = useRouter();
 
     const [input, setInput] = useState("");
     const [messages, setMessages] = useState(initialMessages);
 
     const send = () => {
         const t = input.trim();
-
         if (!t) return;
 
         setMessages((prev) => [
@@ -78,60 +81,39 @@ export default function WatchRoom({ onFinish }: Props) {
         setInput("");
     };
 
-
-    const [effects, setEffects] = useState<
-        {
-            id: number;
-            image: string;
-        }[]
-    >([]);
+    const [effects, setEffects] = useState<{ id: number; image: string }[]>([]);
 
     const showReaction = (image: string) => {
-        const id = Date.now();
+        const effectId = Date.now();
 
-        setEffects((prev) => [...prev, { id, image }]);
+        setEffects((prev) => [...prev, { id: effectId, image }]);
 
         setTimeout(() => {
-            setEffects((prev) => prev.filter((e) => e.id !== id));
+            setEffects((prev) => prev.filter((e) => e.id !== effectId));
         }, 1500);
     };
 
     return (
         <div className={styles.container}>
-
             <div className={styles.header}>
-
-                <h1 className={styles.live_text}>
-                    ● LIVE
-                </h1>
-
-                <h2 className={styles.title}>
-                    のび太の海底鬼岩城
-                </h2>
+                <h1 className={styles.live_text}>● LIVE</h1>
+                <h2 className={styles.title}>のび太の海底鬼岩城</h2>
 
                 <button
                     className={styles.exit}
-                    onClick={onFinish}
+                    onClick={() => router.push("/premiumGuide")}
                 >
-                    <Image
-                        src="/image/exit.png"
-                        alt="退出"
-                        width={28}
-                        height={28}
-                    />
+                    <Image src="/image/exit.png" alt="退出" width={28} height={28} />
                     <span>退出</span>
                 </button>
-
             </div>
 
             <div className={styles.chatArea}>
-
                 {messages.map((message) => (
                     <div
                         key={message.id}
                         className={`${styles.messageRow} ${message.mine ? styles.mine : ""}`}
                     >
-
                         {!message.mine && (
                             <Image
                                 src={message.image}
@@ -143,32 +125,19 @@ export default function WatchRoom({ onFinish }: Props) {
                         )}
 
                         <div>
-
                             {!message.mine && (
-                                <p className={styles.user}>
-                                    {message.user}
-                                </p>
+                                <p className={styles.user}>{message.user}</p>
                             )}
 
                             <div className={styles.messageWrap}>
-
-                                <div className={styles.message}>
-                                    {message.text}
-                                </div>
-
+                                <div className={styles.message}>{message.text}</div>
                             </div>
-
                         </div>
-
                     </div>
-
                 ))}
-
-
             </div>
 
             <div className={styles.reactionArea}>
-
                 <Image
                     src="/image/loveStamp.svg"
                     alt=""
@@ -176,7 +145,6 @@ export default function WatchRoom({ onFinish }: Props) {
                     height={34}
                     onClick={() => showReaction("/image/loveStamp.svg")}
                 />
-
                 <Image
                     src="/image/sadStamp.svg"
                     alt=""
@@ -184,7 +152,6 @@ export default function WatchRoom({ onFinish }: Props) {
                     height={34}
                     onClick={() => showReaction("/image/sadStamp.svg")}
                 />
-
                 <Image
                     src="/image/repeatStamp.svg"
                     alt=""
@@ -205,24 +172,20 @@ export default function WatchRoom({ onFinish }: Props) {
                         />
                     ))}
                 </div>
-
             </div>
 
             <div className={styles.SendArea}>
-
                 <div className={styles.members}>
-
                     <Image src="/image/dami1.png" alt="" width={34} height={34} className={styles.member} />
                     <Image src="/image/dami1.png" alt="" width={34} height={34} className={styles.member} />
                     <Image src="/image/dami1.png" alt="" width={34} height={34} className={styles.member} />
                     <Image src="/image/dami1.png" alt="" width={34} height={34} className={styles.member} />
-
                 </div>
 
                 <div className={styles.inputArea}>
                     <input
                         type="text"
-                        placeholder='Aa'
+                        placeholder="Aa"
                         className={styles.textarea}
                         value={input}
                         onChange={(e) => setInput(e.target.value)}
@@ -232,16 +195,16 @@ export default function WatchRoom({ onFinish }: Props) {
                         className={styles.send}
                         onClick={send}
                     >
-                        <Image src="/image/textSend.png"
+                        <Image
+                            src="/image/textSend.png"
                             alt=""
                             width={42}
                             height={42}
-                            className={styles.icon} />
+                            className={styles.icon}
+                        />
                     </button>
                 </div>
-
             </div>
-
         </div>
     );
 }

@@ -1,60 +1,35 @@
 "use client";
 
 import { useState } from "react";
+import { useRouter } from "next/navigation";
 
 import SelectMovie from "./SelectMovie";
 import MovieSearch from "./MovieSearch";
 import JoinRoom from "./JoinRoom";
-import WatchRoom from "./WatchRoom";
-import PremiumGuide from "./PremiumGuide";
+// WatchRoomのimportは削除
 
 export type LiveStep =
-    | "select"   // 作品を選ぶ前
-    | "search"   // 作品検索中
-    | "join"     // 同時視聴に参加
-    | "room"     // 同時視聴中
-    | "premium"; // 無料枠終了
+    | "select"
+    | "search"
+    | "join";
 
 export default function LiveArea() {
-
     const [status, setStatus] = useState<LiveStep>("select");
 
     const renderContent = () => {
         switch (status) {
-
             case "select":
-                return (
-                    <SelectMovie
-                        onSearch={() => setStatus("search")}
-                    />
-                );
+                return <SelectMovie onSearch={() => setStatus("search")} />;
 
             case "search":
-                return (
-                    <MovieSearch
-                        onStartWatch={() => setStatus("room")}
-                        onBack={() => setStatus("select")}
-                    />
-                );
+                return <MovieSearch />;
 
             case "join":
                 return (
                     <JoinRoom
-                        onJoin={() => setStatus("room")}
+                        onJoin={() => setStatus("join")}
                         onBack={() => setStatus("select")}
                     />
-                );
-
-            case "room":
-                return (
-                    <WatchRoom
-                        onFinish={() => setStatus("premium")}
-                    />
-                );
-
-            case "premium":
-                return (
-                    <PremiumGuide />
                 );
 
             default:
@@ -62,9 +37,5 @@ export default function LiveArea() {
         }
     };
 
-    return (
-        <>
-            {renderContent()}
-        </>
-    );
+    return <>{renderContent()}</>;
 }

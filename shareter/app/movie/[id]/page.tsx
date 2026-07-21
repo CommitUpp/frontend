@@ -1,5 +1,6 @@
 import Image from "next/image";
 import { mockMoviesResponse } from "@/mock/movies";
+import WatchTogetherButton from "./WatchTogetherButton";
 import styles from "./page.module.css";
 
 type Props = {
@@ -36,9 +37,7 @@ export default async function MovieDetail({ params }: Props) {
 
                 {/* 左側 */}
                 <div className={styles.leftArea}>
-                    <button className={styles.watchButton}>
-                        同時視聴開始する ▶
-                    </button>
+                    <WatchTogetherButton movieId={movie.movie_id} />
 
                     <div className={styles.serviceList}>
                         <div className={styles.serviceItem}>
@@ -65,15 +64,15 @@ export default async function MovieDetail({ params }: Props) {
                     <div className={styles.memberList}>
                         <div className={styles.memberAvatar}>
                             <Image src="/image/dami1.png" alt="視聴中のユーザー" width={52} height={52} />
-                            <span className={styles.memberBadge}>🔖</span>
+                            <span className={styles.memberBadge}><Image src="/image/friend_shareIcon.png" alt="視聴したユーザー" width={80} height={85} /></span>
                         </div>
                         <div className={styles.memberAvatar}>
                             <Image src="/image/dami1.png" alt="視聴中のユーザー" width={52} height={52} />
-                            <span className={styles.memberBadge}>🔖</span>
+                            <span className={styles.memberBadge}><Image src="/image/friend_shareIcon.png" alt="視聴したユーザー" width={80} height={85} /></span>
                         </div>
                         <div className={styles.memberAvatar}>
                             <Image src="/image/dami1.png" alt="視聴中のユーザー" width={52} height={52} />
-                            <span className={styles.memberBadge}>🔖</span>
+                            <span className={styles.memberBadge}><Image src="/image/friend_shareIcon.png" alt="視聴したユーザー" width={80} height={85} /></span>
                         </div>
                     </div>
 
