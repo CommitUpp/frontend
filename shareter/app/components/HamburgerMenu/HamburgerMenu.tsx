@@ -30,7 +30,7 @@ export default function HamburgerMenu({ onClose }: Props) {
                         <ul>
                             {menuItems.map((item) => (
                                 <li className={styles.menu_item} key={item.en}>
-                                    <Link href={item.href}>
+                                    <Link href={item.href} onClick={onClose}>
                                         <div className={styles.item_wrap}>
                                             <div className={styles.item_text}>
                                                 <p>{item.ja}</p>
