@@ -25,17 +25,14 @@ type GroupMoviesResponse = {
 
 export default function Home() {
   const router = useRouter();
-  // 仮のグループID（実際にはユーザーが所属するグループIDを取得する）
   const groupId = "4bb618e1-1fc2-457b-b635-bde0b1df667b";
 
-  // 映画データの取得
   const { data: moviesResponse } = useSWR<MoviesResponse>("movies", getMovies, {
     onError: (error) => {
       console.error("[Home] getMovies failed", error);
     },
   });
 
-  // グループの映画データの取得
   const { data: session } = useSWR("supabase-session", async () => {
     const { data, error } = await supabase.auth.getSession();
 
@@ -49,8 +46,7 @@ export default function Home() {
       console.error("[Home] getSession failed", error);
     },
   });
-  
-  // グループの映画データを取得するためのSWRフック
+
   const { data: groupMoviesResponse } = useSWR<GroupMoviesResponse>(
     groupId && session?.access_token ? ["groupMovies", groupId] : null,
     ([, id]) => getGroupMovies(id),
