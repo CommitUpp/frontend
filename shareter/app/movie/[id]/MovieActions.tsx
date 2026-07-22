@@ -2,6 +2,7 @@
 
 import Image from "next/image";
 import styles from "./page.module.css";
+import { postMovieStatus } from "@/lib/api/users";
 
 type Props = {
     movieId: string;
@@ -13,7 +14,7 @@ export default function MovieActions({ movieId }: Props) {
     };
 
     const handleWatched = () => {
-        console.log("見たボタンがクリックされました", { movieId });
+        postMovieStatus(movieId, "watched")
     };
 
     const handleFavorite = () => {
@@ -21,7 +22,7 @@ export default function MovieActions({ movieId }: Props) {
     };
 
     const handleWatchWithSomeone = () => {
-        console.log("誰かと見るボタンがクリックされました", { movieId });
+        postMovieStatus(movieId, "wanna_watch")
     };
 
     return (
