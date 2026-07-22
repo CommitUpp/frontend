@@ -79,10 +79,6 @@
     z-index: 1;
 }
 
-.tabs details {
-    position: static;
-}
-
 .tab {
     display: block;
     padding: 10px 18px;
@@ -95,12 +91,12 @@
     transition: .3s;
 }
 
-.tabs details[open] .tab {
+.active_tab {
     border: 1px solid #ff3b30;
 }
 
 .movie_list {
-    display: none;
+    display: flex;
     position: absolute;
     top: 70px;
     left: 50%;
@@ -108,10 +104,6 @@
     width: 900px;
     justify-content: center;
     gap: 70px;
-}
-
-details[open] .movie_list {
-    display: flex;
 }
 
 .movie_card {
@@ -124,10 +116,16 @@ details[open] .movie_list {
 }
 
 .thumbnail {
+    position: relative;
     width: 232px;
     height: 180px;
     background: #d9d9d9;
     margin-top: 28px;
+    overflow: hidden;
+}
+
+.thumbnail_image {
+    object-fit: cover;
 }
 
 .icons {
@@ -146,4 +144,10 @@ details[open] .movie_list {
     font-size: 26px;
     letter-spacing: .08em;
     color: #f5f5f5;
+}
+
+.loading_text {
+    color: #f5f5f5;
+    font-size: 18px;
+    margin-top: 48px;
 }
