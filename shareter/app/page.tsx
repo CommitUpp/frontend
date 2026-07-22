@@ -1,40 +1,83 @@
 "use client";
 
+import Image from "next/image";
+import { useCallback, useMemo } from "react";
+import { useRouter } from "next/navigation";
+import useSWR from "swr";
 import LiveArea from "./components/live/LiveArea";
 import Sidebar from "./components/Sidebar/Sidebar";
-import { useMemo } from "react";
-import { mockGroupMoviesResponse } from "@/mock/group-movies";
-import { mockMoviesResponse } from "@/mock/movies";
+import { getGroupMovies } from "@/lib/api/groups";
+import { getMovies } from "@/lib/api/movies";
+import { supabase } from "@/lib/supabase";
 import { movieRows } from "@/constants/movieRows";
-import { useRouter } from "next/navigation";
+import type { MoviesResponse } from "@/types/movies";
 import styles from "./page.module.css";
-import Image from "next/image";
 
-type Props = {
-  onSelectMovie: () => void;
+type GroupMovie = {
+  movie_id: string;
+  title: string;
+  trailer_url: string;
 };
 
-export default function Home({ onSelectMovie }: Props) {
-  const groupMovies = mockGroupMoviesResponse.movies;
-  const movies = mockMoviesResponse.movies;
+type GroupMoviesResponse = {
+  movies: GroupMovie[];
+};
+
+export default function Home() {
   const router = useRouter();
+  const groupId = "4bb618e1-1fc2-457b-b635-bde0b1df667b";
+
+  const { data: moviesResponse } = useSWR<MoviesResponse>("movies", getMovies, {
+    onError: (error) => {
+      console.error("[Home] getMovies failed", error);
+    },
+  });
+
+  const { data: session } = useSWR("supabase-session", async () => {
+    const { data, error } = await supabase.auth.getSession();
+
+    if (error) {
+      throw error;
+    }
+
+    return data.session;
+  }, {
+    onError: (error) => {
+      console.error("[Home] getSession failed", error);
+    },
+  });
+
+  const { data: groupMoviesResponse } = useSWR<GroupMoviesResponse>(
+    groupId && session?.access_token ? ["groupMovies", groupId] : null,
+    ([, id]) => getGroupMovies(id),
+    {
+      onError: (error) => {
+        console.error("[Home] getGroupMovies failed", error);
+      },
+    }
+  );
+
+  const movies = useMemo(() => moviesResponse?.movies ?? [], [moviesResponse]);
+  const groupMovies = useMemo(() => groupMoviesResponse?.movies ?? [], [groupMoviesResponse]);
 
   const rows = useMemo(() => {
     return movieRows
       .map((row) => ({
         title: row.displayName,
-        movies: movies.filter((movie) => movie.genres.includes(row.genre)),
+        movies: movies.filter((movie) => (
+          Array.isArray(movie.genres) && movie.genres.includes(row.genre)
+        )),
       }))
       .filter((row) => row.movies.length > 0);
   }, [movies]);
 
-  // 後にAPIに差し替える
-  const mockUser = {
-    id: "u1",
-    name: "テストユーザー",
-    initials: "テ",
-    avatarUrl: undefined,
-  };
+  const handleMovieClick = useCallback((movieId: string) => {
+    const params = new URLSearchParams({
+      group_id: groupId,
+    });
+
+    router.push(`/movie/${movieId}?${params.toString()}`);
+  }, [groupId, router]);
 
   return (
     <div className={styles.page_wrap}>
@@ -42,11 +85,7 @@ export default function Home({ onSelectMovie }: Props) {
 
       <div className={styles.main_wrap}>
         <div className={styles.live_wrap}>
-          <LiveArea
-            currentUser={mockUser}
-            remainingWatchCount={1}
-            isPremium={false}
-          />
+          <LiveArea />
         </div>
 
         <div className={styles.recommend_wrap}>
@@ -60,7 +99,7 @@ export default function Home({ onSelectMovie }: Props) {
                 <div
                   key={movie.movie_id}
                   className={styles.movie_wrap}
-                  onClick={() => router.push(`/movie/${movie.movie_id}`)}
+                  onClick={() => handleMovieClick(movie.movie_id)}
                 >
                   <Image
                     src={movie.trailer_url}
@@ -69,14 +108,15 @@ export default function Home({ onSelectMovie }: Props) {
                     height={320}
                     className={styles.movie_image}
                   />
+
                   <p className={styles.movie_name}>{movie.title}</p>
                 </div>
               ))}
             </div>
           </section>
 
-          {rows.map((row, index) => (
-            <section key={index} className={styles.row_section}>
+          {rows.map((row) => (
+            <section key={row.title} className={styles.row_section}>
               <div className={styles.row_header}>
                 <h3>{row.title}</h3>
               </div>
@@ -86,7 +126,7 @@ export default function Home({ onSelectMovie }: Props) {
                   <div
                     key={movie.movie_id}
                     className={styles.movie_wrap}
-                    onClick={onSelectMovie}
+                    onClick={() => handleMovieClick(movie.movie_id)}
                   >
                     <Image
                       src={movie.trailer_url}
@@ -95,6 +135,7 @@ export default function Home({ onSelectMovie }: Props) {
                       height={320}
                       className={styles.movie_image}
                     />
+
                     <p className={styles.movie_name}>{movie.title}</p>
                   </div>
                 ))}
