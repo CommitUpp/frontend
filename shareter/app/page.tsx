@@ -5,6 +5,7 @@ import Sidebar from "./components/Sidebar/Sidebar";
 import { useMemo } from "react";
 import { mockGroupMoviesResponse } from "@/mock/group-movies";
 import { mockMoviesResponse } from "@/mock/movies";
+import { mockWatchersResponse } from "@/mock/watchers";
 import { movieRows } from "@/constants/movieRows";
 import { useRouter } from "next/navigation";
 import styles from "./page.module.css";
@@ -56,22 +57,44 @@ export default function Home({ onSelectMovie }: Props) {
             </div>
 
             <div className={styles.movies_container}>
-              {groupMovies.map((movie) => (
-                <div
-                  key={movie.movie_id}
-                  className={styles.movie_wrap}
-                  onClick={() => router.push(`/movie/${movie.movie_id}`)}
-                >
-                  <Image
-                    src={movie.trailer_url}
-                    alt={movie.title}
-                    width={220}
-                    height={320}
-                    className={styles.movie_image}
-                  />
-                  <p className={styles.movie_name}>{movie.title}</p>
-                </div>
-              ))}
+              {groupMovies.map((movie) => {
+                const watchers = mockWatchersResponse[movie.movie_id] ?? [];
+
+                return (
+                  <div
+                    key={movie.movie_id}
+                    className={styles.movie_wrap}
+                    onClick={() => router.push(`/movie/${movie.movie_id}`)}
+                  >
+                    <div className={styles.poster_wrap}>
+                      <Image
+                        src={movie.trailer_url}
+                        alt={movie.title}
+                        width={220}
+                        height={320}
+                        className={styles.movie_image}
+                      />
+
+                      {watchers.length > 0 && (
+                        <div className={styles.watcher_icons}>
+                          {watchers.slice(0, 3).map((watcher) => (
+                            <Image
+                              key={watcher.id}
+                              src={watcher.avatar_url}
+                              alt=""
+                              width={32}
+                              height={32}
+                              className={styles.watcher_icon}
+                            />
+                          ))}
+                        </div>
+                      )}
+                    </div>
+
+                    <p className={styles.movie_name}>{movie.title}</p>
+                  </div>
+                );
+              })}
             </div>
           </section>
 
@@ -82,22 +105,44 @@ export default function Home({ onSelectMovie }: Props) {
               </div>
 
               <div className={styles.movies_container}>
-                {row.movies.map((movie) => (
-                  <div
-                    key={movie.movie_id}
-                    className={styles.movie_wrap}
-                    onClick={onSelectMovie}
-                  >
-                    <Image
-                      src={movie.trailer_url}
-                      alt={movie.title}
-                      width={220}
-                      height={320}
-                      className={styles.movie_image}
-                    />
-                    <p className={styles.movie_name}>{movie.title}</p>
-                  </div>
-                ))}
+                {row.movies.map((movie) => {
+                  const watchers = mockWatchersResponse[movie.movie_id] ?? [];
+
+                  return (
+                    <div
+                      key={movie.movie_id}
+                      className={styles.movie_wrap}
+                      onClick={onSelectMovie}
+                    >
+                      <div className={styles.poster_wrap}>
+                        <Image
+                          src={movie.trailer_url}
+                          alt={movie.title}
+                          width={220}
+                          height={320}
+                          className={styles.movie_image}
+                        />
+
+                        {watchers.length > 0 && (
+                          <div className={styles.watcher_icons}>
+                            {watchers.slice(0, 3).map((watcher) => (
+                              <Image
+                                key={watcher.id}
+                                src={watcher.avatar_url}
+                                alt=""
+                                width={32}
+                                height={32}
+                                className={styles.watcher_icon}
+                              />
+                            ))}
+                          </div>
+                        )}
+                      </div>
+
+                      <p className={styles.movie_name}>{movie.title}</p>
+                    </div>
+                  );
+                })}
               </div>
             </section>
           ))}
