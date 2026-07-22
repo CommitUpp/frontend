@@ -22,6 +22,10 @@ export async function apiFetch(path: string, options: ApiFetchOptions = {}) {
   const url = `${API_BASE_URL}${path}`;
   const accessToken = auth ? await getAccessToken() : null;
 
+  if (auth && !accessToken) {
+    throw new Error("Access token is not available.");
+  }
+
   console.log("[apiFetch] request", {
     url,
     method: requestOptions.method ?? "GET",
