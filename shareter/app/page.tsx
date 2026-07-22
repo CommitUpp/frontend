@@ -6,7 +6,6 @@ import { useRouter } from "next/navigation";
 import useSWR from "swr";
 import LiveArea from "./components/live/LiveArea";
 import Sidebar from "./components/Sidebar/Sidebar";
-import { useMemo } from "react";
 import { mockGroupMoviesResponse } from "@/mock/group-movies";
 import { mockMoviesResponse } from "@/mock/movies";
 import { mockWatchersResponse } from "@/mock/watchers";
