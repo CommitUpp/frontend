@@ -4,6 +4,7 @@ import Image from "next/image";
 import { useParams, useSearchParams } from "next/navigation";
 import useSWR from "swr";
 import { getMovieDetails } from "@/lib/api/movies";
+import MovieActions from "./MovieActions";
 import WatchTogetherButton from "./WatchTogetherButton";
 import styles from "./page.module.css";
 
@@ -127,59 +128,7 @@ export default function MovieDetailPage() {
                         ))}
                     </div>
 
-                    <div className={styles.actionList}>
-                        <button
-                            type="button"
-                            className={styles.actionItem}
-                        >
-                            <Image
-                                src="/image/share.png"
-                                alt=""
-                                width={28}
-                                height={28}
-                            />
-                            <span className={styles.actionLabel}>共有</span>
-                        </button>
-
-                        <button
-                            type="button"
-                            className={styles.actionItem}
-                        >
-                            <Image
-                                src="/image/watched.png"
-                                alt=""
-                                width={20}
-                                height={20}
-                            />
-                            <span className={styles.actionLabel}>見た</span>
-                        </button>
-
-                        <button
-                            type="button"
-                            className={styles.actionItem}
-                        >
-                            <Image
-                                src="/image/favorite.png"
-                                alt=""
-                                width={26}
-                                height={26}
-                            />
-                            <span className={styles.actionLabel}>お気に入り</span>
-                        </button>
-
-                        <button
-                            type="button"
-                            className={styles.actionItem}
-                        >
-                            <Image
-                                src="/image/someone.png"
-                                alt=""
-                                width={26}
-                                height={26}
-                            />
-                            <span className={styles.actionLabel}>誰かと見る</span>
-                        </button>
-                    </div>
+                    <MovieActions movieId={movie.MovieID} />
                 </div>
             </div>
 

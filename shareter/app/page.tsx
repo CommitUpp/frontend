@@ -10,6 +10,7 @@ import { mockGroupMoviesResponse } from "@/mock/group-movies";
 import { mockMoviesResponse } from "@/mock/movies";
 import { mockWatchersResponse } from "@/mock/watchers";
 
+
 import { getGroupMovies } from "@/lib/api/groups";
 import { getMovies } from "@/lib/api/movies";
 import { supabase } from "@/lib/supabase";
@@ -21,9 +22,14 @@ type GroupMovie = {
   movie_id: string;
   title: string;
   trailer_url: string;
+  watched_member: {
+    avatar_url: string;
+    user_id: string;
+  }[];
 };
 
 type GroupMoviesResponse = {
+  group_id: string;
   movies: GroupMovie[];
 };
 
@@ -100,13 +106,13 @@ export default function Home() {
 
             <div className={styles.movies_container}>
               {groupMovies.map((movie) => {
-                const watchers = mockWatchersResponse[movie.movie_id] ?? [];
+                const watchers = movie.watched_member ?? [];
 
                 return (
                   <div
                     key={movie.movie_id}
                     className={styles.movie_wrap}
-                    onClick={() => router.push(`/movie/${movie.movie_id}`)}
+                    onClick={() => handleMovieClick(movie.movie_id)}
                   >
                     <div className={styles.poster_wrap}>
                       <Image
@@ -121,7 +127,7 @@ export default function Home() {
                         <div className={styles.watcher_icons}>
                           {watchers.slice(0, 3).map((watcher) => (
                             <Image
-                              key={watcher.id}
+                              key={watcher.user_id}
                               src={watcher.avatar_url}
                               alt=""
                               width={32}
@@ -137,23 +143,6 @@ export default function Home() {
                   </div>
                 );
               })}
-              {groupMovies.map((movie) => (
-                <div
-                  key={movie.movie_id}
-                  className={styles.movie_wrap}
-                  onClick={() => handleMovieClick(movie.movie_id)}
-                >
-                  <Image
-                    src={movie.trailer_url}
-                    alt={movie.title}
-                    width={220}
-                    height={320}
-                    className={styles.movie_image}
-                  />
-
-                  <p className={styles.movie_name}>{movie.title}</p>
-                </div>
-              ))}
             </div>
           </section>
 
@@ -164,45 +153,6 @@ export default function Home() {
               </div>
 
               <div className={styles.movies_container}>
-
-                {row.movies.map((movie) => {
-                  const watchers = mockWatchersResponse[movie.movie_id] ?? [];
-
-                  return (
-                    <div
-                      key={movie.movie_id}
-                      className={styles.movie_wrap}
-                      onClick={onSelectMovie}
-                    >
-                      <div className={styles.poster_wrap}>
-                        <Image
-                          src={movie.trailer_url}
-                          alt={movie.title}
-                          width={220}
-                          height={320}
-                          className={styles.movie_image}
-                        />
-
-                        {watchers.length > 0 && (
-                          <div className={styles.watcher_icons}>
-                            {watchers.slice(0, 3).map((watcher) => (
-                              <Image
-                                key={watcher.id}
-                                src={watcher.avatar_url}
-                                alt=""
-                                width={32}
-                                height={32}
-                                className={styles.watcher_icon}
-                              />
-                            ))}
-                          </div>
-                        )}
-                      </div>
-
-                      <p className={styles.movie_name}>{movie.title}</p>
-                    </div>
-                  );
-                })}
                 {row.movies.map((movie) => (
                   <div
                     key={movie.movie_id}
