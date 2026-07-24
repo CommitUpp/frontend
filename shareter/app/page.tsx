@@ -8,11 +8,6 @@ import { useRouter } from "next/navigation";
 import useSWR from "swr";
 import LiveArea from "./components/live/LiveArea";
 import Sidebar from "./components/Sidebar/Sidebar";
-import { mockGroupMoviesResponse } from "@/mock/group-movies";
-import { mockMoviesResponse } from "@/mock/movies";
-import { mockWatchersResponse } from "@/mock/watchers";
-
-
 import { getGroupMovies } from "@/lib/api/groups";
 import { getMovies } from "@/lib/api/movies";
 import { supabase } from "@/lib/supabase";
@@ -20,6 +15,10 @@ import { movieRows } from "@/constants/movieRows";
 import type { MoviesResponse } from "@/types/movies";
 import styles from "./page.module.css";
 
+type GroupMoviesResponse = {
+  group_id: string;
+  movies: GroupMovie[];
+};
 type GroupMovie = {
   movie_id: string;
   title: string;
@@ -71,14 +70,7 @@ const channels = [
   },
 ];
 
-export default function Home({ onSelectMovie }: Props) {
-  const groupMovies = mockGroupMoviesResponse.movies;
-  const movies = mockMoviesResponse.movies;
 
-type GroupMoviesResponse = {
-  group_id: string;
-  movies: GroupMovie[];
-};
 
 export default function Home() {
   const router = useRouter();
