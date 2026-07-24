@@ -8,11 +8,6 @@ import { useRouter } from "next/navigation";
 import useSWR from "swr";
 import LiveArea from "./components/live/LiveArea";
 import Sidebar from "./components/Sidebar/Sidebar";
-import { mockGroupMoviesResponse } from "@/mock/group-movies";
-import { mockMoviesResponse } from "@/mock/movies";
-import { mockWatchersResponse } from "@/mock/watchers";
-
-
 import { getGroupMovies } from "@/lib/api/groups";
 import { getMovies } from "@/lib/api/movies";
 import { supabase } from "@/lib/supabase";
@@ -70,10 +65,6 @@ const channels = [
     ],
   },
 ];
-
-export default function Home({ onSelectMovie }: Props) {
-  const groupMovies = mockGroupMoviesResponse.movies;
-  const movies = mockMoviesResponse.movies;
 
 type GroupMoviesResponse = {
   group_id: string;
@@ -149,10 +140,6 @@ export default function Home() {
         selectedChannelId={selectedChannelId}
         onSelectChannel={setSelectedChannelId}
       />
-
-      <h1 style={{ color: "#000", fontSize: "32px" }}>
-        {selectedChannelId}
-      </h1>
 
       <div className={styles.main_wrap}>
         <div className={styles.live_wrap}>
