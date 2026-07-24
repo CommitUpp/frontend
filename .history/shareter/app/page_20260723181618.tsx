@@ -6,10 +6,12 @@ import { useRouter } from "next/navigation";
 import useSWR from "swr";
 import LiveArea from "./components/live/LiveArea";
 import Sidebar from "./components/Sidebar/Sidebar";
+<<<<<<< HEAD
 import { mockGroupMoviesResponse } from "@/mock/group-movies";
 import { mockMoviesResponse } from "@/mock/movies";
 import { mockWatchersResponse } from "@/mock/watchers";
-
+=======
+>>>>>>> 231781810ce1a1458388dc0626b74596109e4ccb
 
 import { getGroupMovies } from "@/lib/api/groups";
 import { getMovies } from "@/lib/api/movies";
