@@ -1,6 +1,6 @@
 "use client";
 
-import { useState, use } from "react";
+import { useState, useEffect, useRef, use } from "react";
 import { useRouter } from "next/navigation";
 import Image from "next/image";
 import styles from "./page.module.css";
@@ -62,6 +62,13 @@ export default function RoomPage({ params }: Props) {
 
     const [input, setInput] = useState("");
     const [messages, setMessages] = useState(initialMessages);
+
+    const chatEndRef = useRef<HTMLDivElement>(null);
+
+
+    useEffect(() => {
+        chatEndRef.current?.scrollIntoView({ behavior: "smooth" });
+    }, [messages]);
 
     const send = () => {
         const t = input.trim();
@@ -135,6 +142,7 @@ export default function RoomPage({ params }: Props) {
                         </div>
                     </div>
                 ))}
+                <div ref={chatEndRef} />
             </div>
 
             <div className={styles.reactionArea}>

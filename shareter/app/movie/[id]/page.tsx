@@ -1,112 +1,159 @@
+"use client";
+
 import Image from "next/image";
-import { mockMoviesResponse } from "@/mock/movies";
+import { useParams, useSearchParams } from "next/navigation";
+import useSWR from "swr";
+import { getMovieDetails } from "@/lib/api/movies";
+import MovieActions from "./MovieActions";
 import WatchTogetherButton from "./WatchTogetherButton";
 import styles from "./page.module.css";
 
-type Props = {
-    params: Promise<{
-        id: string;
-    }>;
+type WatchedUser = {
+    UserID: string;
+    UserName: string;
+    AvatarURL: string;
 };
 
-export default async function MovieDetail({ params }: Props) {
-    const { id } = await params;
+type MovieDetailResponse = {
+    MovieID: string;
+    TMDBID: string;
+    Title: string;
+    PosterURL: string;
+    TrailerURL: string;
+    Overview: string;
+    ReleaseDate: string;
+    WatchedUser?: WatchedUser[];
+    StreamingServices?: string[];
+};
 
-    const movie = mockMoviesResponse.movies.find(
-        (movie) => movie.movie_id === id
+export default function MovieDetailPage() {
+    const params = useParams<{ id: string }>();
+    const searchParams = useSearchParams();
+    const movieId = params.id;
+    const groupId = searchParams.get("group_id");
+
+    const { data: movie, error, isLoading } = useSWR<MovieDetailResponse>(
+        groupId ? ["movieDetail", movieId, groupId] : null,
+        ([, currentMovieId, currentGroupId]) => getMovieDetails(currentMovieId, currentGroupId),
+        {
+            onError: (fetchError) => {
+                console.error("[MovieDetail] getMovieDetails failed", fetchError);
+            },
+        }
     );
 
-    if (!movie) {
-        return <p>作品が見つかりませんでした。</p>;
+    if (!groupId) {
+        return <p>グループIDが指定されていません。</p>;
     }
+
+    if (isLoading) {
+        return <p>作品情報を取得中です。</p>;
+    }
+
+    if (error || !movie) {
+        return <p>作品情報の取得に失敗しました。</p>;
+    }
+
+    const streamingServices = movie.StreamingServices ?? [];
+    const watchedUsers = movie.WatchedUser ?? [];
 
     return (
         <main className={styles.container}>
-            {/* ヘッダー画像 */}
             <div className={styles.hero}>
                 <Image
-                    src={movie.trailer_url}
-                    alt={movie.title}
+                    src={movie.TrailerURL}
+                    alt={movie.Title}
                     fill
+                    sizes="100vw"
                     className={styles.heroImage}
+                    priority
                 />
 
-                <button className={styles.backButton}>
+                <button
+                    type="button"
+                    className={styles.backButton}
+                    aria-label="前の画面に戻る"
+                    onClick={() => window.history.back()}
+                >
                     ←
                 </button>
 
-                {/* 左側 */}
                 <div className={styles.leftArea}>
-                    <WatchTogetherButton movieId={movie.movie_id} />
+                    <WatchTogetherButton movieId={movie.MovieID} />
 
                     <div className={styles.serviceList}>
-                        <div className={styles.serviceItem}>
-                            <Image src="/image/subscOne.png" alt="Spotify" width={48} height={48} />
-                            <span className={styles.serviceName}>Spotify</span>
-                        </div>
-                        <div className={styles.serviceItem}>
-                            <Image src="/image/subscTwo.png" alt="YouTube" width={48} height={48} />
-                            <span className={styles.serviceName}>YouTube</span>
-                        </div>
-                        <div className={styles.serviceItem}>
-                            <Image src="/image/subscThree.png" alt="Prime Video" width={48} height={48} />
-                            <span className={styles.serviceName}>Prime</span>
-                        </div>
-                        <div className={styles.serviceItem}>
-                            <Image src="/image/subscFour.png" alt="Netflix" width={48} height={48} />
-                            <span className={styles.serviceName}>Netflix</span>
-                        </div>
+                        {streamingServices.map((service) => (
+                            <div
+                                key={service}
+                                className={styles.serviceItem}
+                            >
+                                <Image
+                                    src={getStreamingServiceImage(service)}
+                                    alt={service}
+                                    width={48}
+                                    height={48}
+                                />
+
+                                <span className={styles.serviceName}>
+                                    {service}
+                                </span>
+                            </div>
+                        ))}
                     </div>
                 </div>
 
-                {/* 右側 */}
                 <div className={styles.rightArea}>
                     <div className={styles.memberList}>
-                        <div className={styles.memberAvatar}>
-                            <Image src="/image/dami1.png" alt="視聴中のユーザー" width={52} height={52} />
-                            <span className={styles.memberBadge}><Image src="/image/friend_shareIcon.png" alt="視聴したユーザー" width={80} height={85} /></span>
-                        </div>
-                        <div className={styles.memberAvatar}>
-                            <Image src="/image/dami1.png" alt="視聴中のユーザー" width={52} height={52} />
-                            <span className={styles.memberBadge}><Image src="/image/friend_shareIcon.png" alt="視聴したユーザー" width={80} height={85} /></span>
-                        </div>
-                        <div className={styles.memberAvatar}>
-                            <Image src="/image/dami1.png" alt="視聴中のユーザー" width={52} height={52} />
-                            <span className={styles.memberBadge}><Image src="/image/friend_shareIcon.png" alt="視聴したユーザー" width={80} height={85} /></span>
-                        </div>
+                        {watchedUsers.map((user) => (
+                            <div
+                                key={user.UserID}
+                                className={styles.memberAvatar}
+                            >
+                                <Image
+                                    src={user.AvatarURL || "/image/dami1.png"}
+                                    alt={user.UserName}
+                                    width={52}
+                                    height={52}
+                                />
+
+                                <span className={styles.memberBadge}>
+                                    <Image
+                                        src="/image/friend_shareIcon.png"
+                                        alt="視聴したユーザー"
+                                        width={80}
+                                        height={85}
+                                    />
+                                </span>
+                            </div>
+                        ))}
                     </div>
 
-                    <div className={styles.actionList}>
-                        <button className={styles.actionItem}>
-                            <Image src="/image/share.png" alt="" width={28} height={28} />
-                            <span className={styles.actionLabel}>共有</span>
-                        </button>
-                        <button className={styles.actionItem}>
-                            <Image src="/image/watched.png" alt="" width={20} height={20} />
-                            <span className={styles.actionLabel}>見た</span>
-                        </button>
-                        <button className={styles.actionItem}>
-                            <Image src="/image/favorite.png" alt="" width={26} height={26} />
-                            <span className={styles.actionLabel}>お気に入り</span>
-                        </button>
-                        <button className={styles.actionItem}>
-                            <Image src="/image/someone.png" alt="" width={26} height={26} />
-                            <span className={styles.actionLabel}>誰かと見る</span>
-                        </button>
-                    </div>
+                    <MovieActions movieId={movie.MovieID} />
                 </div>
             </div>
 
-            {/* 詳細 */}
             <section className={styles.detail}>
-                <h1>{movie.title}</h1>
+                <h1>{movie.Title}</h1>
 
-                <h2>エピソード</h2>
+                <p>{movie.ReleaseDate}</p>
+
+                <h2>あらすじ</h2>
 
                 <p className={styles.story}>
-                    あらすじは後ほどモックデータから取得予定
+                    {movie.Overview}
                 </p>
             </section>
         </main>
     );
+}
+
+function getStreamingServiceImage(serviceName: string): string {
+    const serviceImages: Record<string, string> = {
+        Netflix: "/image/subscFour.png",
+        "U-NEXT": "/image/subscOne.png",
+        "Prime Video": "/image/subscThree.png",
+        YouTube: "/image/subscTwo.png",
+    };
+
+    return serviceImages[serviceName] ?? "/image/no-image.png";
 }

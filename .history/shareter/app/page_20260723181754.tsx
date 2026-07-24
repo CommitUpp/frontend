@@ -1,7 +1,5 @@
 "use client";
 
-import { useState } from "react";
-
 import Image from "next/image";
 import { useCallback, useMemo } from "react";
 import { useRouter } from "next/navigation";
@@ -29,51 +27,6 @@ type GroupMovie = {
     user_id: string;
   }[];
 };
-
-const channels = [
-  {
-    id: "harry-potter",
-    name: "ハリーポッター賢者の石",
-    messages: [
-      {
-        user: "やまけん",
-        text: "この伏線そんな回収の仕方ある？！ってなった",
-      },
-      {
-        user: "りょうと",
-        text: "しかも途中ちょっと怖かったのに、変なところで笑わせてくるのずるい",
-      },
-    ],
-  },
-  {
-    id: "avengers-civil-war",
-    name: "アベンジャーズ シビル・ウォー",
-    messages: [
-      {
-        user: "けんた",
-        text: "最後の戦いめっちゃ熱かった",
-      },
-      {
-        user: "りょうと",
-        text: "キャップ派かアイアンマン派かで揉めそう笑",
-      },
-    ],
-  },
-  {
-    id: "ironman-3",
-    name: "アイアンマン3",
-    messages: [
-      {
-        user: "やまけん",
-        text: "スーツが大量に飛んでくるシーン好き",
-      },
-    ],
-  },
-];
-
-export default function Home({ onSelectMovie }: Props) {
-  const groupMovies = mockGroupMoviesResponse.movies;
-  const movies = mockMoviesResponse.movies;
 
 type GroupMoviesResponse = {
   group_id: string;
@@ -136,23 +89,9 @@ export default function Home() {
     router.push(`/movie/${movieId}?${params.toString()}`);
   }, [groupId, router]);
 
-  const [selectedChannelId, setSelectedChannelId] =
-    useState("harry-potter");
-
-  const selectedChannel = channels.find(
-    (channel) => channel.id === selectedChannelId
-  );
-
   return (
     <div className={styles.page_wrap}>
-      <Sidebar
-        selectedChannelId={selectedChannelId}
-        onSelectChannel={setSelectedChannelId}
-      />
-
-      <h1 style={{ color: "#000", fontSize: "32px" }}>
-        {selectedChannelId}
-      </h1>
+      <Sidebar />
 
       <div className={styles.main_wrap}>
         <div className={styles.live_wrap}>
