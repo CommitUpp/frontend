@@ -1,5 +1,6 @@
 import Link from "next/link";
-import Image from "next/image";
+import { useRouter } from "next/navigation";
+import { supabase } from "@/lib/supabase";
 import styles from "./HamburgerMenu.module.css";
 import "../../globals.css";
 
@@ -10,12 +11,27 @@ type Props = {
 const menuItems = [
     { ja: "トップ", en: "TOP", href: "/" },
     { ja: "マイページ", en: "MY PAGE", href: "/mypage" },
-    { ja: "検索", en: "SEARCH", href: "/serach" },
+    { ja: "検索", en: "SEARCH", href: "/search" },
     { ja: "プラン", en: "PLAN", href: "/plan" },
     { ja: "アンケート", en: "SURVEY", href: "/survey" },
 ]
 
 export default function HamburgerMenu({ onClose }: Props) {
+    const router = useRouter();
+
+    const handleLogout = async () => {
+        const { error } = await supabase.auth.signOut();
+
+        if (error) {
+            console.error("ログアウトに失敗しました:", error.message);
+            return;
+        }
+
+        onClose();
+        router.replace("/login");
+        router.refresh();
+    };
+
     return (
         <>
             <div className={styles.overlay}>
@@ -47,6 +63,9 @@ export default function HamburgerMenu({ onClose }: Props) {
                             ))}
                         </ul>
                     </nav>
+                    <button className={styles.logout_button} onClick={handleLogout}>
+                        ログアウト
+                    </button>
                 </div>
             </div>
         </>
