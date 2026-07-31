@@ -1,13 +1,18 @@
 "use client";
 
 import { useState } from "react";
-import Image from "next/image";
+import { usePathname } from "next/navigation";
 import HamburgerMenu from "../HamburgerMenu/HamburgerMenu";
 import "../../globals.css";
 import styles from "./Header.module.css";
 
 export default function Header() {
     const [isMenuOpen, setIsMenuOpen] = useState(false);
+    const pathname = usePathname();
+
+    if (pathname === "/landing-page") {
+        return null;
+    }
 
     return (
         <>

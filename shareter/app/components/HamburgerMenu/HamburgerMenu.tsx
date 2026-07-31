@@ -1,5 +1,5 @@
 import Link from "next/link";
-import { useRouter } from "next/navigation";
+import { useEffect, useState } from "react";
 import { supabase } from "@/lib/supabase";
 import styles from "./HamburgerMenu.module.css";
 import "../../globals.css";
@@ -9,7 +9,7 @@ type Props = {
 }
 
 const menuItems = [
-    { ja: "トップ", en: "TOP", href: "/" },
+    { ja: "トップ", en: "TOP", href: "/home" },
     { ja: "マイページ", en: "MY PAGE", href: "/mypage" },
     { ja: "検索", en: "SEARCH", href: "/search" },
     { ja: "プラン", en: "PLAN", href: "/plan" },
@@ -17,7 +17,22 @@ const menuItems = [
 ]
 
 export default function HamburgerMenu({ onClose }: Props) {
-    const router = useRouter();
+    const [isLoggedIn, setIsLoggedIn] = useState(false);
+
+    useEffect(() => {
+        void supabase.auth.getSession().then(({ data, error }) => {
+            if (error) {
+                console.error("セッションの取得に失敗しました:", error.message);
+            }
+            setIsLoggedIn(Boolean(data.session));
+        });
+
+        const { data: { subscription } } = supabase.auth.onAuthStateChange(
+            (_event, session) => setIsLoggedIn(Boolean(session))
+        );
+
+        return () => subscription.unsubscribe();
+    }, []);
 
     const handleLogout = async () => {
         const { error } = await supabase.auth.signOut();
@@ -27,9 +42,7 @@ export default function HamburgerMenu({ onClose }: Props) {
             return;
         }
 
-        onClose();
-        router.replace("/login");
-        router.refresh();
+        window.location.replace("/landing-page");
     };
 
     return (
@@ -63,9 +76,11 @@ export default function HamburgerMenu({ onClose }: Props) {
                             ))}
                         </ul>
                     </nav>
-                    <button className={styles.logout_button} onClick={handleLogout}>
-                        ログアウト
-                    </button>
+                    {isLoggedIn && (
+                        <button className={styles.logout_button} onClick={handleLogout}>
+                            ログアウト
+                        </button>
+                    )}
                 </div>
             </div>
         </>
