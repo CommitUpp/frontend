@@ -155,8 +155,8 @@ const channels = [
 ];
 
 type Props = {
-    selectedChannelId: string;
-    onSelectChannel: (channelId: string) => void;
+    selectedChannelId?: string;
+    onSelectChannel?: (channelId: string) => void;
 };
 
 type Group = {
@@ -180,6 +180,10 @@ export default function Sidebar({
     const [isAddFriendsOpen, setIsAddFriendsOpen] = useState(false);
     const [isGroupNameOpen, setIsGroupNameOpen] = useState(false);
     const [selectedFriends, setSelectedFriends] = useState<Friend[]>([]);
+    const [fallbackSelectedChannelId, setFallbackSelectedChannelId] =
+        useState(channels[0].id);
+    const activeChannelId = selectedChannelId ?? fallbackSelectedChannelId;
+    const handleSelectChannel = onSelectChannel ?? setFallbackSelectedChannelId;
 
     const [groups, setGroups] = useState<Group[]>([
         {
@@ -229,7 +233,7 @@ export default function Sidebar({
                     <div className={styles.tag_list}>
                         {channels.map((channel) => {
                             const isActive =
-                                selectedChannelId === channel.id;
+                                activeChannelId === channel.id;
 
                             return (
                                 <button
@@ -238,7 +242,7 @@ export default function Sidebar({
                                     className={`${styles.tag_item} ${isActive ? styles.active : ""
                                         }`}
                                     onClick={() =>
-                                        onSelectChannel(channel.id)
+                                        handleSelectChannel(channel.id)
                                     }
                                 >
                                     # {channel.name}
