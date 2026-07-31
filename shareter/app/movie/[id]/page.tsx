@@ -31,10 +31,15 @@ export default function MovieDetailPage() {
     const searchParams = useSearchParams();
     const movieId = params.id;
     const groupId = searchParams.get("group_id");
+    const movieDetailKey: ["movieDetail", string, string] | null = groupId
+        ? ["movieDetail", movieId, groupId]
+        : null;
 
     const { data: movie, error, isLoading } = useSWR<MovieDetailResponse>(
-        groupId ? ["movieDetail", movieId, groupId] : null,
-        ([, currentMovieId, currentGroupId]) => getMovieDetails(currentMovieId, currentGroupId),
+        movieDetailKey,
+        ([, currentMovieId, currentGroupId]: ["movieDetail", string, string]) => (
+            getMovieDetails(currentMovieId, currentGroupId)
+        ),
         {
             onError: (fetchError) => {
                 console.error("[MovieDetail] getMovieDetails failed", fetchError);
