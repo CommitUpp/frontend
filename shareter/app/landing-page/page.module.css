@@ -1,0 +1,35 @@
+.page {
+    min-height: 100vh;
+    display: grid;
+    place-items: center;
+    padding: 24px;
+    background: #111;
+    color: #fff;
+}
+
+.content {
+    text-align: center;
+}
+
+.title {
+    font-size: clamp(4.8rem, 8vw, 7.2rem);
+    font-weight: 600;
+    line-height: 1;
+}
+
+.login_button {
+    min-width: 220px;
+    margin-top: 36px;
+    padding: 13px 24px;
+    border: 1px solid #fff;
+    border-radius: 4px;
+    color: #fff;
+    font-size: 1.6rem;
+    cursor: pointer;
+    transition: color 0.2s ease, background-color 0.2s ease;
+}
+
+.login_button:hover {
+    color: #111;
+    background-color: #fff;
+}

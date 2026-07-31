@@ -16,6 +16,8 @@
     background: linear-gradient(90deg, #303030 0%, #202020 100%);
     border-radius: 6px;
     position: relative;
+    display: flex;
+    flex-direction: column;
     animation: slideIn 0.4s ease forwards;
 }
 
@@ -70,5 +72,21 @@
         &:last-child {
             font-size: 2rem;
         }
+    }
+}
+
+.logout_button {
+    width: 284px;
+    margin: auto auto 40px;
+    padding: 12px 0;
+    border: 1px solid #fff;
+    border-radius: 4px;
+    color: #fff;
+    font-size: 1.4rem;
+    transition: color 0.3s ease, background-color 0.3s ease;
+
+    &:hover {
+        color: #202020;
+        background-color: #fff;
     }
 }

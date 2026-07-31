@@ -1,5 +1,6 @@
 import Link from "next/link";
-import Image from "next/image";
+import { useEffect, useState } from "react";
+import { supabase } from "@/lib/supabase";
 import styles from "./HamburgerMenu.module.css";
 import "../../globals.css";
 
@@ -8,14 +9,42 @@ type Props = {
 }
 
 const menuItems = [
-    { ja: "トップ", en: "TOP", href: "/" },
+    { ja: "トップ", en: "TOP", href: "/home" },
     { ja: "マイページ", en: "MY PAGE", href: "/mypage" },
-    { ja: "検索", en: "SEARCH", href: "/serach" },
+    { ja: "検索", en: "SEARCH", href: "/search" },
     { ja: "プラン", en: "PLAN", href: "/plan" },
     { ja: "アンケート", en: "SURVEY", href: "/survey" },
 ]
 
 export default function HamburgerMenu({ onClose }: Props) {
+    const [isLoggedIn, setIsLoggedIn] = useState(false);
+
+    useEffect(() => {
+        void supabase.auth.getSession().then(({ data, error }) => {
+            if (error) {
+                console.error("セッションの取得に失敗しました:", error.message);
+            }
+            setIsLoggedIn(Boolean(data.session));
+        });
+
+        const { data: { subscription } } = supabase.auth.onAuthStateChange(
+            (_event, session) => setIsLoggedIn(Boolean(session))
+        );
+
+        return () => subscription.unsubscribe();
+    }, []);
+
+    const handleLogout = async () => {
+        const { error } = await supabase.auth.signOut();
+
+        if (error) {
+            console.error("ログアウトに失敗しました:", error.message);
+            return;
+        }
+
+        window.location.replace("/landing-page");
+    };
+
     return (
         <>
             <div className={styles.overlay}>
@@ -47,6 +76,11 @@ export default function HamburgerMenu({ onClose }: Props) {
                             ))}
                         </ul>
                     </nav>
+                    {isLoggedIn && (
+                        <button className={styles.logout_button} onClick={handleLogout}>
+                            ログアウト
+                        </button>
+                    )}
                 </div>
             </div>
         </>
