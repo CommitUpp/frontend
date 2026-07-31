@@ -1,5 +1,7 @@
 import type { Metadata } from "next";
 import { Geist, Geist_Mono } from "next/font/google";
+import Header from "./components/Header/Header";
+import { WatchTogetherProvider } from "@/contexts/WatchTogetherContext";
 import "./globals.css";
 
 const geistSans = Geist({
@@ -24,10 +26,15 @@ export default function RootLayout({
 }>) {
   return (
     <html
-      lang="en"
+      lang="ja"
       className={`${geistSans.variable} ${geistMono.variable} h-full antialiased`}
     >
-      <body className="min-h-full flex flex-col">{children}</body>
+      <body className="min-h-full flex flex-col">
+        <Header />
+        <WatchTogetherProvider>
+          {children}
+        </WatchTogetherProvider>
+      </body>
     </html>
   );
 }
