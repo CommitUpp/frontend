@@ -5,7 +5,6 @@ import { useRouter } from "next/navigation";
 
 import SelectMovie from "./SelectMovie";
 import MovieSearch from "./MovieSearch";
-import JoinRoom from "./JoinRoom";
 // WatchRoomのimportは削除
 
 export type LiveStep =
@@ -23,14 +22,6 @@ export default function LiveArea() {
 
             case "search":
                 return <MovieSearch />;
-
-            case "join":
-                return (
-                    <JoinRoom
-                        onJoin={() => setStatus("join")}
-                        onBack={() => setStatus("select")}
-                    />
-                );
 
             default:
                 return null;

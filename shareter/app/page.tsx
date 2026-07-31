@@ -95,9 +95,13 @@ export default function Home() {
     },
   });
 
+  const groupMoviesKey: ["groupMovies", string] | null = groupId && session?.access_token
+    ? ["groupMovies", groupId]
+    : null;
+
   const { data: groupMoviesResponse } = useSWR<GroupMoviesResponse>(
-    groupId && session?.access_token ? ["groupMovies", groupId] : null,
-    ([, id]) => getGroupMovies(id),
+    groupMoviesKey,
+    ([, id]: ["groupMovies", string]) => getGroupMovies(id),
     {
       onError: (error) => {
         console.error("[Home] getGroupMovies failed", error);
