@@ -10,15 +10,11 @@ import styles from "./page.module.css";
 const tabs = ["お気に入り", "視聴済み", "誰かと見たい"];
 const groupId = "4bb618e1-1fc2-457b-b635-bde0b1df667b";
 
-type Props = {
-    movies: string[];
-};
-
 function toMovies(response: MoviesResponse | Movie[]): Movie[] {
     return Array.isArray(response) ? response : response.movies;
 }
 
-export default function MyPageTabs({ movies }: Props) {
+export default function MyPageTabs() {
     const router = useRouter();
     const [activeTab, setActiveTab] = useState(tabs[0]);
     const [movieList, setMovieList] = useState<Movie[]>([]);
@@ -104,17 +100,6 @@ export default function MyPageTabs({ movies }: Props) {
         router.push(`/movie/${movieId}?${params.toString()}`);
     };
 
-    const visibleMovies = movieList.length > 0 ? movieList : movies.map((title, index) => ({
-        movie_id: `mock-${index}`,
-        overview: "",
-        poster_url: "",
-        release_date: "",
-        title,
-        tmdb_id: "",
-        trailer_url: "",
-        updated_at: "",
-    }));
-
     return (
         <div className={styles.tabs}>
             {tabs.map((tab) => (
@@ -133,16 +118,12 @@ export default function MyPageTabs({ movies }: Props) {
                     <p className={styles.loading_text}>取得中...</p>
                 )}
 
-                {!isLoading && visibleMovies.map((movie) => (
+                {!isLoading && movieList.map((movie) => (
                     <MovieCard
                         key={`${activeTab}-${movie.movie_id}`}
                         title={movie.title}
                         imageUrl={movie.trailer_url || movie.poster_url || ""}
-                        onClick={
-                            movie.movie_id.startsWith("mock-")
-                                ? undefined
-                                : () => handleMovieClick(movie.movie_id)
-                        }
+                        onClick={() => handleMovieClick(movie.movie_id)}
                     />
                 ))}
             </div>

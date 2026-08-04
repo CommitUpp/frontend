@@ -5,15 +5,12 @@
     padding: 0;
     border: 0;
     background: transparent;
+    cursor: pointer;
     transition: transform .2s ease;
 }
 
 .movie_card:hover {
     transform: scale(1.05);
-}
-
-.clickable {
-    cursor: pointer;
 }
 
 .poster_wrap {
@@ -30,10 +27,56 @@
 }
 
 .movie_name {
+    position: relative;
+    width: 250px;
+    overflow: hidden;
     color: white;
-    text-align: center;
+    text-align: left;
     margin-top: 10px;
     font-size: 20px;
+    line-height: 1.4;
+    white-space: nowrap;
+}
+
+.movie_name.overflowing::after {
+    content: "";
+    position: absolute;
+    top: 0;
+    right: 0;
+    width: 56px;
+    height: 100%;
+    pointer-events: none;
+    background: linear-gradient(90deg, rgb(41 41 41 / 0), #292929 82%);
+}
+
+.movie_name_text {
+    display: inline-block;
+    max-width: 100%;
+    text-align: left;
+    overflow: hidden;
+    text-overflow: clip;
+    vertical-align: top;
+}
+
+.overflowing .movie_name_text {
+    max-width: none;
+    padding-right: 56px;
+}
+
+.movie_card:hover .overflowing .movie_name_text {
+    animation: title-scroll 7s linear infinite;
+}
+
+@keyframes title-scroll {
+    0%,
+    16% {
+        transform: translateX(0);
+    }
+
+    84%,
+    100% {
+        transform: translateX(calc(250px - 100% - 56px));
+    }
 }
 
 .watcher_icons {
