@@ -1,6 +1,6 @@
 import Link from "next/link";
-import { useEffect, useState } from "react";
 import { supabase } from "@/lib/supabase";
+import { useAuth } from "@/contexts/AuthContext";
 import styles from "./HamburgerMenu.module.css";
 import "../../globals.css";
 
@@ -17,22 +17,7 @@ const menuItems = [
 ]
 
 export default function HamburgerMenu({ onClose }: Props) {
-    const [isLoggedIn, setIsLoggedIn] = useState(false);
-
-    useEffect(() => {
-        void supabase.auth.getSession().then(({ data, error }) => {
-            if (error) {
-                console.error("セッションの取得に失敗しました:", error.message);
-            }
-            setIsLoggedIn(Boolean(data.session));
-        });
-
-        const { data: { subscription } } = supabase.auth.onAuthStateChange(
-            (_event, session) => setIsLoggedIn(Boolean(session))
-        );
-
-        return () => subscription.unsubscribe();
-    }, []);
+    const { user } = useAuth();
 
     const handleLogout = async () => {
         const { error } = await supabase.auth.signOut();
@@ -76,7 +61,7 @@ export default function HamburgerMenu({ onClose }: Props) {
                             ))}
                         </ul>
                     </nav>
-                    {isLoggedIn && (
+                    {user && (
                         <button className={styles.logout_button} onClick={handleLogout}>
                             ログアウト
                         </button>
