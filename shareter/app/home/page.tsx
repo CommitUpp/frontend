@@ -2,13 +2,13 @@
 
 import { useState } from "react";
 
-import Image from "next/image";
 import { useCallback, useMemo } from "react";
 import { useRouter } from "next/navigation";
 import useSWR from "swr";
 import LiveArea from "../components/live/LiveArea";
 import Sidebar from "../components/Sidebar/Sidebar";
 import AuthGate from "../components/AuthGate/AuthGate";
+import MovieCard from "../components/MovieCard/MovieCard";
 import { getGroupMovies } from "@/lib/api/groups";
 import { getMovies } from "@/lib/api/movies";
 import { useAuth } from "@/contexts/AuthContext";
@@ -146,44 +146,15 @@ export default function Home() {
             </div>
 
             <div className={styles.movies_container}>
-              {groupMovies.map((movie) => {
-                const watchers = movie.watched_member ?? [];
-
-                return (
-                  <div
-                    key={movie.movie_id}
-                    className={styles.movie_wrap}
-                    onClick={() => handleMovieClick(movie.movie_id)}
-                  >
-                    <div className={styles.poster_wrap}>
-                      <Image
-                        src={movie.trailer_url}
-                        alt={movie.title}
-                        width={220}
-                        height={320}
-                        className={styles.movie_image}
-                      />
-
-                      {watchers.length > 0 && (
-                        <div className={styles.watcher_icons}>
-                          {watchers.slice(0, 3).map((watcher) => (
-                            <Image
-                              key={watcher.user_id}
-                              src={watcher.avatar_url}
-                              alt=""
-                              width={32}
-                              height={32}
-                              className={styles.watcher_icon}
-                            />
-                          ))}
-                        </div>
-                      )}
-                    </div>
-
-                    <p className={styles.movie_name}>{movie.title}</p>
-                  </div>
-                );
-              })}
+              {groupMovies.map((movie) => (
+                <MovieCard
+                  key={movie.movie_id}
+                  title={movie.title}
+                  imageUrl={movie.trailer_url}
+                  watchers={movie.watched_member}
+                  onClick={() => handleMovieClick(movie.movie_id)}
+                />
+              ))}
             </div>
           </section>
 
@@ -195,21 +166,12 @@ export default function Home() {
 
               <div className={styles.movies_container}>
                 {row.movies.map((movie) => (
-                  <div
+                  <MovieCard
                     key={movie.movie_id}
-                    className={styles.movie_wrap}
+                    title={movie.title}
+                    imageUrl={movie.trailer_url}
                     onClick={() => handleMovieClick(movie.movie_id)}
-                  >
-                    <Image
-                      src={movie.trailer_url}
-                      alt={movie.title}
-                      width={220}
-                      height={320}
-                      className={styles.movie_image}
-                    />
-
-                    <p className={styles.movie_name}>{movie.title}</p>
-                  </div>
+                  />
                 ))}
               </div>
             </section>

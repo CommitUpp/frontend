@@ -7,7 +7,6 @@ import MyPageTabs from "./MyPageTabs";
 import styles from "./page.module.css";
 
 export default function MyPage() {
-    const movies: string[] = [];
     const { user } = useAuth();
     const userName = user?.user_metadata.name;
     const avatarUrl = user?.user_metadata.avatar_url;
@@ -32,7 +31,7 @@ export default function MyPage() {
                 <div className={styles.movie_list_wrap}>
                     <h2 className={styles.movie_list_title}>MovieList</h2>
 
-                    <MyPageTabs movies={movies} />
+                    <MyPageTabs />
                 </div>
             </main>
         </AuthGate>
