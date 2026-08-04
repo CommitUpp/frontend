@@ -11,7 +11,7 @@ import Sidebar from "../components/Sidebar/Sidebar";
 import AuthGate from "../components/AuthGate/AuthGate";
 import { getGroupMovies } from "@/lib/api/groups";
 import { getMovies } from "@/lib/api/movies";
-import { supabase } from "@/lib/supabase";
+import { useAuth } from "@/contexts/AuthContext";
 import { movieRows } from "@/constants/movieRows";
 import type { MoviesResponse } from "@/types/movies";
 import styles from "./page.module.css";
@@ -74,25 +74,12 @@ type GroupMoviesResponse = {
 
 export default function Home() {
   const router = useRouter();
+  const { session } = useAuth();
   const groupId = "4bb618e1-1fc2-457b-b635-bde0b1df667b";
 
   const { data: moviesResponse } = useSWR<MoviesResponse>("movies", getMovies, {
     onError: (error) => {
       console.error("[Home] getMovies failed", error);
-    },
-  });
-
-  const { data: session } = useSWR("supabase-session", async () => {
-    const { data, error } = await supabase.auth.getSession();
-
-    if (error) {
-      throw error;
-    }
-
-    return data.session;
-  }, {
-    onError: (error) => {
-      console.error("[Home] getSession failed", error);
     },
   });
 

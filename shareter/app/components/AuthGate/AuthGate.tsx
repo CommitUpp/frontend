@@ -1,8 +1,8 @@
 "use client";
 
-import { useEffect, useState } from "react";
+import { useEffect } from "react";
 import { useRouter } from "next/navigation";
-import { supabase } from "@/lib/supabase";
+import { useAuth } from "@/contexts/AuthContext";
 
 type Props = {
     children?: React.ReactNode;
@@ -16,36 +16,19 @@ export default function AuthGate({
     unauthenticatedPath,
 }: Props) {
     const router = useRouter();
-    const [canRender, setCanRender] = useState(false);
+    const { user, isLoading } = useAuth();
+    const destination = user ? authenticatedPath : unauthenticatedPath;
+    const canRender = !isLoading && !destination;
 
     useEffect(() => {
-        const handleSession = (isAuthenticated: boolean) => {
-            const destination = isAuthenticated
-                ? authenticatedPath
-                : unauthenticatedPath;
+        if (isLoading) {
+            return;
+        }
 
-            if (destination) {
-                setCanRender(false);
-                router.replace(destination);
-                return;
-            }
-
-            setCanRender(true);
-        };
-
-        void supabase.auth.getSession().then(({ data, error }) => {
-            if (error) {
-                console.error("セッションの取得に失敗しました:", error.message);
-            }
-            handleSession(Boolean(data.session));
-        });
-
-        const { data: { subscription } } = supabase.auth.onAuthStateChange(
-            (_event, session) => handleSession(Boolean(session))
-        );
-
-        return () => subscription.unsubscribe();
-    }, [authenticatedPath, router, unauthenticatedPath]);
+        if (destination) {
+            router.replace(destination);
+        }
+    }, [destination, isLoading, router]);
 
     return canRender ? children : null;
 }
