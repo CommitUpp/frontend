@@ -1,0 +1,57 @@
+.movie_card {
+    flex: 0 0 250px;
+    display: flex;
+    flex-direction: column;
+    padding: 0;
+    border: 0;
+    background: transparent;
+    transition: transform .2s ease;
+}
+
+.movie_card:hover {
+    transform: scale(1.05);
+}
+
+.clickable {
+    cursor: pointer;
+}
+
+.poster_wrap {
+    position: relative;
+    width: 250px;
+    height: 180px;
+}
+
+.movie_image {
+    width: 250px;
+    height: 180px;
+    object-fit: cover;
+    border-radius: 12px;
+}
+
+.movie_name {
+    color: white;
+    text-align: center;
+    margin-top: 10px;
+    font-size: 20px;
+}
+
+.watcher_icons {
+    position: absolute;
+    bottom: 8px;
+    right: 8px;
+    display: flex;
+}
+
+.watcher_icon {
+    width: 32px;
+    height: 32px;
+    border-radius: 50%;
+    border: 2px solid #fff;
+    object-fit: cover;
+    margin-left: -12px;
+}
+
+.watcher_icon:first-child {
+    margin-left: 0;
+}
