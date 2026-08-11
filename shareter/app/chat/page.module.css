@@ -14,50 +14,6 @@
         height: 100vh;
         background: #ececec;
 
-        .chat_header {
-            position: absolute;
-            top: 0;
-            left: 0;
-            z-index: 10;
-            display: flex;
-            align-items: center;
-            justify-content: space-between;
-            width: 100%;
-            padding: 28px 36px;
-            pointer-events: none;
-
-            h1 {
-                margin: 0;
-                font-size: 2rem;
-                font-weight: 500;
-                color: #333;
-                opacity: 0;
-
-                span {
-                    margin-right: 8px;
-                }
-            }
-
-            .menu_button {
-                display: flex;
-                flex-direction: column;
-                gap: 7px;
-                width: 40px;
-                padding: 4px 0;
-                border: none;
-                background: transparent;
-                cursor: pointer;
-                pointer-events: auto;
-
-                span {
-                    display: block;
-                    width: 36px;
-                    height: 2px;
-                    background: #333;
-                }
-            }
-        }
-
         .message_area {
             flex: 1;
             min-height: 0;

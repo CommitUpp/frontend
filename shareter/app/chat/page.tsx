@@ -176,23 +176,6 @@ export default function ChatPage() {
             />
 
             <section className={styles.chat_area}>
-                <header className={styles.chat_header}>
-                    <h1>
-                        <span>#</span>
-                        {selected_channel.name}
-                    </h1>
-
-                    <button
-                        type="button"
-                        className={styles.menu_button}
-                        aria-label="メニューを開く"
-                    >
-                        <span />
-                        <span />
-                        <span />
-                    </button>
-                </header>
-
                 <div className={styles.message_area}>
                     <div className={styles.message_list}>
                         {previous_messages.map((message) => (
