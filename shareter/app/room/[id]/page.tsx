@@ -146,27 +146,42 @@ export default function RoomPage({ params }: Props) {
             </div>
 
             <div className={styles.reactionArea}>
-                <Image
-                    src="/image/loveStamp.svg"
-                    alt=""
-                    width={34}
-                    height={34}
+                <button
+                    type="button"
                     onClick={() => showReaction("/image/loveStamp.svg")}
-                />
-                <Image
-                    src="/image/sadStamp.svg"
-                    alt=""
-                    width={34}
-                    height={34}
+                    aria-label="ラブリアクション"
+                >
+                    <Image
+                        src="/image/loveStamp.svg"
+                        alt=""
+                        width={34}
+                        height={34}
+                    />
+                </button>
+                <button
+                    type="button"
                     onClick={() => showReaction("/image/sadStamp.svg")}
-                />
-                <Image
-                    src="/image/repeatStamp.svg"
-                    alt=""
-                    width={34}
-                    height={34}
+                    aria-label="悲しいリアクション"
+                >
+                    <Image
+                        src="/image/sadStamp.svg"
+                        alt=""
+                        width={34}
+                        height={34}
+                    />
+                </button>
+                <button
+                    type="button"
                     onClick={() => showReaction("/image/repeatStamp.svg")}
-                />
+                    aria-label="リピートリアクション"
+                >
+                    <Image
+                        src="/image/repeatStamp.svg"
+                        alt=""
+                        width={34}
+                        height={34}
+                    />
+                </button>
 
                 <div className={styles.effectArea}>
                     {effects.map((effect) => (

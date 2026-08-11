@@ -99,13 +99,6 @@
     padding: 10px 24px;
 }
 
-
-.reactionArea img {
-    cursor: pointer;
-}
-
-
-
 .effectArea {
     position: absolute;
     right: 50px;
