@@ -104,6 +104,9 @@
     background: linear-gradient(180deg,
             #EA2020 0%,
             #B30000 100%);
+    display: flex;
+    align-items: center;
+    justify-content: center;
     box-shadow:
         0 4px 10px rgba(0, 0, 0, .4);
 }

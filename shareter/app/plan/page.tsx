@@ -69,11 +69,9 @@ export default function plan() {
                                 <li>チャンネル作成無制限</li>
                             </ul>
 
-                            <button type="button" className={styles.button}>
-                                <Link href="./">
-                                    加入する
-                                </Link>
-                            </button>
+                            <Link href="./" className={styles.button}>
+                                加入する
+                            </Link>
                         </div>
 
                     </div>
