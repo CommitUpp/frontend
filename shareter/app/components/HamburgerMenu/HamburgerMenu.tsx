@@ -35,7 +35,7 @@ export default function HamburgerMenu({ onClose }: Props) {
             <div className={styles.overlay}>
                 <div className={styles.menu_wrap} onClick={(e) => e.stopPropagation()}>
                     <nav className={styles.nav}>
-                        <button className={styles.close_button} onClick={onClose}>
+                        <button type="button" className={styles.close_button} onClick={onClose}>
                             <svg xmlns="http://www.w3.org/2000/svg" width="15" height="15" viewBox="0 0 15 15" fill="none">
                                 <rect width="19.1439" height="1.91469" transform="matrix(0.711826 -0.702356 0.717008 0.697065 0 13.5557)" fill="white" />
                                 <rect width="19.1366" height="1.91543" transform="matrix(-0.698708 -0.715407 0.729769 -0.683694 13.4863 15)" fill="white" />
@@ -62,7 +62,7 @@ export default function HamburgerMenu({ onClose }: Props) {
                         </ul>
                     </nav>
                     {user && (
-                        <button className={styles.logout_button} onClick={handleLogout}>
+                        <button type="button" className={styles.logout_button} onClick={handleLogout}>
                             ログアウト
                         </button>
                     )}

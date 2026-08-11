@@ -43,13 +43,13 @@ export default function GroupNameModal({
     return (
         <div className={styles.overlay}>
             <div className={styles.modal_wrap}>
-                <button className={styles.back_button} onClick={onClose}>
+                <button type="button" className={styles.back_button} onClick={onClose}>
                     <Image src="/image/arrow.png" alt="戻る" width={16} height={16} />
                 </button>
 
                 <div className={styles.title_wrap}>
                     <h1 className={styles.title}>あなたの友達</h1>
-                    <button className={styles.create_button} onClick={handleCreate}>
+                    <button type="button" className={styles.create_button} onClick={handleCreate}>
                         作成
                     </button>
                 </div>

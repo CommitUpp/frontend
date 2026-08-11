@@ -34,7 +34,7 @@ export default function AddFriendsModal({ onClose, onNextClick }: Props) {
                 onClick={(e) => e.stopPropagation()}
             >
                 <div className={styles.title_wrap}>
-                    <button className={styles.back_button} onClick={onClose}>
+                    <button type="button" className={styles.back_button} onClick={onClose}>
                         <Image src="/image/arrow.png" alt="戻る" width={16} height={16} />
                     </button>
                     <h1 className={styles.title}>あなたの友達</h1>
@@ -73,6 +73,7 @@ export default function AddFriendsModal({ onClose, onNextClick }: Props) {
                 </div>
 
                 <button
+                    type="button"
                     className={styles.next_button}
                     onClick={() => onNextClick(selectedFriends)}
                 >

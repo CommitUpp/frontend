@@ -26,7 +26,6 @@
                 background: none;
                 border: none;
                 padding: 0;
-                cursor: pointer;
                 display: flex;
                 align-items: center;
             }
@@ -74,7 +73,6 @@
             position: absolute;
             right: 35px;
             bottom: 50px;
-            cursor: pointer;
 
             &::before,
             &::after {

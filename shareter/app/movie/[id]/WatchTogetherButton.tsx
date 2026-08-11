@@ -19,6 +19,7 @@ export default function WatchTogetherButton({ movieId }: Props) {
 
     return (
         <button
+            type="button"
             className={styles.watchButton}
             onClick={handleClick}
             disabled={!isSelectingMovie}
