@@ -8,7 +8,7 @@ import styles from "./GroupListModal.module.css";
 type Group = {
     id: string;
     name: string;
-    count: number;
+    member_count: number;
     image: string;
 };
 
@@ -82,7 +82,7 @@ export default function GroupListModal({
                                 <Image src={group.image} alt="" width={52} height={52} />
                                 <div className={styles.text}>
                                     <p>{group.name}</p>
-                                    <p>({group.count})</p>
+                                    <p>({group.member_count})</p>
                                 </div>
                             </button>
 
