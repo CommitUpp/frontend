@@ -62,7 +62,6 @@ export default function Sidebar({
         },
     ]);
 
-
     return (
         <>
             <div className={styles.sidebar_wrap}>
@@ -145,7 +144,7 @@ export default function Sidebar({
                                 id: response.group.id,
                                 name: response.group.name,
                                 count: 1,
-                                image: "/image/dummy-icon-man.png",
+                                image: "/image/no-image.png",
                             },
                         ]);
                     }}

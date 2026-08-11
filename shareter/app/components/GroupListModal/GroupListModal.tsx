@@ -64,17 +64,14 @@ export default function GroupListModal({
                         className={styles.back_button}
                         onClick={onClose}
                     >
-                        <ChevronLeft size={32} aria-hidden="true" />    
+                        <ChevronLeft size={32} aria-hidden="true" />
                     </button>
                     <h1 className={styles.title}>グループ一覧</h1>
                 </div>
 
                 <div className={styles.group_wrap}>
                     {groups.map((group) => (
-                        <div
-                            className={styles.group_card}
-                            key={group.id}
-                        >
+                        <div className={styles.group_card} key={group.id}>
                             <button
                                 type="button"
                                 className={styles.group_select}
