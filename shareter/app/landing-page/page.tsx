@@ -23,7 +23,7 @@ export default function LandingPage() {
       <main className={styles.page}>
         <div className={styles.content}>
           <h1 className={styles.title}>Sheater</h1>
-          <button className={styles.login_button} onClick={loginHandler}>
+          <button type="button" className={styles.login_button} onClick={loginHandler}>
           Googleでログイン
           </button>
         </div>

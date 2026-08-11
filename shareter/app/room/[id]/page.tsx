@@ -107,6 +107,7 @@ export default function RoomPage({ params }: Props) {
                 <h2 className={styles.title}>のび太の海底鬼岩城</h2>
 
                 <button
+                    type="button"
                     className={styles.exit}
                     onClick={() => router.push("/premiumGuide")}
                 >

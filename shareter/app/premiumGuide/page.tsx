@@ -16,7 +16,7 @@ export default function PremiumGuidePage() {
                             <span>プランを変更してください</span>
                         </h2>
 
-                        <button className={styles.select_button}>
+                        <button type="button" className={styles.select_button}>
                             <Link href="/plan">
                                 加入する
                                 <span>▶</span>

@@ -34,7 +34,7 @@ export default function plan() {
                                 </span>
                             </div>
 
-                            <button className={styles.button}>
+                            <button type="button" className={styles.button}>
                                 続ける
                             </button>
 
@@ -69,7 +69,7 @@ export default function plan() {
                                 <li>チャンネル作成無制限</li>
                             </ul>
 
-                            <button className={styles.button}>
+                            <button type="button" className={styles.button}>
                                 <Link href="./">
                                     加入する
                                 </Link>

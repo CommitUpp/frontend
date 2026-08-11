@@ -22,6 +22,7 @@ export default function Header() {
         <>
             <header className={styles.header}>
                 <button
+                    type="button"
                     className={`${styles.menu_button} ${isDarkMenuButton ? styles.dark_menu_button : ""}`}
                     onClick={() => setIsMenuOpen(true)}
                 >

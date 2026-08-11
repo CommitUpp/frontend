@@ -19,6 +19,7 @@ export default function WatchReady({ onStart }: Props) {
 
 
                 <button
+                    type="button"
                     className={styles.select_button}
                     onClick={onStart}
                 >
