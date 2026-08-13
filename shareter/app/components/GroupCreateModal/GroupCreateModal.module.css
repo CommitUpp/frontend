@@ -43,12 +43,21 @@
             align-items: center;
             gap: 12px;
 
+            .group_icon_label {
+                width: 60px;
+                height: 60px;
+                border-radius: 50%;
+                flex-shrink: 0;
+                overflow: hidden;
+                display: block;
+            }
+
             .group_icon {
                 width: 60px;
                 height: 60px;
                 border-radius: 50%;
                 background: #d9d9d9;
-                flex-shrink: 0;
+                display: block;
                 object-fit: cover;
             }
 

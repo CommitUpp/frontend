@@ -4,6 +4,8 @@ import { useState } from "react";
 import { ChevronLeft } from "lucide-react";
 import styles from "./GroupCreateModal.module.css";
 
+const defaultGroupImage = "/image/no-image.png";
+
 type Props = {
     onClose: () => void;
     onCreateGroup: (name: string, image: string) => Promise<void> | void;
@@ -14,7 +16,7 @@ export default function GroupCreateModal({
     onCreateGroup,
 }: Props) {
     const [groupName, setGroupName] = useState("");
-    const [iconImage, setIconImage] = useState("/image/group_default_icon.png");
+    const [iconImage, setIconImage] = useState(defaultGroupImage);
     const [isCreating, setIsCreating] = useState(false);
     const [errorMessage, setErrorMessage] = useState("");
 
@@ -37,7 +39,7 @@ export default function GroupCreateModal({
         setErrorMessage("");
 
         try {
-            await onCreateGroup(groupName.trim(), iconImage);
+            await onCreateGroup(groupName.trim(), defaultGroupImage);
         } catch (error) {
             console.error("[GroupCreateModal] create group failed", error);
             setErrorMessage("グループの作成に失敗しました。時間をおいて再度お試しください。");
