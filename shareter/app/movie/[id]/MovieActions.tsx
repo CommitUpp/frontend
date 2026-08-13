@@ -1,6 +1,6 @@
 "use client";
 
-import Image from "next/image";
+import { Bookmark, Star, MessageSquareShare, ScanFace } from "lucide-react";
 import styles from "./page.module.css";
 import { postMovieStatus } from "@/lib/api/users";
 
@@ -32,7 +32,7 @@ export default function MovieActions({ movieId }: Props) {
                 className={styles.actionItem}
                 onClick={handleShare}
             >
-                <Image src="/image/share.png" alt="" width={28} height={28} />
+                <MessageSquareShare size={28} aria-hidden="true" />
                 <span className={styles.actionLabel}>共有</span>
             </button>
 
@@ -41,7 +41,7 @@ export default function MovieActions({ movieId }: Props) {
                 className={styles.actionItem}
                 onClick={handleWatched}
             >
-                <Image src="/image/watched.png" alt="" width={20} height={20} />
+                <Bookmark size={28} aria-hidden="true" />
                 <span className={styles.actionLabel}>見た</span>
             </button>
 
@@ -50,7 +50,7 @@ export default function MovieActions({ movieId }: Props) {
                 className={styles.actionItem}
                 onClick={handleFavorite}
             >
-                <Image src="/image/favorite.png" alt="" width={26} height={26} />
+                <Star size={28} aria-hidden="true" />
                 <span className={styles.actionLabel}>お気に入り</span>
             </button>
 
@@ -59,7 +59,7 @@ export default function MovieActions({ movieId }: Props) {
                 className={styles.actionItem}
                 onClick={handleWatchWithSomeone}
             >
-                <Image src="/image/someone.png" alt="" width={26} height={26} />
+                <ScanFace size={28} aria-hidden="true" />
                 <span className={styles.actionLabel}>誰かと見る</span>
             </button>
         </div>

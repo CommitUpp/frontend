@@ -2,6 +2,7 @@
 
 import Image from "next/image";
 import { useParams, useSearchParams } from "next/navigation";
+import { Bookmark } from "lucide-react";
 import useSWR from "swr";
 import { getMovieDetails } from "@/lib/api/movies";
 import MovieActions from "./MovieActions";
@@ -122,12 +123,7 @@ export default function MovieDetailPage() {
                                 />
 
                                 <span className={styles.memberBadge}>
-                                    <Image
-                                        src="/image/friend_shareIcon.png"
-                                        alt="視聴したユーザー"
-                                        width={80}
-                                        height={85}
-                                    />
+                                    <Bookmark size={18} fill="#181818" aria-label="視聴したユーザー" />
                                 </span>
                             </div>
                         ))}
