@@ -3,92 +3,8 @@
 import { Suspense, useEffect, useRef, useState } from "react";
 import { useSearchParams } from "next/navigation";
 import Sidebar from "../components/Sidebar/Sidebar";
+import { chatMessages, type ChatMessage } from "@/mock/chat-message";
 import styles from "./page.module.css";
-
-type Message = {
-    id: number;
-    user: string;
-    text: string;
-    time: string;
-    is_mine: boolean;
-    is_new?: boolean;
-};
-
-type Channel = {
-    id: string;
-    name: string;
-    messages: Message[];
-};
-
-const initial_channels: Channel[] = [
-    {
-        id: "harry-potter",
-        name: "ハリーポッター賢者の石",
-        messages: [
-            {
-                id: 1,
-                user: "やまけん",
-                text: "わかる あの伏線そんな回収の仕方ある？！ってなった",
-                time: "2:45",
-                is_mine: false,
-            },
-            {
-                id: 2,
-                user: "やまけん",
-                text: "しかも途中ちょっと怖かったのに、変なとこで笑わせてくるのずるい",
-                time: "2:45",
-                is_mine: false,
-            },
-            {
-                id: 3,
-                user: "りょうと",
-                text: "わかる あの伏線そんな回収の仕方ある？！ってなった",
-                time: "2:45",
-                is_mine: true,
-            },
-            {
-                id: 4,
-                user: "りょうと",
-                text: "しかも途中ちょっと怖かったのに、変なとこで笑わせてくるのずるい",
-                time: "2:45",
-                is_mine: true,
-            },
-        ],
-    },
-    {
-        id: "avengers-civil-war",
-        name: "アベンジャーズ シビル・ウォー",
-        messages: [
-            {
-                id: 1,
-                user: "けんた",
-                text: "最後の戦いめっちゃ熱かった",
-                time: "3:10",
-                is_mine: false,
-            },
-            {
-                id: 2,
-                user: "りょうと",
-                text: "キャップ派かアイアンマン派かで揉めそう笑",
-                time: "3:12",
-                is_mine: true,
-            },
-        ],
-    },
-    {
-        id: "ironman-3",
-        name: "アイアンマン3",
-        messages: [
-            {
-                id: 1,
-                user: "やまけん",
-                text: "スーツが大量に飛んでくるシーン好き",
-                time: "4:25",
-                is_mine: false,
-            },
-        ],
-    },
-];
 
 export default function ChatPage() {
     return (
@@ -101,27 +17,21 @@ export default function ChatPage() {
 function ChatPageContent() {
     const searchParams = useSearchParams();
     const selected_chat_room_id = searchParams.get("chat_room_id") ?? "harry-potter";
-    const [channels, setChannels] =
-        useState<Channel[]>(initial_channels);
+    const [messages, setMessages] = useState<ChatMessage[]>(chatMessages);
 
     const [input_text, setInputText] = useState("");
 
-    const latest_message_ref =
-        useRef<HTMLDivElement | null>(null);
-
-    const selected_channel = channels.find(
-        (channel) => channel.id === selected_chat_room_id
-    );
+    const latest_message_ref = useRef<HTMLDivElement | null>(null);
 
     const previous_messages =
-        selected_channel?.messages.filter(
+        messages.filter(
             (message) => !message.is_new
-        ) ?? [];
+        );
 
     const new_messages =
-        selected_channel?.messages.filter(
+        messages.filter(
             (message) => message.is_new
-        ) ?? [];
+        );
 
     useEffect(() => {
         if (new_messages.length === 0) return;
@@ -141,7 +51,7 @@ function ChatPageContent() {
 
         if (!trimmed_text) return;
 
-        const new_message: Message = {
+        const new_message: ChatMessage = {
             id: Date.now(),
             user: "りょうと",
             text: trimmed_text,
@@ -153,20 +63,11 @@ function ChatPageContent() {
             is_new: true,
         };
 
-        setChannels((previous_channels) =>
-            previous_channels.map((channel) => {
-                if (channel.id !== selected_chat_room_id) {
-                    return channel;
-                }
-
-                return {
-                    ...channel,
-                    messages: [
-                        ...channel.messages,
-                        new_message,
-                    ],
-                };
-            })
+        setMessages((previous_messages) =>
+            [
+                ...previous_messages,
+                new_message,
+            ]
         );
 
         setInputText("");
