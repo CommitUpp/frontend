@@ -1,6 +1,7 @@
 "use client";
 import { useState } from "react";
 import Image from "next/image";
+import { ChevronLeft } from "lucide-react";
 import styles from "./AddFriendsModal.module.css";
 
 type Friend = {
@@ -35,7 +36,7 @@ export default function AddFriendsModal({ onClose, onNextClick }: Props) {
             >
                 <div className={styles.title_wrap}>
                     <button type="button" className={styles.back_button} onClick={onClose}>
-                        <Image src="/image/arrow.png" alt="戻る" width={16} height={16} />
+                        <ChevronLeft size={32} aria-hidden="true" />
                     </button>
                     <h1 className={styles.title}>あなたの友達</h1>
                 </div>
