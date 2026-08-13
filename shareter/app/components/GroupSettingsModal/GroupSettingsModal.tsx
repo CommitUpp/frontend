@@ -8,7 +8,7 @@ import styles from "./GroupSettingsModal.module.css";
 type Group = {
     id: string;
     name: string;
-    count: number;
+    member_count: number;
     image: string;
 };
 
@@ -50,7 +50,7 @@ export default function GroupSettingsModal({ group, onClose }: Props) {
                     />
                     <div className={styles.group_text}>
                         <h2 className={styles.group_name}>{group.name}</h2>
-                        <p className={styles.member_count}>{group.count}人</p>
+                        <p className={styles.member_count}>{group.member_count}人</p>
                     </div>
                 </div>
 
@@ -74,7 +74,7 @@ export default function GroupSettingsModal({ group, onClose }: Props) {
                         <Users size={20} aria-hidden="true" />
                         <div>
                             <p className={styles.setting_label}>メンバー</p>
-                            <p className={styles.setting_value}>{group.count}人が参加中</p>
+                            <p className={styles.setting_value}>{group.member_count}人が参加中</p>
                         </div>
                     </div>
                     <div className={styles.setting_row}>

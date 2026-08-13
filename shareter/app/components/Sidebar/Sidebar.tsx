@@ -9,9 +9,11 @@ import GroupListModal from "@/app/components/GroupListModal/GroupListModal";
 import GroupSettingsModal from "@/app/components/GroupSettingsModal/GroupSettingsModal";
 import { useGroupChatRooms } from "@/hooks/useGroupChatRooms";
 import { createGroup, joinGroup } from "@/lib/api/groups";
+import { mockMyGroups } from "@/mock/groups";
 import styles from "./Sidebar.module.css";
 
 const groupId = "4bb618e1-1fc2-457b-b635-bde0b1df667b";
+const defaultGroupImage = "/image/no-image.png";
 
 type Props = {
     selectedChannelId?: string;
@@ -21,7 +23,7 @@ type Props = {
 type Group = {
     id: string;
     name: string;
-    count: number;
+    member_count: number;
     image: string;
 };
 
@@ -53,15 +55,13 @@ export default function Sidebar({
         router.push(`/chat?${params.toString()}`);
     };
 
-    const [groups, setGroups] = useState<Group[]>([
-        {
-            id: groupId,
-            name: "ECCメンツ",
-            count: 12,
-            image: "/image/dummy-icon-man.png",
-        },
-    ]);
-
+    const [groups, setGroups] = useState<Group[]>(
+        mockMyGroups.groups.map((group) => ({
+            ...group,
+            image: defaultGroupImage,
+        }))
+    );
+    const currentGroup = groups[0];
 
     return (
         <>
@@ -72,7 +72,7 @@ export default function Sidebar({
                     onClick={() => setIsGroupListOpen(true)}
                 >
                     <Image
-                        src="/image/dummy-icon-man.png"
+                        src={currentGroup?.image ?? defaultGroupImage}
                         alt="グループアイコン"
                         width={36}
                         height={36}
@@ -81,7 +81,9 @@ export default function Sidebar({
 
                     <div className={styles.group_info}>
                         <p className={styles.group_label}>グループ名</p>
-                        <h2 className={styles.group_name}>ECCメンツ</h2>
+                        <h2 className={styles.group_name}>
+                            {currentGroup?.name ?? "グループ未選択"}
+                        </h2>
                     </div>
                 </button>
 
@@ -144,8 +146,8 @@ export default function Sidebar({
                             {
                                 id: response.group.id,
                                 name: response.group.name,
-                                count: 1,
-                                image: "/image/dummy-icon-man.png",
+                                member_count: 1,
+                                image: defaultGroupImage,
                             },
                         ]);
                     }}
@@ -171,7 +173,7 @@ export default function Sidebar({
                             {
                                 id: response.group.id,
                                 name: response.group.name,
-                                count: 1,
+                                member_count: 1,
                                 image,
                             },
                         ]);

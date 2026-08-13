@@ -8,7 +8,7 @@ import styles from "./GroupListModal.module.css";
 type Group = {
     id: string;
     name: string;
-    count: number;
+    member_count: number;
     image: string;
 };
 
@@ -64,17 +64,14 @@ export default function GroupListModal({
                         className={styles.back_button}
                         onClick={onClose}
                     >
-                        <ChevronLeft size={32} aria-hidden="true" />    
+                        <ChevronLeft size={32} aria-hidden="true" />
                     </button>
                     <h1 className={styles.title}>グループ一覧</h1>
                 </div>
 
                 <div className={styles.group_wrap}>
                     {groups.map((group) => (
-                        <div
-                            className={styles.group_card}
-                            key={group.id}
-                        >
+                        <div className={styles.group_card} key={group.id}>
                             <button
                                 type="button"
                                 className={styles.group_select}
@@ -85,7 +82,7 @@ export default function GroupListModal({
                                 <Image src={group.image} alt="" width={52} height={52} />
                                 <div className={styles.text}>
                                     <p>{group.name}</p>
-                                    <p>({group.count})</p>
+                                    <p>({group.member_count})</p>
                                 </div>
                             </button>
 
