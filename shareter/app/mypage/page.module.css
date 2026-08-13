@@ -1,6 +1,7 @@
 .container {
     min-height: 100vh;
     background: #252525;
+    font-family: var(--font-serif);
     display: flex;
 }
 
@@ -41,7 +42,6 @@
     text-align: center;
     font-size: 5rem;
     font-weight: 400;
-    font-family: serif;
     background: linear-gradient(109deg, #f00 -41.22%, #7e7e7e 77%, #fff 150.04%);
     background-clip: text;
     -webkit-background-clip: text;
