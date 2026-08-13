@@ -8,6 +8,7 @@ import GroupCreateModal from "@/app/components/GroupCreateModal/GroupCreateModal
 import GroupListModal from "@/app/components/GroupListModal/GroupListModal";
 import GroupSettingsModal from "@/app/components/GroupSettingsModal/GroupSettingsModal";
 import { useGroupChatRooms } from "@/hooks/useGroupChatRooms";
+import { createGroup } from "@/lib/api/groups";
 import styles from "./Sidebar.module.css";
 
 const groupId = "4bb618e1-1fc2-457b-b635-bde0b1df667b";
@@ -161,12 +162,14 @@ export default function Sidebar({
             {isGroupCreateOpen && (
                 <GroupCreateModal
                     onClose={() => setIsGroupCreateOpen(false)}
-                    onCreateGroup={(name, image) => {
+                    onCreateGroup={async (name, image) => {
+                        const response = await createGroup(name);
+
                         setGroups((prevGroups) => [
                             ...prevGroups,
                             {
-                                id: crypto.randomUUID(),
-                                name,
+                                id: response.group.id,
+                                name: response.group.name,
                                 count: 1,
                                 image,
                             },

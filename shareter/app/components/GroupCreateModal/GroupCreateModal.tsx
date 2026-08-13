@@ -6,7 +6,7 @@ import styles from "./GroupCreateModal.module.css";
 
 type Props = {
     onClose: () => void;
-    onCreateGroup: (name: string, image: string) => void;
+    onCreateGroup: (name: string, image: string) => Promise<void> | void;
 };
 
 export default function GroupCreateModal({
@@ -15,6 +15,8 @@ export default function GroupCreateModal({
 }: Props) {
     const [groupName, setGroupName] = useState("");
     const [iconImage, setIconImage] = useState("/image/group_default_icon.png");
+    const [isCreating, setIsCreating] = useState(false);
+    const [errorMessage, setErrorMessage] = useState("");
 
     const handleImageChange = (e: React.ChangeEvent<HTMLInputElement>) => {
         const file = e.target.files?.[0];
@@ -23,13 +25,25 @@ export default function GroupCreateModal({
         setIconImage(URL.createObjectURL(file));
     };
 
-    const handleCreate = () => {
+    const handleCreate = async () => {
         if (groupName.trim() === "") {
             alert("グループ名を入力してください");
             return;
         }
 
-        onCreateGroup(groupName, iconImage);
+        if (isCreating) return;
+
+        setIsCreating(true);
+        setErrorMessage("");
+
+        try {
+            await onCreateGroup(groupName.trim(), iconImage);
+        } catch (error) {
+            console.error("[GroupCreateModal] create group failed", error);
+            setErrorMessage("グループの作成に失敗しました。時間をおいて再度お試しください。");
+        } finally {
+            setIsCreating(false);
+        }
     };
 
     return (
@@ -66,6 +80,9 @@ export default function GroupCreateModal({
                     <p className={styles.description}>
                         作成後に発行されるグループIDを共有することで、メンバーを招待できます。
                     </p>
+                    {errorMessage && (
+                        <p className={styles.error_message}>{errorMessage}</p>
+                    )}
                 </div>
 
                 <button
@@ -73,8 +90,9 @@ export default function GroupCreateModal({
                     className={styles.create_button}
                     aria-label="作成"
                     onClick={handleCreate}
+                    disabled={isCreating}
                 >
-                    作成
+                    {isCreating ? "作成中" : "作成"}
                 </button>
             </div>
         </div>
