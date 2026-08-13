@@ -1,0 +1,153 @@
+.overlay {
+    position: fixed;
+    inset: 0;
+    background: rgba(0, 0, 0, 0.65);
+    z-index: 10002;
+
+    .modal_wrap {
+        position: fixed;
+        top: 0;
+        left: 0;
+        width: 344px;
+        height: 100vh;
+        background: #f8f8f8;
+        animation: slideIn 1s ease forwards;
+
+        .title_wrap {
+            height: 66px;
+            display: flex;
+            align-items: center;
+            gap: 10px;
+            padding: 0 28px;
+            border-bottom: 1px solid #999;
+
+            .back_button {
+                background: none;
+                border: none;
+                padding: 0;
+                display: flex;
+                align-items: center;
+            }
+
+            .title {
+                font-size: 2rem;
+                font-weight: 500;
+                margin: 0;
+            }
+        }
+
+        .group_header {
+            display: flex;
+            align-items: center;
+            gap: 14px;
+            padding: 30px 28px 24px;
+
+            .group_image {
+                width: 72px;
+                height: 72px;
+                border-radius: 50%;
+                object-fit: cover;
+                background: #d9d9d9;
+            }
+
+            .group_text {
+                min-width: 0;
+            }
+
+            .group_name {
+                color: #111;
+                font-size: 2.2rem;
+                font-weight: 600;
+                margin: 0;
+                overflow: hidden;
+                text-overflow: ellipsis;
+                white-space: nowrap;
+            }
+
+            .member_count {
+                color: #777;
+                font-size: 1.3rem;
+                margin: 6px 0 0;
+            }
+        }
+
+        .setting_section {
+            padding: 24px 28px;
+            border-top: 1px solid #ddd;
+
+            .section_title {
+                color: #333;
+                font-size: 1.6rem;
+                font-weight: 600;
+                margin: 0 0 16px;
+            }
+
+            .group_id_box {
+                display: grid;
+                grid-template-columns: 1fr auto;
+                gap: 10px;
+                align-items: center;
+            }
+
+            .group_id {
+                min-width: 0;
+                color: #222;
+                font-size: 1.2rem;
+                line-height: 1.4;
+                margin: 0;
+                overflow: hidden;
+                text-overflow: ellipsis;
+                white-space: nowrap;
+            }
+
+            .copy_button {
+                width: 92px;
+                height: 34px;
+                border: 1px solid #d3d3d3;
+                border-radius: 8px;
+                background: #fff;
+                color: #333;
+                display: flex;
+                align-items: center;
+                justify-content: center;
+                gap: 4px;
+                font-size: 1.1rem;
+            }
+
+            .setting_row {
+                display: flex;
+                align-items: center;
+                gap: 12px;
+                min-height: 48px;
+                color: #333;
+            }
+
+            .setting_row + .setting_row {
+                margin-top: 12px;
+            }
+
+            .setting_label {
+                color: #222;
+                font-size: 1.4rem;
+                font-weight: 500;
+                margin: 0;
+            }
+
+            .setting_value {
+                color: #777;
+                font-size: 1.2rem;
+                margin: 4px 0 0;
+            }
+        }
+    }
+}
+
+@keyframes slideIn {
+    from {
+        transform: translateX(-100%);
+    }
+
+    to {
+        transform: translateX(0);
+    }
+}

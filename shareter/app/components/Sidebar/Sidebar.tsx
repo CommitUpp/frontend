@@ -5,8 +5,8 @@ import Image from "next/image";
 import { useRouter } from "next/navigation";
 import { ChevronDown } from "lucide-react";
 import GroupCreateModal from "@/app/components/GroupCreateModal/GroupCreateModal";
-import AddFriendsModal from "@/app/components/AddFriendsModal/AddFriendsModal";
 import GroupNameModal from "@/app/components/GroupNameModal/GroupNameModal";
+import GroupSettingsModal from "@/app/components/GroupSettingsModal/GroupSettingsModal";
 import { useGroupChatRooms } from "@/hooks/useGroupChatRooms";
 import styles from "./Sidebar.module.css";
 
@@ -18,7 +18,7 @@ type Props = {
 };
 
 type Group = {
-    id: number;
+    id: string;
     name: string;
     count: number;
     image: string;
@@ -38,8 +38,8 @@ export default function Sidebar({
     const { data: chatRoomsResponse } = useGroupChatRooms(groupId);
     const channels = chatRoomsResponse?.chat_rooms ?? [];
     const [isOpen, setIsOpen] = useState(false);
-    const [isAddFriendsOpen, setIsAddFriendsOpen] = useState(false);
     const [isGroupNameOpen, setIsGroupNameOpen] = useState(false);
+    const [selectedGroup, setSelectedGroup] = useState<Group | null>(null);
     const [selectedFriends, setSelectedFriends] = useState<Friend[]>([]);
     const [fallbackSelectedChannelId, setFallbackSelectedChannelId] =
         useState<string | undefined>();
@@ -61,7 +61,7 @@ export default function Sidebar({
 
     const [groups, setGroups] = useState<Group[]>([
         {
-            id: 1,
+            id: groupId,
             name: "ECCメンツ",
             count: 12,
             image: "/image/dummy-icon-man.png",
@@ -140,19 +140,29 @@ export default function Sidebar({
                         }
 
                         setIsOpen(false);
-                        setIsAddFriendsOpen(true);
+                        setSelectedFriends([]);
+                        setIsGroupNameOpen(true);
                     }}
+                    onJoinClick={(joinedGroupId) => {
+                        console.log("join group:", joinedGroupId);
+                        setGroups((prevGroups) => [
+                            ...prevGroups,
+                            {
+                                id: joinedGroupId,
+                                name: `参加グループ`,
+                                count: 1,
+                                image: "/image/dummy-icon-man.png",
+                            },
+                        ]);
+                    }}
+                    onGroupClick={(group) => setSelectedGroup(group)}
                 />
             )}
 
-            {isAddFriendsOpen && (
-                <AddFriendsModal
-                    onClose={() => setIsAddFriendsOpen(false)}
-                    onNextClick={(friends) => {
-                        setSelectedFriends(friends);
-                        setIsAddFriendsOpen(false);
-                        setIsGroupNameOpen(true);
-                    }}
+            {selectedGroup && (
+                <GroupSettingsModal
+                    group={selectedGroup}
+                    onClose={() => setSelectedGroup(null)}
                 />
             )}
 
@@ -164,9 +174,9 @@ export default function Sidebar({
                         setGroups((prevGroups) => [
                             ...prevGroups,
                             {
-                                id: Date.now(),
+                                id: crypto.randomUUID(),
                                 name,
-                                count: selectedFriends.length,
+                                count: selectedFriends.length + 1,
                                 image,
                             },
                         ]);

@@ -1,7 +1,6 @@
 "use client";
 
 import { useState } from "react";
-import Image from "next/image";
 import { ChevronLeft } from "lucide-react";
 import styles from "./GroupNameModal.module.css";
 
@@ -18,7 +17,6 @@ type Props = {
 };
 
 export default function GroupNameModal({
-    selectedFriends,
     onClose,
     onCreateGroup,
 }: Props) {
@@ -44,15 +42,11 @@ export default function GroupNameModal({
     return (
         <div className={styles.overlay}>
             <div className={styles.modal_wrap}>
-                <button type="button" className={styles.back_button} onClick={onClose}>
-                    <ChevronLeft size={32} aria-hidden="true" />
-                </button>
-
                 <div className={styles.title_wrap}>
-                    <h1 className={styles.title}>あなたの友達</h1>
-                    <button type="button" className={styles.create_button} onClick={handleCreate}>
-                        作成
+                    <button type="button" className={styles.back_button} onClick={onClose}>
+                        <ChevronLeft size={32} aria-hidden="true" />
                     </button>
+                    <h1 className={styles.title}>グループ作成</h1>
                 </div>
 
                 <div className={styles.group_name_wrap}>
@@ -75,24 +69,20 @@ export default function GroupNameModal({
                     />
                 </div>
 
-                <div className={styles.member_section}>
-                    <h2 className={styles.member_title}>メンバー</h2>
-
-                    <div className={styles.member_list}>
-                        {selectedFriends.map((member) => (
-                            <div className={styles.member_card} key={member.id}>
-                                <Image
-                                    src={member.image}
-                                    alt=""
-                                    width={46}
-                                    height={46}
-                                    className={styles.member_image}
-                                />
-                                <p>{member.name}</p>
-                            </div>
-                        ))}
-                    </div>
+                <div className={styles.description_wrap}>
+                    <p className={styles.description}>
+                        作成後に発行されるグループIDを共有することで、メンバーを招待できます。
+                    </p>
                 </div>
+
+                <button
+                    type="button"
+                    className={styles.create_button}
+                    aria-label="作成"
+                    onClick={handleCreate}
+                >
+                    作成
+                </button>
             </div>
         </div>
     );

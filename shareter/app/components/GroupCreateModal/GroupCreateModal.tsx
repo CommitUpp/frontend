@@ -1,9 +1,12 @@
+"use client";
+
+import { useState } from "react";
 import Image from "next/image";
-import { ChevronLeft } from "lucide-react";
+import { ChevronLeft, Settings } from "lucide-react";
 import styles from "./GroupCreateModal.module.css";
 
 type Group = {
-    id: number;
+    id: string;
     name: string;
     count: number;
     image: string;
@@ -13,13 +16,31 @@ type Props = {
     groups: Group[];
     onClose: () => void;
     onAddClick: () => void;
+    onJoinClick: (groupId: string) => void;
+    onGroupClick: (group: Group) => void;
 };
 
 export default function GroupCreateModal({
     groups,
     onClose,
     onAddClick,
+    onJoinClick,
+    onGroupClick,
 }: Props) {
+    const [groupId, setGroupId] = useState("");
+
+    const handleJoinClick = () => {
+        const trimmedGroupId = groupId.trim();
+
+        if (!trimmedGroupId) {
+            alert("グループIDを入力してください");
+            return;
+        }
+
+        onJoinClick(trimmedGroupId);
+        setGroupId("");
+    };
+
     return (
         <div className={styles.overlay} onClick={onClose}>
             <div className={styles.modal_wrap} onClick={(e) => e.stopPropagation()}>
@@ -36,21 +57,57 @@ export default function GroupCreateModal({
 
                 <div className={styles.group_wrap}>
                     {groups.map((group) => (
-                        <button
-                            type="button"
+                        <div
                             className={styles.group_card}
                             key={group.id}
-                            onClick={() => {
-                                console.log("group selected:", group.id);
-                            }}
                         >
-                            <Image src={group.image} alt="" width={52} height={52} />
-                            <div className={styles.text}>
-                                <p>{group.name}</p>
-                                <p>({group.count})</p>
-                            </div>
-                        </button>
+                            <button
+                                type="button"
+                                className={styles.group_select}
+                                onClick={() => {
+                                    console.log("group selected:", group.id);
+                                }}
+                            >
+                                <Image src={group.image} alt="" width={52} height={52} />
+                                <div className={styles.text}>
+                                    <p>{group.name}</p>
+                                    <p>({group.count})</p>
+                                </div>
+                            </button>
+
+                            <button
+                                type="button"
+                                className={styles.settings_button}
+                                onClick={() => onGroupClick(group)}
+                                aria-label={`${group.name}の設定を開く`}
+                            >
+                                <Settings size={22} aria-hidden="true" />
+                            </button>
+                        </div>
                     ))}
+                </div>
+
+                <div className={styles.join_wrap}>
+                    <label className={styles.join_label} htmlFor="join-group-id">
+                        グループに参加
+                    </label>
+                    <div className={styles.join_form}>
+                        <input
+                            id="join-group-id"
+                            type="text"
+                            className={styles.join_input}
+                            value={groupId}
+                            onChange={(e) => setGroupId(e.target.value)}
+                            placeholder="グループID"
+                        />
+                        <button
+                            type="button"
+                            className={styles.join_button}
+                            onClick={handleJoinClick}
+                        >
+                            参加
+                        </button>
+                    </div>
                 </div>
 
                 <button
