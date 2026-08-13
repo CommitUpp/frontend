@@ -150,11 +150,11 @@ export default function RoomPage({ params }: Props) {
             <div className={styles.reactionArea}>
                 <button
                     type="button"
-                    onClick={() => showReaction("/image/loveStamp.svg")}
+                    onClick={() => showReaction("/image/stamp-love.svg")}
                     aria-label="ラブリアクション"
                 >
                     <Image
-                        src="/image/loveStamp.svg"
+                        src="/image/stamp-love.svg"
                         alt=""
                         width={34}
                         height={34}
@@ -162,11 +162,11 @@ export default function RoomPage({ params }: Props) {
                 </button>
                 <button
                     type="button"
-                    onClick={() => showReaction("/image/sadStamp.svg")}
+                    onClick={() => showReaction("/image/stamp-sad.svg")}
                     aria-label="悲しいリアクション"
                 >
                     <Image
-                        src="/image/sadStamp.svg"
+                        src="/image/stamp-sad.svg"
                         alt=""
                         width={34}
                         height={34}
@@ -174,11 +174,11 @@ export default function RoomPage({ params }: Props) {
                 </button>
                 <button
                     type="button"
-                    onClick={() => showReaction("/image/repeatStamp.svg")}
-                    aria-label="リピートリアクション"
+                    onClick={() => showReaction("/image/stamp-fire.svg")}
+                    aria-label="炎リアクション"
                 >
                     <Image
-                        src="/image/repeatStamp.svg"
+                        src="/image/stamp-fire.svg"
                         alt=""
                         width={34}
                         height={34}
