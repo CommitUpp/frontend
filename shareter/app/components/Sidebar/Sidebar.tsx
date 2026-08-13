@@ -2,25 +2,14 @@
 
 import { useState } from "react";
 import Image from "next/image";
+import { useRouter } from "next/navigation";
 import GroupCreateModal from "@/app/components/GroupCreateModal/GroupCreateModal";
 import AddFriendsModal from "@/app/components/AddFriendsModal/AddFriendsModal";
 import GroupNameModal from "@/app/components/GroupNameModal/GroupNameModal";
+import { useGroupChatRooms } from "@/hooks/useGroupChatRooms";
 import styles from "./Sidebar.module.css";
 
-const channels = [
-    {
-        id: "harry-potter",
-        name: "ハリーポッター賢者の石",
-    },
-    {
-        id: "avengers-civil-war",
-        name: "アベンジャーズシビルウォー",
-    },
-    {
-        id: "ironman-3",
-        name: "アイアンマン3",
-    },
-];
+const groupId = "4bb618e1-1fc2-457b-b635-bde0b1df667b";
 
 type Props = {
     selectedChannelId?: string;
@@ -44,14 +33,30 @@ export default function Sidebar({
     selectedChannelId,
     onSelectChannel,
 }: Props) {
+    const router = useRouter();
+    const { data: chatRoomsResponse } = useGroupChatRooms(groupId);
+    const channels = chatRoomsResponse?.chat_rooms ?? [];
     const [isOpen, setIsOpen] = useState(false);
     const [isAddFriendsOpen, setIsAddFriendsOpen] = useState(false);
     const [isGroupNameOpen, setIsGroupNameOpen] = useState(false);
     const [selectedFriends, setSelectedFriends] = useState<Friend[]>([]);
     const [fallbackSelectedChannelId, setFallbackSelectedChannelId] =
-        useState(channels[0].id);
+        useState<string | undefined>();
     const activeChannelId = selectedChannelId ?? fallbackSelectedChannelId;
-    const handleSelectChannel = onSelectChannel ?? setFallbackSelectedChannelId;
+
+    const handleSelectChannel = (chatRoomId: string) => {
+        if (onSelectChannel) {
+            onSelectChannel(chatRoomId);
+        } else {
+            setFallbackSelectedChannelId(chatRoomId);
+        }
+
+        const params = new URLSearchParams({
+            chat_room_id: chatRoomId,
+        });
+
+        router.push(`/chat?${params.toString()}`);
+    };
 
     const [groups, setGroups] = useState<Group[]>([
         {
@@ -114,7 +119,7 @@ export default function Sidebar({
                                         handleSelectChannel(channel.id)
                                     }
                                 >
-                                    # {channel.name}
+                                    # {channel.movie_title}
                                 </button>
                             );
                         })}

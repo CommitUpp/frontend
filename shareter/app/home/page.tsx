@@ -1,7 +1,5 @@
 "use client";
 
-import { useState } from "react";
-
 import { useCallback, useMemo } from "react";
 import { useRouter } from "next/navigation";
 import useSWR from "swr";
@@ -25,47 +23,6 @@ type GroupMovie = {
     user_id: string;
   }[];
 };
-
-const channels = [
-  {
-    id: "harry-potter",
-    name: "ハリーポッター賢者の石",
-    messages: [
-      {
-        user: "やまけん",
-        text: "この伏線そんな回収の仕方ある？！ってなった",
-      },
-      {
-        user: "りょうと",
-        text: "しかも途中ちょっと怖かったのに、変なところで笑わせてくるのずるい",
-      },
-    ],
-  },
-  {
-    id: "avengers-civil-war",
-    name: "アベンジャーズ シビル・ウォー",
-    messages: [
-      {
-        user: "けんた",
-        text: "最後の戦いめっちゃ熱かった",
-      },
-      {
-        user: "りょうと",
-        text: "キャップ派かアイアンマン派かで揉めそう笑",
-      },
-    ],
-  },
-  {
-    id: "ironman-3",
-    name: "アイアンマン3",
-    messages: [
-      {
-        user: "やまけん",
-        text: "スーツが大量に飛んでくるシーン好き",
-      },
-    ],
-  },
-];
 
 type GroupMoviesResponse = {
   group_id: string;
@@ -119,20 +76,10 @@ export default function Home() {
     router.push(`/movie/${movieId}?${params.toString()}`);
   }, [groupId, router]);
 
-  const [selectedChannelId, setSelectedChannelId] =
-    useState("harry-potter");
-
-  const selectedChannel = channels.find(
-    (channel) => channel.id === selectedChannelId
-  );
-
   return (
     <AuthGate unauthenticatedPath="/landing-page">
       <div className={styles.page_wrap}>
-      <Sidebar
-        selectedChannelId={selectedChannelId}
-        onSelectChannel={setSelectedChannelId}
-      />
+      <Sidebar />
 
       <div className={styles.main_wrap}>
         <div className={styles.live_wrap}>
