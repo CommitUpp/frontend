@@ -3,7 +3,9 @@
 import { Suspense, useEffect, useRef, useState } from "react";
 import { useSearchParams } from "next/navigation";
 import Sidebar from "../components/Sidebar/Sidebar";
+import RecommendMovieCard from "./RecommendMovieCard";
 import { chatMessages, type ChatMessage } from "@/mock/chat-message";
+import { recommendMovies } from "@/mock/recommend-movie";
 import styles from "./page.module.css";
 
 export default function ChatPage() {
@@ -125,6 +127,13 @@ function ChatPageContent() {
                             </div>
                         ))}
                     </div>
+
+                    {recommendMovies.map((movie) => (
+                        <RecommendMovieCard
+                            key={movie.id}
+                            movie={movie}
+                        />
+                    ))}
 
                     <div className={styles.new_message_list}>
                         {new_messages.map((message) => (
