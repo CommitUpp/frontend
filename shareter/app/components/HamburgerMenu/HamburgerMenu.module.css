@@ -37,7 +37,9 @@
     margin-top: 30px;
     margin-right: 30px;
     margin-left: auto;
-    /* border: 1px solid tomato; */
+    border: none;
+    background: transparent;
+    color: #fff;
 }
 
 .menu_item {
@@ -48,6 +50,8 @@
 }
 
 .hamburger_menu_allow {
+    display: inline-flex;
+    color: #fff;
     transition: .3s ease;
 }
 
