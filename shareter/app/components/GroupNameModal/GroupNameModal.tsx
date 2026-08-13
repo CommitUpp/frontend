@@ -2,6 +2,7 @@
 
 import { useState } from "react";
 import Image from "next/image";
+import { ChevronLeft } from "lucide-react";
 import styles from "./GroupNameModal.module.css";
 
 type Friend = {
@@ -44,7 +45,7 @@ export default function GroupNameModal({
         <div className={styles.overlay}>
             <div className={styles.modal_wrap}>
                 <button type="button" className={styles.back_button} onClick={onClose}>
-                    <Image src="/image/arrow.png" alt="戻る" width={16} height={16} />
+                    <ChevronLeft size={32} aria-hidden="true" />
                 </button>
 
                 <div className={styles.title_wrap}>

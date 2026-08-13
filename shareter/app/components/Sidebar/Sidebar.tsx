@@ -3,6 +3,7 @@
 import { useState } from "react";
 import Image from "next/image";
 import { useRouter } from "next/navigation";
+import { ChevronDown } from "lucide-react";
 import GroupCreateModal from "@/app/components/GroupCreateModal/GroupCreateModal";
 import AddFriendsModal from "@/app/components/AddFriendsModal/AddFriendsModal";
 import GroupNameModal from "@/app/components/GroupNameModal/GroupNameModal";
@@ -92,16 +93,11 @@ export default function Sidebar({
 
                 <section className={styles.channel_wrap}>
                     <div className={styles.channel_header}>
-                        <Image
-                            src="/image/toggle.png"
-                            alt="トグル"
-                            width={16}
-                            height={16}
-                        />
+                        <ChevronDown size={32} aria-hidden="true" />
 
-                        <h1 className={styles.channel_title}>
+                        <h2 className={styles.channel_title}>
                             movieチャンネル
-                        </h1>
+                        </h2>
                     </div>
 
                     <div className={styles.tag_list}>

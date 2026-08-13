@@ -1,4 +1,5 @@
 import Image from "next/image";
+import { ChevronLeft } from "lucide-react";
 import styles from "./GroupCreateModal.module.css";
 
 type Group = {
@@ -28,7 +29,7 @@ export default function GroupCreateModal({
                         className={styles.back_button}
                         onClick={onClose}
                     >
-                        <Image src="/image/arrow.png" alt="戻る" width={16} height={16} />
+                        <ChevronLeft size={32} aria-hidden="true" />    
                     </button>
                     <h1 className={styles.title}>グループ一覧</h1>
                 </div>

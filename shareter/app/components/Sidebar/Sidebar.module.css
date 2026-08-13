@@ -55,13 +55,14 @@
     align-items: center;
     margin-left: 20px;
     margin-bottom: 10px;
+    color: #fff;
 }
 
 .channel_title {
     color: #fff;
     font-size: 22px;
     font-weight: 700;
-    margin: 0 0 0 20px;
+    margin: 0 0 0 10px;
 }
 
 .tag_list {
