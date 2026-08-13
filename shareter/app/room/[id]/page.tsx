@@ -3,6 +3,7 @@
 import { useState, useEffect, useRef, use } from "react";
 import { useRouter } from "next/navigation";
 import Image from "next/image";
+import { LogOut, SendHorizontal } from "lucide-react";
 import styles from "./page.module.css";
 
 type Props = {
@@ -111,7 +112,7 @@ export default function RoomPage({ params }: Props) {
                     className={styles.exit}
                     onClick={() => router.push("/premiumGuide")}
                 >
-                    <Image src="/image/exit.png" alt="退出" width={28} height={28} />
+                    <LogOut size={28} aria-hidden="true" />
                     <span>退出</span>
                 </button>
             </div>
@@ -219,13 +220,7 @@ export default function RoomPage({ params }: Props) {
                         className={styles.send}
                         onClick={send}
                     >
-                        <Image
-                            src="/image/textSend.png"
-                            alt=""
-                            width={42}
-                            height={42}
-                            className={styles.icon}
-                        />
+                        <SendHorizontal size={26} className={styles.icon} aria-hidden="true" />
                     </button>
                 </div>
             </div>
