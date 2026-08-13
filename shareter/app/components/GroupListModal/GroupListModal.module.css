@@ -1,0 +1,199 @@
+.overlay {
+    position: fixed;
+    inset: 0;
+    background: rgba(0, 0, 0, 0.65);
+    z-index: 99;
+
+    .modal_wrap {
+        position: fixed;
+        top: 0;
+        left: 0;
+        width: 344px;
+        height: 100vh;
+        background: #F8F8F8;
+
+        animation: slideIn 1s ease forwards;
+
+        .title_wrap {
+            height: 66px;
+            display: flex;
+            align-items: center;
+            gap: 10px;
+            padding: 0 28px;
+            border-bottom: 1px solid #999;
+
+            .back_button {
+                background: none;
+                border: none;
+                padding: 0;
+                display: flex;
+                align-items: center;
+            }
+
+            .title {
+                font-size: 2rem;
+                font-weight: 500;
+                margin: 0;
+            }
+        }
+
+        .group_wrap {
+            margin-top: 30px;
+            margin-left: 30px;
+            margin-right: 30px;
+            display: flex;
+            flex-direction: column;
+            gap: 18px;
+
+            img {
+                width: 52px;
+                height: 52px;
+                border-radius: 50%;
+                object-fit: cover;
+            }
+
+            .group_card {
+                display: flex;
+                align-items: center;
+                justify-content: space-between;
+                gap: 12px;
+
+                .group_select {
+                    min-width: 0;
+                    flex: 1;
+                    display: flex;
+                    align-items: center;
+                    justify-content: flex-start;
+                    gap: 7px;
+                    border: none;
+                    background: transparent;
+                    padding: 0;
+                    text-align: left;
+                }
+
+                .text {
+                    min-width: 0;
+                    display: flex;
+                    align-items: center;
+
+                    p {
+                        font-size: 2rem;
+                        margin: 0;
+                    }
+                }
+
+                .settings_button {
+                    width: 36px;
+                    height: 36px;
+                    border: none;
+                    border-radius: 50%;
+                    background: transparent;
+                    color: #555;
+                    display: flex;
+                    align-items: center;
+                    justify-content: center;
+                    flex-shrink: 0;
+                }
+            }
+        }
+
+        .join_wrap {
+            margin: 28px 30px 0;
+            padding-top: 24px;
+            border-top: 1px solid #ddd;
+
+            .join_label {
+                display: block;
+                color: #333;
+                font-size: 1.5rem;
+                font-weight: 500;
+                margin-bottom: 12px;
+            }
+
+            .join_form {
+                display: flex;
+                align-items: center;
+                gap: 10px;
+            }
+
+            .join_input {
+                min-width: 0;
+                flex: 1;
+                height: 42px;
+                border: 1px solid #d3d3d3;
+                border-radius: 8px;
+                background: #fff;
+                padding: 0 12px;
+                font-size: 1.3rem;
+                outline: none;
+
+                &::placeholder {
+                    color: #aaa;
+                }
+            }
+
+            .join_button {
+                width: 72px;
+                height: 42px;
+                border: none;
+                border-radius: 8px;
+                background: #1d1d1d;
+                color: #fff;
+                font-size: 1.2rem;
+                flex-shrink: 0;
+
+                &:disabled {
+                    opacity: 0.7;
+                }
+            }
+
+            .error_message {
+                color: #d43135;
+                font-size: 1.2rem;
+                line-height: 1.5;
+                margin: 12px 0 0;
+            }
+        }
+
+        .add_button {
+            width: 60px;
+            height: 60px;
+            border-radius: 50%;
+            border: none;
+            background: #ff4045;
+            position: absolute;
+            right: 35px;
+            bottom: 50px;
+
+            &::before,
+            &::after {
+                content: "";
+                position: absolute;
+                background: #fff;
+                left: 50%;
+                top: 50%;
+                transform: translate(-50%, -50%);
+            }
+
+            &::before {
+                width: 20px;
+                height: 1.5px;
+            }
+
+            &::after {
+                width: 1.5px;
+                height: 20px;
+            }
+        }
+    }
+}
+
+@keyframes slideIn {
+    from {
+        transform: translateX(-100%);
+    }
+
+    to {
+        transform: translateX(0);
+    }
+}

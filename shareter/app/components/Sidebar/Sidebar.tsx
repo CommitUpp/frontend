@@ -5,9 +5,10 @@ import Image from "next/image";
 import { useRouter } from "next/navigation";
 import { ChevronDown } from "lucide-react";
 import GroupCreateModal from "@/app/components/GroupCreateModal/GroupCreateModal";
-import AddFriendsModal from "@/app/components/AddFriendsModal/AddFriendsModal";
-import GroupNameModal from "@/app/components/GroupNameModal/GroupNameModal";
+import GroupListModal from "@/app/components/GroupListModal/GroupListModal";
+import GroupSettingsModal from "@/app/components/GroupSettingsModal/GroupSettingsModal";
 import { useGroupChatRooms } from "@/hooks/useGroupChatRooms";
+import { createGroup, joinGroup } from "@/lib/api/groups";
 import styles from "./Sidebar.module.css";
 
 const groupId = "4bb618e1-1fc2-457b-b635-bde0b1df667b";
@@ -18,15 +19,9 @@ type Props = {
 };
 
 type Group = {
-    id: number;
+    id: string;
     name: string;
     count: number;
-    image: string;
-};
-
-type Friend = {
-    id: number;
-    name: string;
     image: string;
 };
 
@@ -37,10 +32,9 @@ export default function Sidebar({
     const router = useRouter();
     const { data: chatRoomsResponse } = useGroupChatRooms(groupId);
     const channels = chatRoomsResponse?.chat_rooms ?? [];
-    const [isOpen, setIsOpen] = useState(false);
-    const [isAddFriendsOpen, setIsAddFriendsOpen] = useState(false);
-    const [isGroupNameOpen, setIsGroupNameOpen] = useState(false);
-    const [selectedFriends, setSelectedFriends] = useState<Friend[]>([]);
+    const [isGroupListOpen, setIsGroupListOpen] = useState(false);
+    const [isGroupCreateOpen, setIsGroupCreateOpen] = useState(false);
+    const [selectedGroup, setSelectedGroup] = useState<Group | null>(null);
     const [fallbackSelectedChannelId, setFallbackSelectedChannelId] =
         useState<string | undefined>();
     const activeChannelId = selectedChannelId ?? fallbackSelectedChannelId;
@@ -61,7 +55,7 @@ export default function Sidebar({
 
     const [groups, setGroups] = useState<Group[]>([
         {
-            id: 1,
+            id: groupId,
             name: "ECCメンツ",
             count: 12,
             image: "/image/dummy-icon-man.png",
@@ -75,7 +69,7 @@ export default function Sidebar({
                 <button
                     type="button"
                     className={styles.group_wrap}
-                    onClick={() => setIsOpen(true)}
+                    onClick={() => setIsGroupListOpen(true)}
                 >
                     <Image
                         src="/image/dummy-icon-man.png"
@@ -127,10 +121,10 @@ export default function Sidebar({
                 </button>
             </div>
 
-            {isOpen && (
-                <GroupCreateModal
+            {isGroupListOpen && (
+                <GroupListModal
                     groups={groups}
-                    onClose={() => setIsOpen(false)}
+                    onClose={() => setIsGroupListOpen(false)}
                     onAddClick={() => {
                         if (groups.length >= 3) {
                             alert(
@@ -139,40 +133,51 @@ export default function Sidebar({
                             return;
                         }
 
-                        setIsOpen(false);
-                        setIsAddFriendsOpen(true);
+                        setIsGroupListOpen(false);
+                        setIsGroupCreateOpen(true);
                     }}
-                />
-            )}
+                    onJoinClick={async (joinedGroupId) => {
+                        const response = await joinGroup(joinedGroupId);
 
-            {isAddFriendsOpen && (
-                <AddFriendsModal
-                    onClose={() => setIsAddFriendsOpen(false)}
-                    onNextClick={(friends) => {
-                        setSelectedFriends(friends);
-                        setIsAddFriendsOpen(false);
-                        setIsGroupNameOpen(true);
-                    }}
-                />
-            )}
-
-            {isGroupNameOpen && (
-                <GroupNameModal
-                    selectedFriends={selectedFriends}
-                    onClose={() => setIsGroupNameOpen(false)}
-                    onCreateGroup={(name, image) => {
                         setGroups((prevGroups) => [
                             ...prevGroups,
                             {
-                                id: Date.now(),
-                                name,
-                                count: selectedFriends.length,
+                                id: response.group.id,
+                                name: response.group.name,
+                                count: 1,
+                                image: "/image/dummy-icon-man.png",
+                            },
+                        ]);
+                    }}
+                    onGroupClick={(group) => setSelectedGroup(group)}
+                />
+            )}
+
+            {selectedGroup && (
+                <GroupSettingsModal
+                    group={selectedGroup}
+                    onClose={() => setSelectedGroup(null)}
+                />
+            )}
+
+            {isGroupCreateOpen && (
+                <GroupCreateModal
+                    onClose={() => setIsGroupCreateOpen(false)}
+                    onCreateGroup={async (name, image) => {
+                        const response = await createGroup(name);
+
+                        setGroups((prevGroups) => [
+                            ...prevGroups,
+                            {
+                                id: response.group.id,
+                                name: response.group.name,
+                                count: 1,
                                 image,
                             },
                         ]);
 
-                        setIsGroupNameOpen(false);
-                        setIsOpen(true);
+                        setIsGroupCreateOpen(false);
+                        setIsGroupListOpen(true);
                     }}
                 />
             )}
