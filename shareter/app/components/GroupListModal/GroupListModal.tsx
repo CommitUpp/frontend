@@ -35,7 +35,7 @@ export default function GroupListModal({
         const trimmedGroupId = groupId.trim();
 
         if (!trimmedGroupId) {
-            alert("グループIDを入力してください");
+            alert("招待IDを入力してください");
             return;
         }
 
@@ -112,7 +112,7 @@ export default function GroupListModal({
                             className={styles.join_input}
                             value={groupId}
                             onChange={(e) => setGroupId(e.target.value)}
-                            placeholder="グループID"
+                            placeholder="招待ID"
                         />
                         <button
                             type="button"

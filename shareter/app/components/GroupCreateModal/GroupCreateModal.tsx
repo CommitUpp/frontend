@@ -80,7 +80,7 @@ export default function GroupCreateModal({
 
                 <div className={styles.description_wrap}>
                     <p className={styles.description}>
-                        作成後に発行されるグループIDを共有することで、メンバーを招待できます。
+                        作成後に発行される招待IDを共有することで、メンバーを招待できます。
                     </p>
                     {errorMessage && (
                         <p className={styles.error_message}>{errorMessage}</p>
