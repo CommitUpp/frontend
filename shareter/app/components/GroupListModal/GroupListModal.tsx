@@ -16,7 +16,7 @@ type Props = {
     groups: Group[];
     onClose: () => void;
     onAddClick: () => void;
-    onJoinClick: (groupId: string) => void;
+    onJoinClick: (groupId: string) => Promise<void> | void;
     onGroupClick: (group: Group) => void;
 };
 
@@ -28,8 +28,10 @@ export default function GroupListModal({
     onGroupClick,
 }: Props) {
     const [groupId, setGroupId] = useState("");
+    const [isJoining, setIsJoining] = useState(false);
+    const [errorMessage, setErrorMessage] = useState("");
 
-    const handleJoinClick = () => {
+    const handleJoinClick = async () => {
         const trimmedGroupId = groupId.trim();
 
         if (!trimmedGroupId) {
@@ -37,8 +39,20 @@ export default function GroupListModal({
             return;
         }
 
-        onJoinClick(trimmedGroupId);
-        setGroupId("");
+        if (isJoining) return;
+
+        setIsJoining(true);
+        setErrorMessage("");
+
+        try {
+            await onJoinClick(trimmedGroupId);
+            setGroupId("");
+        } catch (error) {
+            console.error("[GroupListModal] join group failed", error);
+            setErrorMessage("グループへの参加に失敗しました。IDを確認して再度お試しください。");
+        } finally {
+            setIsJoining(false);
+        }
     };
 
     return (
@@ -104,10 +118,14 @@ export default function GroupListModal({
                             type="button"
                             className={styles.join_button}
                             onClick={handleJoinClick}
+                            disabled={isJoining}
                         >
-                            参加
+                            {isJoining ? "参加中" : "参加"}
                         </button>
                     </div>
+                    {errorMessage && (
+                        <p className={styles.error_message}>{errorMessage}</p>
+                    )}
                 </div>
 
                 <button

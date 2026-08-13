@@ -8,7 +8,7 @@ import GroupCreateModal from "@/app/components/GroupCreateModal/GroupCreateModal
 import GroupListModal from "@/app/components/GroupListModal/GroupListModal";
 import GroupSettingsModal from "@/app/components/GroupSettingsModal/GroupSettingsModal";
 import { useGroupChatRooms } from "@/hooks/useGroupChatRooms";
-import { createGroup } from "@/lib/api/groups";
+import { createGroup, joinGroup } from "@/lib/api/groups";
 import styles from "./Sidebar.module.css";
 
 const groupId = "4bb618e1-1fc2-457b-b635-bde0b1df667b";
@@ -136,13 +136,14 @@ export default function Sidebar({
                         setIsGroupListOpen(false);
                         setIsGroupCreateOpen(true);
                     }}
-                    onJoinClick={(joinedGroupId) => {
-                        console.log("join group:", joinedGroupId);
+                    onJoinClick={async (joinedGroupId) => {
+                        const response = await joinGroup(joinedGroupId);
+
                         setGroups((prevGroups) => [
                             ...prevGroups,
                             {
-                                id: joinedGroupId,
-                                name: `参加グループ`,
+                                id: response.group.id,
+                                name: response.group.name,
                                 count: 1,
                                 image: "/image/dummy-icon-man.png",
                             },
