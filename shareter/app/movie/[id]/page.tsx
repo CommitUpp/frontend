@@ -4,6 +4,7 @@ import Image from "next/image";
 import { useParams, useSearchParams } from "next/navigation";
 import { Bookmark } from "lucide-react";
 import useSWR from "swr";
+import Loading from "@/app/components/Loading/Loading";
 import { getMovieDetails } from "@/lib/api/movies";
 import MovieActions from "./MovieActions";
 import WatchTogetherButton from "./WatchTogetherButton";
@@ -53,7 +54,11 @@ export default function MovieDetailPage() {
     }
 
     if (isLoading) {
-        return <p>作品情報を取得中です。</p>;
+        return (
+            <main className={styles.container}>
+                <Loading label="作品情報を取得中..." />
+            </main>
+        );
     }
 
     if (error || !movie) {
