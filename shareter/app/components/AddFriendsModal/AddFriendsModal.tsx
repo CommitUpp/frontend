@@ -16,12 +16,12 @@ type Props = {
 };
 
 const friends = [
-    { id: 1, name: "ことな", image: "/image/icon_dami1.png" },
-    { id: 2, name: "yamagata", image: "/image/icon_dami5.png" },
-    { id: 3, name: "やまけん", image: "/image/icon_dami1.png" },
-    { id: 4, name: "にゃーニキ", image: "/image/icon_dami5.png" },
-    { id: 5, name: "にょ", image: "/image/icon_dami1.png" },
-    { id: 6, name: "うぎゃニキ", image: "/image/icon_dami5.png" },
+    { id: 1, name: "ことな", image: "/image/dummy-icon-woman-cap.png" },
+    { id: 2, name: "yamagata", image: "/image/dummy-icon-woman-camera.png" },
+    { id: 3, name: "やまけん", image: "/image/dummy-icon-woman-cap.png" },
+    { id: 4, name: "にゃーニキ", image: "/image/dummy-icon-woman-camera.png" },
+    { id: 5, name: "にょ", image: "/image/dummy-icon-woman-cap.png" },
+    { id: 6, name: "うぎゃニキ", image: "/image/dummy-icon-woman-camera.png" },
 ];
 
 

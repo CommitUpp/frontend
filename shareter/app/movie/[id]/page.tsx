@@ -116,7 +116,7 @@ export default function MovieDetailPage() {
                                 className={styles.memberAvatar}
                             >
                                 <Image
-                                    src={user.AvatarURL || "/image/dami1.png"}
+                                    src={user.AvatarURL || "/image/dummy-icon-man.png"}
                                     alt={user.UserName}
                                     width={52}
                                     height={52}

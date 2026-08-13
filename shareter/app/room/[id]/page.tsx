@@ -16,42 +16,42 @@ const initialMessages = [
     {
         id: 1,
         user: "やまけん",
-        image: "/image/dami1.png",
+        image: "/image/dummy-icon-man.png",
         text: "え、ラスト普通に騙されたんだけど（笑）",
         mine: false,
     },
     {
         id: 2,
         user: "ことな",
-        image: "/image/dami1.png",
+        image: "/image/dummy-icon-man.png",
         text: "わかる あの伏線そんな回収の仕方ある？！ってなった",
         mine: false,
     },
     {
         id: 3,
         user: "ことな",
-        image: "/image/dami1.png",
+        image: "/image/dummy-icon-man.png",
         text: "しかも途中ちょっと怖かったのに、変なとこで笑わせてくるのずるい",
         mine: false,
     },
     {
         id: 4,
         user: "自分",
-        image: "/image/dami1.png",
+        image: "/image/dummy-icon-man.png",
         text: "主人公ずっと顔死んでたのに最後だけ急に熱かったよな\nあと音楽めっちゃ良くなかった？",
         mine: true,
     },
     {
         id: 5,
         user: "やまけん",
-        image: "/image/dami1.png",
+        image: "/image/dummy-icon-man.png",
         text: "それ！！映画館で観たかったタイプかも",
         mine: false,
     },
     {
         id: 6,
         user: "自分",
-        image: "/image/dami1.png",
+        image: "/image/dummy-icon-man.png",
         text: "でも正直あの友達ポジションのキャラはいらんかった気する（笑）",
         mine: true,
     },
@@ -80,7 +80,7 @@ export default function RoomPage({ params }: Props) {
             {
                 id: Date.now(),
                 user: "自分",
-                image: "/image/dami1.png",
+                image: "/image/dummy-icon-man.png",
                 text: t,
                 mine: true,
             },
@@ -201,10 +201,10 @@ export default function RoomPage({ params }: Props) {
 
             <div className={styles.SendArea}>
                 <div className={styles.members}>
-                    <Image src="/image/dami1.png" alt="" width={34} height={34} className={styles.member} />
-                    <Image src="/image/dami1.png" alt="" width={34} height={34} className={styles.member} />
-                    <Image src="/image/dami1.png" alt="" width={34} height={34} className={styles.member} />
-                    <Image src="/image/dami1.png" alt="" width={34} height={34} className={styles.member} />
+                    <Image src="/image/dummy-icon-man.png" alt="" width={34} height={34} className={styles.member} />
+                    <Image src="/image/dummy-icon-man.png" alt="" width={34} height={34} className={styles.member} />
+                    <Image src="/image/dummy-icon-man.png" alt="" width={34} height={34} className={styles.member} />
+                    <Image src="/image/dummy-icon-man.png" alt="" width={34} height={34} className={styles.member} />
                 </div>
 
                 <div className={styles.inputArea}>

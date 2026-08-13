@@ -95,7 +95,7 @@ function ChatPageContent() {
                                 {!message.is_mine && (
                                     <div className={styles.user_icon}>
                                         <img
-                                            src="/image/icon_dami1.png"
+                                            src="/image/dummy-icon-woman-cap.png"
                                             alt=""
                                         />
                                     </div>
@@ -147,7 +147,7 @@ function ChatPageContent() {
                                 {!message.is_mine && (
                                     <div className={styles.user_icon}>
                                         <img
-                                            src="/image/icon_dami1.png"
+                                            src="/image/dummy-icon-woman-cap.png"
                                             alt=""
                                         />
                                     </div>

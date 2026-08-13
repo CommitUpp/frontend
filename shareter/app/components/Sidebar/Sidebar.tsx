@@ -64,7 +64,7 @@ export default function Sidebar({
             id: 1,
             name: "ECCメンツ",
             count: 12,
-            image: "/image/dami1.png",
+            image: "/image/dummy-icon-man.png",
         },
     ]);
 
@@ -78,7 +78,7 @@ export default function Sidebar({
                     onClick={() => setIsOpen(true)}
                 >
                     <Image
-                        src="/image/dami1.png"
+                        src="/image/dummy-icon-man.png"
                         alt="グループアイコン"
                         width={36}
                         height={36}
