@@ -8,7 +8,7 @@ import "../../globals.css";
 import styles from "./Header.module.css";
 
 // ハンバーガーメニューのボタンを暗い色にするパスのリスト
-const darkMenuButtonPaths = ["/chat"];
+const darkMenuButtonPaths = ["/chat", "/survey"];
 
 export default function Header() {
     const [isMenuOpen, setIsMenuOpen] = useState(false);
