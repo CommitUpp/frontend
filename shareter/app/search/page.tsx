@@ -4,6 +4,7 @@ import { useEffect, useState, type ChangeEvent } from "react";
 import { useRouter } from "next/navigation";
 import useSWR from "swr";
 import AuthGate from "../components/AuthGate/AuthGate";
+import Loading from "../components/Loading/Loading";
 import MovieCard from "../components/MovieCard/MovieCard";
 import Sidebar from "../components/Sidebar/Sidebar";
 import { getMovies } from "@/lib/api/movies";
@@ -79,9 +80,9 @@ export default function SearchPage() {
 
                             <section className={styles.result_wrap}>
                                 {isLoading && (
-                                    <p className={styles.loading_text}>
-                                        取得中...
-                                    </p>
+                                    <div className={styles.loading_wrap}>
+                                        <Loading label="作品を取得中..." />
+                                    </div>
                                 )}
 
                                 {!isLoading && hasError && (
