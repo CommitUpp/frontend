@@ -72,9 +72,13 @@
 }
 
 .tag_item {
-    color: white;
+    color: #757575;
     font-size: 18px;
     font-weight: 300;
+}
+
+.tag_item.active {
+    color: #ffffff;
 }
 
 .add_button {
