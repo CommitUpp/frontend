@@ -5,7 +5,7 @@ import Image from "next/image";
 import { useRouter } from "next/navigation";
 import { ChevronDown } from "lucide-react";
 import GroupCreateModal from "@/app/components/GroupCreateModal/GroupCreateModal";
-import GroupNameModal from "@/app/components/GroupNameModal/GroupNameModal";
+import GroupListModal from "@/app/components/GroupListModal/GroupListModal";
 import GroupSettingsModal from "@/app/components/GroupSettingsModal/GroupSettingsModal";
 import { useGroupChatRooms } from "@/hooks/useGroupChatRooms";
 import styles from "./Sidebar.module.css";
@@ -24,12 +24,6 @@ type Group = {
     image: string;
 };
 
-type Friend = {
-    id: number;
-    name: string;
-    image: string;
-};
-
 export default function Sidebar({
     selectedChannelId,
     onSelectChannel,
@@ -37,10 +31,9 @@ export default function Sidebar({
     const router = useRouter();
     const { data: chatRoomsResponse } = useGroupChatRooms(groupId);
     const channels = chatRoomsResponse?.chat_rooms ?? [];
-    const [isOpen, setIsOpen] = useState(false);
-    const [isGroupNameOpen, setIsGroupNameOpen] = useState(false);
+    const [isGroupListOpen, setIsGroupListOpen] = useState(false);
+    const [isGroupCreateOpen, setIsGroupCreateOpen] = useState(false);
     const [selectedGroup, setSelectedGroup] = useState<Group | null>(null);
-    const [selectedFriends, setSelectedFriends] = useState<Friend[]>([]);
     const [fallbackSelectedChannelId, setFallbackSelectedChannelId] =
         useState<string | undefined>();
     const activeChannelId = selectedChannelId ?? fallbackSelectedChannelId;
@@ -75,7 +68,7 @@ export default function Sidebar({
                 <button
                     type="button"
                     className={styles.group_wrap}
-                    onClick={() => setIsOpen(true)}
+                    onClick={() => setIsGroupListOpen(true)}
                 >
                     <Image
                         src="/image/dummy-icon-man.png"
@@ -127,10 +120,10 @@ export default function Sidebar({
                 </button>
             </div>
 
-            {isOpen && (
-                <GroupCreateModal
+            {isGroupListOpen && (
+                <GroupListModal
                     groups={groups}
-                    onClose={() => setIsOpen(false)}
+                    onClose={() => setIsGroupListOpen(false)}
                     onAddClick={() => {
                         if (groups.length >= 3) {
                             alert(
@@ -139,9 +132,8 @@ export default function Sidebar({
                             return;
                         }
 
-                        setIsOpen(false);
-                        setSelectedFriends([]);
-                        setIsGroupNameOpen(true);
+                        setIsGroupListOpen(false);
+                        setIsGroupCreateOpen(true);
                     }}
                     onJoinClick={(joinedGroupId) => {
                         console.log("join group:", joinedGroupId);
@@ -166,23 +158,22 @@ export default function Sidebar({
                 />
             )}
 
-            {isGroupNameOpen && (
-                <GroupNameModal
-                    selectedFriends={selectedFriends}
-                    onClose={() => setIsGroupNameOpen(false)}
+            {isGroupCreateOpen && (
+                <GroupCreateModal
+                    onClose={() => setIsGroupCreateOpen(false)}
                     onCreateGroup={(name, image) => {
                         setGroups((prevGroups) => [
                             ...prevGroups,
                             {
                                 id: crypto.randomUUID(),
                                 name,
-                                count: selectedFriends.length + 1,
+                                count: 1,
                                 image,
                             },
                         ]);
 
-                        setIsGroupNameOpen(false);
-                        setIsOpen(true);
+                        setIsGroupCreateOpen(false);
+                        setIsGroupListOpen(true);
                     }}
                 />
             )}
