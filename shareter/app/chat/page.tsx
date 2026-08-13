@@ -1,6 +1,7 @@
 "use client";
 
-import { useEffect, useRef, useState } from "react";
+import { Suspense, useEffect, useRef, useState } from "react";
+import { useSearchParams } from "next/navigation";
 import Sidebar from "../components/Sidebar/Sidebar";
 import styles from "./page.module.css";
 
@@ -90,11 +91,18 @@ const initial_channels: Channel[] = [
 ];
 
 export default function ChatPage() {
+    return (
+        <Suspense fallback={null}>
+            <ChatPageContent />
+        </Suspense>
+    );
+}
+
+function ChatPageContent() {
+    const searchParams = useSearchParams();
+    const selected_chat_room_id = searchParams.get("chat_room_id") ?? "harry-potter";
     const [channels, setChannels] =
         useState<Channel[]>(initial_channels);
-
-    const [selected_channel_id, setSelectedChannelId] =
-        useState("harry-potter");
 
     const [input_text, setInputText] = useState("");
 
@@ -102,7 +110,7 @@ export default function ChatPage() {
         useRef<HTMLDivElement | null>(null);
 
     const selected_channel = channels.find(
-        (channel) => channel.id === selected_channel_id
+        (channel) => channel.id === selected_chat_room_id
     );
 
     const previous_messages =
@@ -147,7 +155,7 @@ export default function ChatPage() {
 
         setChannels((previous_channels) =>
             previous_channels.map((channel) => {
-                if (channel.id !== selected_channel_id) {
+                if (channel.id !== selected_chat_room_id) {
                     return channel;
                 }
 
@@ -164,15 +172,10 @@ export default function ChatPage() {
         setInputText("");
     };
 
-    if (!selected_channel) {
-        return null;
-    }
-
     return (
         <main className={styles.chat_page}>
             <Sidebar
-                selectedChannelId={selected_channel_id}
-                onSelectChannel={setSelectedChannelId}
+                selectedChannelId={selected_chat_room_id}
             />
 
             <section className={styles.chat_area}>
@@ -220,48 +223,6 @@ export default function ChatPage() {
                                 </div>
                             </div>
                         ))}
-                    </div>
-
-                    <div className={styles.recommend_divider}>
-                        <span />
-
-                        <p>
-                            りょうとがトイ・ストーリー5を
-                            お勧めしました
-                        </p>
-
-                        <span />
-                    </div>
-
-                    <div className={styles.recommend_wrap}>
-                        <p className={styles.recommend_user}>
-                            りょうと
-                        </p>
-
-                        <article className={styles.movie_card}>
-                            <div className={styles.movie_image}>
-                                <img
-                                    src="/image/dami2.jpg"
-                                    alt="トイ・ストーリー5"
-                                />
-                            </div>
-
-                            <div className={styles.movie_information}>
-                                <h2>トイ・ストーリー5</h2>
-
-                                <p>
-                                    ウッディやバズたちが、
-                                    子どもたちの遊びがデジタル機器中心へと
-                                    変化する中で、おもちゃとしての役割や
-                                    存在意義に向き合います。
-                                </p>
-
-                                <button type="button">
-                                    同時視聴開始する
-                                    <span>▶</span>
-                                </button>
-                            </div>
-                        </article>
                     </div>
 
                     <div className={styles.new_message_list}>
