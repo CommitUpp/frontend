@@ -56,7 +56,9 @@ export default function MovieDetailPage() {
     if (isLoading) {
         return (
             <main className={styles.container}>
-                <Loading label="作品情報を取得中..." />
+                <div className={styles.loadingWrap}>
+                    <Loading label="作品情報を取得中..." />
+                </div>
             </main>
         );
     }

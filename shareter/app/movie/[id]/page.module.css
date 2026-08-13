@@ -4,6 +4,13 @@
     color: white;
 }
 
+.loadingWrap {
+    min-height: 100vh;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+}
+
 /* 上画像 */
 
 .hero {
