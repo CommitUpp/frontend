@@ -72,6 +72,8 @@
 }
 
 .tag_item {
+    width: 100%;
+    text-align: left;
     color: #757575;
     font-size: 18px;
     font-weight: 300;
