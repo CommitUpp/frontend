@@ -116,7 +116,7 @@ export default function MovieDetailPage() {
                                 className={styles.memberAvatar}
                             >
                                 <Image
-                                    src={user.AvatarURL || "/image/dami1.png"}
+                                    src={user.AvatarURL || "/image/dummy-icon-man.png"}
                                     alt={user.UserName}
                                     width={52}
                                     height={52}
@@ -150,10 +150,10 @@ export default function MovieDetailPage() {
 
 function getStreamingServiceImage(serviceName: string): string {
     const serviceImages: Record<string, string> = {
-        Netflix: "/image/subscFour.png",
-        "U-NEXT": "/image/subscOne.png",
-        "Prime Video": "/image/subscThree.png",
-        YouTube: "/image/subscTwo.png",
+        Netflix: "/image/subsc-four.png",
+        "U-NEXT": "/image/subsc-one.png",
+        "Prime Video": "/image/subsc-three.png",
+        YouTube: "/image/subsc-two.png",
     };
 
     return serviceImages[serviceName] ?? "/image/no-image.png";
