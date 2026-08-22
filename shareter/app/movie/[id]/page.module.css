@@ -4,6 +4,13 @@
     color: white;
 }
 
+.loadingWrap {
+    min-height: 100vh;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+}
+
 /* 上画像 */
 
 .hero {
@@ -45,7 +52,6 @@
     border: none;
     color: white;
     font-size: 24px;
-    cursor: pointer;
 }
 
 /* 左 */
@@ -68,7 +74,6 @@
     font-size: 16px;
     font-weight: 700;
     color: #181818;
-    cursor: pointer;
 }
 
 .watchButton:hover {
@@ -181,7 +186,6 @@
     background: none;
     border: none;
     color: white;
-    cursor: pointer;
     padding: 0;
 }
 

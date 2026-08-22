@@ -4,3 +4,11 @@
     right: 40px;
     z-index: 99;
 }
+
+.menu_button {
+    color: #fff;
+}
+
+.dark_menu_button {
+    color: #333;
+}

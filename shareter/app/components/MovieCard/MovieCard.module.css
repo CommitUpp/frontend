@@ -1,0 +1,99 @@
+.movie_card {
+    flex: 0 0 250px;
+    display: flex;
+    flex-direction: column;
+    padding: 0;
+    border: 0;
+    background: transparent;
+    transition: transform .2s ease;
+}
+
+.movie_card:hover {
+    transform: scale(1.05);
+}
+
+.poster_wrap {
+    position: relative;
+    width: 250px;
+    height: 180px;
+}
+
+.movie_image {
+    width: 250px;
+    height: 180px;
+    object-fit: cover;
+    border-radius: 12px;
+}
+
+.movie_name {
+    position: relative;
+    width: 250px;
+    overflow: hidden;
+    color: white;
+    text-align: left;
+    margin-top: 10px;
+    font-size: 20px;
+    line-height: 1.4;
+    white-space: nowrap;
+}
+
+.movie_name.overflowing::after {
+    content: "";
+    position: absolute;
+    top: 0;
+    right: 0;
+    width: 56px;
+    height: 100%;
+    pointer-events: none;
+    background: linear-gradient(90deg, rgb(41 41 41 / 0), #292929 82%);
+}
+
+.movie_name_text {
+    display: inline-block;
+    max-width: 100%;
+    text-align: left;
+    overflow: hidden;
+    text-overflow: clip;
+    vertical-align: top;
+}
+
+.overflowing .movie_name_text {
+    max-width: none;
+    padding-right: 56px;
+}
+
+.movie_card:hover .overflowing .movie_name_text {
+    animation: title-scroll 7s linear infinite;
+}
+
+@keyframes title-scroll {
+    0%,
+    16% {
+        transform: translateX(0);
+    }
+
+    84%,
+    100% {
+        transform: translateX(calc(250px - 100% - 56px));
+    }
+}
+
+.watcher_icons {
+    position: absolute;
+    bottom: 8px;
+    right: 8px;
+    display: flex;
+}
+
+.watcher_icon {
+    width: 32px;
+    height: 32px;
+    border-radius: 50%;
+    border: 2px solid #fff;
+    object-fit: cover;
+    margin-left: -12px;
+}
+
+.watcher_icon:first-child {
+    margin-left: 0;
+}

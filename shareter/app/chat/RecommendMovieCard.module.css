@@ -1,0 +1,132 @@
+.recommend_divider {
+    display: flex;
+    align-items: center;
+    gap: 26px;
+    margin: 54px -36px 40px;
+}
+
+.recommend_divider span {
+    flex: 1;
+    height: 1px;
+    background: #a5a5a5;
+}
+
+.recommend_divider p {
+    flex-shrink: 0;
+    margin: 0;
+    font-size: 1.5rem;
+    color: #aaa;
+    letter-spacing: 0.08em;
+}
+
+.recommend_wrap {
+    display: flex;
+    flex-direction: column;
+    align-items: flex-end;
+    width: 100%;
+}
+
+.recommend_user {
+    margin: 0 28px 8px 0;
+    font-size: 1.2rem;
+    color: #666;
+}
+
+.movie_card {
+    position: relative;
+    display: grid;
+    grid-template-columns: minmax(260px, 1.2fr) 0.8fr;
+    gap: 20px;
+    width: min(560px, 100%);
+    padding: 18px;
+    border-radius: 12px;
+    background: #fff;
+    box-shadow:
+        0 4px 7px rgb(0 0 0 / 16%),
+        0 1px 3px rgb(0 0 0 / 10%);
+}
+
+.movie_card::after {
+    position: absolute;
+    top: 0;
+    right: -12px;
+    width: 24px;
+    height: 20px;
+    background: #fff;
+    clip-path: polygon(0 0,
+            100% 0,
+            0 100%);
+    content: "";
+}
+
+.movie_image {
+    min-height: 210px;
+    overflow: hidden;
+    border-radius: 8px;
+}
+
+.movie_image img {
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+}
+
+.movie_information {
+    display: flex;
+    flex-direction: column;
+    padding: 8px 8px 4px 0;
+}
+
+.movie_information h2 {
+    margin: 0 0 16px;
+    font-size: 1.8rem;
+    color: #222;
+}
+
+.movie_information p {
+    margin: 0;
+    font-size: 1.2rem;
+    line-height: 1.55;
+    color: #333;
+}
+
+.movie_information button {
+    width: 100%;
+    margin-top: auto;
+    padding: 12px;
+    border: none;
+    border-radius: 5px;
+    color: #fff;
+    background: #6a6a6a;
+}
+
+.movie_information button span {
+    margin-left: 5px;
+}
+
+.movie_information button:hover {
+    background: #505050;
+}
+
+@media (max-width: 900px) {
+    .recommend_divider {
+        margin-right: -20px;
+        margin-left: -20px;
+    }
+
+    .recommend_divider p {
+        font-size: 1.2rem;
+    }
+
+    .movie_card {
+        grid-template-columns: 1fr;
+    }
+
+    .movie_information {
+        gap: 14px;
+    }
+
+    .movie_information button {
+        margin-top: 0;
+    }
+}

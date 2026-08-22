@@ -1,158 +1,20 @@
-// "use client";
-
-// import { useState } from "react";
-// import Image from "next/image";
-// import GroupCreateModal from "@/app/components/GroupCreateModal/GroupCreateModal";
-// import AddFriendsModal from "@/app/components/AddFriendsModal/AddFriendsModal";
-// import GroupNameModal from "@/app/components/GroupNameModal/GroupNameModal";
-// import styles from "./Sidebar.module.css";
-
-// const tags = [
-//     "ハリーポッター賢者の石",
-//     "アベンジャーズシビルウォー",
-//     "アイアンマン3",
-// ];
-
-// type Group = {
-//     id: number;
-//     name: string;
-//     count: number;
-//     image: string;
-// };
-
-// type Friend = {
-//     id: number;
-//     name: string;
-//     image: string;
-// };
-
-// export default function Sidebar() {
-//     const [isOpen, setIsOpen] = useState(false);
-//     const [isAddFriendsOpen, setIsAddFriendsOpen] = useState(false);
-//     const [isGroupNameOpen, setIsGroupNameOpen] = useState(false);
-//     const [selectedFriends, setSelectedFriends] = useState<Friend[]>([]);
-
-//     const [groups, setGroups] = useState<Group[]>([
-//         {
-//             id: 1,
-//             name: "ECCメンツ",
-//             count: 12,
-//             image: "/image/dami1.png",
-//         },
-//     ]);
-
-//     return (
-//         <>
-//             <div className={styles.sidebar_wrap}>
-//                 <div className={styles.group_wrap}>
-//                     <Image
-//                         src="/image/dami1.png"
-//                         alt="グループアイコン"
-//                         width={36}
-//                         height={36}
-//                         className={styles.group_image}
-//                     />
-
-//                     <div className={styles.group_info} onClick={() => setIsOpen(true)}>
-//                         <p className={styles.group_label}>グループ名</p>
-//                         <h2 className={styles.group_name}>ECCメンツ</h2>
-//                     </div>
-//                 </div>
-
-//                 <section className={styles.channel_wrap}>
-//                     <div className={styles.channel_header}>
-//                         <Image src="/image/toggle.png" alt="トグル" width={16} height={16} />
-//                         <h1 className={styles.channel_title}>movieチャンネル</h1>
-//                     </div>
-
-//                     <div className={styles.tag_list}>
-//                         {tags.map((tag, index) => (
-//                             <p key={index} className={styles.tag_item}>
-//                                 # {tag}
-//                             </p>
-//                         ))}
-//                     </div>
-//                 </section>
-
-//                 <button className={styles.add_button}>
-//                     ＋ チャンネルを追加する
-//                 </button>
-//             </div>
-
-//             {isOpen && (
-//                 <GroupCreateModal
-//                     groups={groups}
-//                     onClose={() => setIsOpen(false)}
-//                     onAddClick={() => {
-//                         if (groups.length >= 3) {
-//                             alert("グループは3つまでしか作成できません");
-//                             return;
-//                         }
-//                         setIsOpen(false);
-//                         setIsAddFriendsOpen(true);
-//                     }}
-//                 />
-//             )}
-
-//             {isAddFriendsOpen && (
-//                 <AddFriendsModal
-//                     onClose={() => setIsAddFriendsOpen(false)}
-//                     onNextClick={(friends) => {
-//                         setSelectedFriends(friends);
-//                         setIsAddFriendsOpen(false);
-//                         setIsGroupNameOpen(true);
-//                     }}
-//                 />
-//             )}
-
-//             {isGroupNameOpen && (
-//                 <GroupNameModal
-//                     selectedFriends={selectedFriends}
-//                     onClose={() => setIsGroupNameOpen(false)}
-//                     onCreateGroup={(name, image) => {
-//                         setGroups([
-//                             ...groups,
-//                             {
-//                                 id: Date.now(),
-//                                 name,
-//                                 count: selectedFriends.length,
-//                                 image,
-//                             },
-//                         ]);
-//                         setIsGroupNameOpen(false);
-//                         setIsOpen(true);
-//                     }}
-//                 />
-//             )}
-//         </>
-//     );
-// }
-
-
-
 "use client";
 
 import { useState } from "react";
 import Image from "next/image";
+import { useRouter } from "next/navigation";
+import { ChevronDown } from "lucide-react";
 import GroupCreateModal from "@/app/components/GroupCreateModal/GroupCreateModal";
-import AddFriendsModal from "@/app/components/AddFriendsModal/AddFriendsModal";
-import GroupNameModal from "@/app/components/GroupNameModal/GroupNameModal";
+import GroupListModal from "@/app/components/GroupListModal/GroupListModal";
+import GroupSettingsModal from "@/app/components/GroupSettingsModal/GroupSettingsModal";
+import { useGroupChatRooms } from "@/hooks/useGroupChatRooms";
+import { useGroups } from "@/hooks/useGroups";
+import { createGroup, joinGroup, type ApiGroup, type GetGroupsResponse } from "@/lib/api/groups";
+import { useAuth } from "@/contexts/AuthContext";
+import { useGroup } from "@/contexts/GroupContext";
 import styles from "./Sidebar.module.css";
 
-const channels = [
-    {
-        id: "harry-potter",
-        name: "ハリーポッター賢者の石",
-    },
-    {
-        id: "avengers-civil-war",
-        name: "アベンジャーズシビルウォー",
-    },
-    {
-        id: "ironman-3",
-        name: "アイアンマン3",
-    },
-];
+const defaultGroupImage = "/image/no-image.png";
 
 type Props = {
     selectedChannelId?: string;
@@ -160,74 +22,89 @@ type Props = {
 };
 
 type Group = {
-    id: number;
+    id: string;
     name: string;
-    count: number;
+    member_count: number;
     image: string;
 };
 
-type Friend = {
-    id: number;
-    name: string;
-    image: string;
-};
+function toGroup(group: ApiGroup): Group {
+    return {
+        id: group.id,
+        name: group.name,
+        member_count: group.member_count ?? group.memberCount ?? 1,
+        image: group.image ?? group.image_url ?? group.avatar_url ?? defaultGroupImage,
+    };
+}
 
 export default function Sidebar({
     selectedChannelId,
     onSelectChannel,
 }: Props) {
-    const [isOpen, setIsOpen] = useState(false);
-    const [isAddFriendsOpen, setIsAddFriendsOpen] = useState(false);
-    const [isGroupNameOpen, setIsGroupNameOpen] = useState(false);
-    const [selectedFriends, setSelectedFriends] = useState<Friend[]>([]);
+    const router = useRouter();
+    const { session, isLoading: isAuthLoading } = useAuth();
+    const { selectedGroupId, setSelectedGroupId } = useGroup();
+    const [isGroupListOpen, setIsGroupListOpen] = useState(false);
+    const [isGroupCreateOpen, setIsGroupCreateOpen] = useState(false);
+    const [selectedGroup, setSelectedGroup] = useState<Group | null>(null);
     const [fallbackSelectedChannelId, setFallbackSelectedChannelId] =
-        useState(channels[0].id);
+        useState<string | undefined>();
     const activeChannelId = selectedChannelId ?? fallbackSelectedChannelId;
-    const handleSelectChannel = onSelectChannel ?? setFallbackSelectedChannelId;
+    const {
+        data: groupsResponse,
+        mutate: mutateGroups,
+    } = useGroups(Boolean(session?.access_token) && !isAuthLoading);
+    const groups = (groupsResponse?.groups ?? []).map(toGroup);
+    const currentGroup = groups.find((group) => group.id === selectedGroupId) ?? groups[0];
+    const currentGroupId = currentGroup?.id;
+    const { data: chatRoomsResponse } = useGroupChatRooms(currentGroupId);
+    const channels = chatRoomsResponse?.chat_rooms ?? [];
 
-    const [groups, setGroups] = useState<Group[]>([
-        {
-            id: 1,
-            name: "ECCメンツ",
-            count: 12,
-            image: "/image/dami1.png",
-        },
-    ]);
+    const handleSelectChannel = (chatRoomId: string) => {
+        if (onSelectChannel) {
+            onSelectChannel(chatRoomId);
+        } else {
+            setFallbackSelectedChannelId(chatRoomId);
+        }
 
+        const params = new URLSearchParams({
+            chat_room_id: chatRoomId,
+        });
+
+        router.push(`/chat?${params.toString()}`);
+    };
 
     return (
         <>
             <div className={styles.sidebar_wrap}>
-                <div className={styles.group_wrap}>
+                <button
+                    type="button"
+                    className={styles.group_wrap}
+                    onClick={() => setIsGroupListOpen(true)}
+                >
                     <Image
-                        src="/image/dami1.png"
+                        src={currentGroup?.image ?? defaultGroupImage}
                         alt="グループアイコン"
                         width={36}
                         height={36}
                         className={styles.group_image}
                     />
 
-                    <div
-                        className={styles.group_info}
-                        onClick={() => setIsOpen(true)}
-                    >
+                    <div className={styles.group_info}>
                         <p className={styles.group_label}>グループ名</p>
-                        <h2 className={styles.group_name}>ECCメンツ</h2>
+                        <h2 className={styles.group_name}>
+                            {currentGroup?.name ?? "グループ未選択"}
+                        </h2>
                     </div>
-                </div>
+                </button>
 
                 <section className={styles.channel_wrap}>
                     <div className={styles.channel_header}>
-                        <Image
-                            src="/image/toggle.png"
-                            alt="トグル"
-                            width={16}
-                            height={16}
-                        />
+                        <ChevronDown size={32} aria-hidden="true" />
 
-                        <h1 className={styles.channel_title}>
+                        <h2 className={styles.channel_title}>
                             movieチャンネル
-                        </h1>
+                        </h2>
                     </div>
 
                     <div className={styles.tag_list}>
@@ -245,7 +122,7 @@ export default function Sidebar({
                                         handleSelectChannel(channel.id)
                                     }
                                 >
-                                    # {channel.name}
+                                    # {channel.movie_title}
                                 </button>
                             );
                         })}
@@ -257,10 +134,11 @@ export default function Sidebar({
                 </button>
             </div>
 
-            {isOpen && (
-                <GroupCreateModal
+            {isGroupListOpen && (
+                <GroupListModal
                     groups={groups}
-                    onClose={() => setIsOpen(false)}
+                    selectedGroupId={currentGroupId}
+                    onClose={() => setIsGroupListOpen(false)}
                     onAddClick={() => {
                         if (groups.length >= 3) {
                             alert(
@@ -269,40 +147,63 @@ export default function Sidebar({
                             return;
                         }
 
-                        setIsOpen(false);
-                        setIsAddFriendsOpen(true);
+                        setIsGroupListOpen(false);
+                        setIsGroupCreateOpen(true);
                     }}
+                    onJoinClick={async (joinedGroupId) => {
+                        const response = await joinGroup(joinedGroupId);
+                        const joinedGroup = toGroup(response.group);
+
+                        setSelectedGroupId(joinedGroup.id);
+                        await mutateGroups((currentData): GetGroupsResponse => {
+                            const currentGroups = currentData?.groups ?? [];
+                            const exists = currentGroups.some((group) => group.id === joinedGroup.id);
+
+                            return {
+                                groups: exists
+                                    ? currentGroups
+                                    : [...currentGroups, response.group],
+                            };
+                        }, false);
+                    }}
+                    onSelectGroup={(group) => {
+                        setSelectedGroupId(group.id);
+                        setIsGroupListOpen(false);
+                    }}
+                    onGroupClick={(group) => setSelectedGroup(group)}
                 />
             )}
 
-            {isAddFriendsOpen && (
-                <AddFriendsModal
-                    onClose={() => setIsAddFriendsOpen(false)}
-                    onNextClick={(friends) => {
-                        setSelectedFriends(friends);
-                        setIsAddFriendsOpen(false);
-                        setIsGroupNameOpen(true);
-                    }}
+            {selectedGroup && (
+                <GroupSettingsModal
+                    group={selectedGroup}
+                    onClose={() => setSelectedGroup(null)}
                 />
             )}
 
-            {isGroupNameOpen && (
-                <GroupNameModal
-                    selectedFriends={selectedFriends}
-                    onClose={() => setIsGroupNameOpen(false)}
-                    onCreateGroup={(name, image) => {
-                        setGroups((prevGroups) => [
-                            ...prevGroups,
-                            {
-                                id: Date.now(),
-                                name,
-                                count: selectedFriends.length,
-                                image,
-                            },
-                        ]);
+            {isGroupCreateOpen && (
+                <GroupCreateModal
+                    onClose={() => setIsGroupCreateOpen(false)}
+                    onCreateGroup={async (name, image) => {
+                        const response = await createGroup(name);
+                        const createdGroup = toGroup({
+                            ...response.group,
+                            image,
+                        });
 
-                        setIsGroupNameOpen(false);
-                        setIsOpen(true);
+                        setSelectedGroupId(createdGroup.id);
+                        await mutateGroups((currentData): GetGroupsResponse => ({
+                            groups: [
+                                ...(currentData?.groups ?? []),
+                                {
+                                    ...response.group,
+                                    image,
+                                },
+                            ],
+                        }), false);
+
+                        setIsGroupCreateOpen(false);
+                        setIsGroupListOpen(true);
                     }}
                 />
             )}

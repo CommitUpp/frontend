@@ -25,6 +25,7 @@ export default function SelectMovie({ onSearch }: Props) {
                     選んでください
                 </h2>
                 <button
+                    type="button"
                     className={styles.select_button}
                     onClick={handleSelect}>
                     選択する

@@ -1,6 +1,6 @@
 {
   "$schema": "node_modules/wrangler/config-schema.json",
-  "name": "shareter",
+  "name": "sheater",
   "main": ".open-next/worker.js",
   "compatibility_date": "2026-07-31",
   "compatibility_flags": [
