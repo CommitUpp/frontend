@@ -14,17 +14,21 @@ type Group = {
 
 type Props = {
     groups: Group[];
+    selectedGroupId?: string;
     onClose: () => void;
     onAddClick: () => void;
     onJoinClick: (groupId: string) => Promise<void> | void;
+    onSelectGroup: (group: Group) => void;
     onGroupClick: (group: Group) => void;
 };
 
 export default function GroupListModal({
     groups,
+    selectedGroupId,
     onClose,
     onAddClick,
     onJoinClick,
+    onSelectGroup,
     onGroupClick,
 }: Props) {
     const [groupId, setGroupId] = useState("");
@@ -76,8 +80,9 @@ export default function GroupListModal({
                                 type="button"
                                 className={styles.group_select}
                                 onClick={() => {
-                                    console.log("group selected:", group.id);
+                                    onSelectGroup(group);
                                 }}
+                                aria-current={selectedGroupId === group.id}
                             >
                                 <Image src={group.image} alt="" width={52} height={52} />
                                 <div className={styles.text}>
