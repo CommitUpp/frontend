@@ -12,10 +12,7 @@ export async function postMovieStatus(movieId: string, status: string) {
     throw new Error(await getErrorMessage(res));
   }
 
-  const data = await res.json();
-  console.log("[postMovieStatus] data", data);
-
-  return data;
+  return res.json();
 }
 
 // 映画の視聴状況を取得する関数
@@ -27,10 +24,7 @@ export async function getMovieStatus(status: string): Promise<MoviesResponse> {
     throw new Error(await getErrorMessage(res));
   }
 
-  const data = await res.json();
-  console.log("[getMovieStatus] data", data);
-
-  return data;
+  return res.json();
 }
 
 // お気に入りの映画を取得する関数
@@ -41,8 +35,5 @@ export async function getFavoriteMovies(): Promise<MoviesResponse> {
     throw new Error(await getErrorMessage(res));
   }
 
-  const data = await res.json();
-  console.log("[getFavoriteMovies] data", data);
-
-  return data;
+  return res.json();
 }

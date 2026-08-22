@@ -28,11 +28,6 @@ export default function MyPageTabs() {
             const response = await getMovieStatus(status);
             const nextMovies = toMovies(response);
 
-            console.log("[MyPageTabs] getMovieStatus response", {
-                status,
-                movies: nextMovies,
-            });
-
             setMovieList(nextMovies);
         } catch (error) {
             console.error("[MyPageTabs] getMovieStatus failed", {
@@ -57,10 +52,6 @@ export default function MyPageTabs() {
         try {
             const response = await getFavoriteMovies();
             const nextMovies = toMovies(response);
-
-            console.log("[MyPageTabs] getFavoriteMovies response", {
-                movies: nextMovies,
-            });
 
             setMovieList(nextMovies);
         } catch (error) {

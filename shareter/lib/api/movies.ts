@@ -21,10 +21,7 @@ export async function getMovies(keyword?: string): Promise<MoviesResponse> {
     throw new Error(await getErrorMessage(res));
   }
 
-  const data = await res.json();
-  console.log("[getMovies] data", data);
-
-  return data;
+  return res.json();
 }
 
 // 映画詳細を取得する関数
@@ -39,8 +36,5 @@ export async function getMovieDetails(movie_id: string, group_id: string) {
     throw new Error(await getErrorMessage(res));
   }
 
-  const data = await res.json();
-  console.log("[getMovieDetails] data", data);
-
-  return data;
+  return res.json();
 }

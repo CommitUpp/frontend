@@ -46,10 +46,7 @@ export async function getGroups(): Promise<GetGroupsResponse> {
     throw new Error(await getErrorMessage(res));
   }
 
-  const data = await res.json();
-  console.log("[getGroups] data", data);
-
-  return data;
+  return res.json();
 }
 
 export async function createGroup(name: string): Promise<CreateGroupResponse> {
@@ -84,10 +81,7 @@ export async function getGroupMovies(group_id: string) {
     throw new Error(await getErrorMessage(res));
   }
 
-  const data = await res.json();
-  console.log("[getGroupMovies] data", data);
-
-  return data;
+  return res.json();
 }
 
 export async function getGroupChatRooms(group_id: string): Promise<GroupChatRoomsResponse> {
@@ -97,8 +91,5 @@ export async function getGroupChatRooms(group_id: string): Promise<GroupChatRoom
     throw new Error(await getErrorMessage(res));
   }
 
-  const data = await res.json();
-  console.log("[getGroupChatRooms] data", data);
-
-  return data;
+  return res.json();
 }

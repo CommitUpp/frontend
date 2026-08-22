@@ -26,13 +26,6 @@ export async function apiFetch(path: string, options: ApiFetchOptions = {}) {
     throw new Error("Access token is not available.");
   }
 
-  console.log("[apiFetch] request", {
-    url,
-    method: requestOptions.method ?? "GET",
-    auth,
-    hasAccessToken: Boolean(accessToken),
-  });
-
   const res = await fetch(url, {
     ...requestOptions,
     headers: {
@@ -40,12 +33,6 @@ export async function apiFetch(path: string, options: ApiFetchOptions = {}) {
       ...(accessToken ? { Authorization: `Bearer ${accessToken}` } : {}),
       ...requestOptions.headers,
     },
-  });
-
-  console.log("[apiFetch] response", {
-    url,
-    status: res.status,
-    ok: res.ok,
   });
 
   return res;
