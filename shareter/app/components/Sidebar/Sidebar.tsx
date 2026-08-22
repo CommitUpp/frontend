@@ -11,6 +11,7 @@ import { useGroupChatRooms } from "@/hooks/useGroupChatRooms";
 import { useGroups } from "@/hooks/useGroups";
 import { createGroup, joinGroup, type ApiGroup, type GetGroupsResponse } from "@/lib/api/groups";
 import { useAuth } from "@/contexts/AuthContext";
+import { useGroup } from "@/contexts/GroupContext";
 import styles from "./Sidebar.module.css";
 
 const defaultGroupImage = "/image/no-image.png";
@@ -42,10 +43,10 @@ export default function Sidebar({
 }: Props) {
     const router = useRouter();
     const { session, isLoading: isAuthLoading } = useAuth();
+    const { selectedGroupId, setSelectedGroupId } = useGroup();
     const [isGroupListOpen, setIsGroupListOpen] = useState(false);
     const [isGroupCreateOpen, setIsGroupCreateOpen] = useState(false);
     const [selectedGroup, setSelectedGroup] = useState<Group | null>(null);
-    const [selectedGroupId, setSelectedGroupId] = useState<string | null>(null);
     const [fallbackSelectedChannelId, setFallbackSelectedChannelId] =
         useState<string | undefined>();
     const activeChannelId = selectedChannelId ?? fallbackSelectedChannelId;

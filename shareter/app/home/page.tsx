@@ -10,6 +10,7 @@ import MovieCard from "../components/MovieCard/MovieCard";
 import { getGroupMovies } from "@/lib/api/groups";
 import { getMovies } from "@/lib/api/movies";
 import { useAuth } from "@/contexts/AuthContext";
+import { useGroup } from "@/contexts/GroupContext";
 import { movieRows } from "@/constants/movieRows";
 import type { MoviesResponse } from "@/types/movies";
 import styles from "./page.module.css";
@@ -32,7 +33,7 @@ type GroupMoviesResponse = {
 export default function Home() {
   const router = useRouter();
   const { session } = useAuth();
-  const groupId = "4bb618e1-1fc2-457b-b635-bde0b1df667b";
+  const { selectedGroupId } = useGroup();
 
   const { data: moviesResponse } = useSWR<MoviesResponse>("movies", getMovies, {
     onError: (error) => {
@@ -40,8 +41,8 @@ export default function Home() {
     },
   });
 
-  const groupMoviesKey: ["groupMovies", string] | null = groupId && session?.access_token
-    ? ["groupMovies", groupId]
+  const groupMoviesKey: ["groupMovies", string] | null = selectedGroupId && session?.access_token
+    ? ["groupMovies", selectedGroupId]
     : null;
 
   const { data: groupMoviesResponse } = useSWR<GroupMoviesResponse>(
@@ -69,12 +70,14 @@ export default function Home() {
   }, [movies]);
 
   const handleMovieClick = useCallback((movieId: string) => {
+    if (!selectedGroupId) return;
+
     const params = new URLSearchParams({
-      group_id: groupId,
+      group_id: selectedGroupId,
     });
 
     router.push(`/movie/${movieId}?${params.toString()}`);
-  }, [groupId, router]);
+  }, [selectedGroupId, router]);
 
   return (
     <AuthGate unauthenticatedPath="/landing-page">
