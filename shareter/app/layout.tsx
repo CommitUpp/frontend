@@ -1,6 +1,7 @@
 import type { Metadata } from "next";
 import Header from "./components/Header/Header";
 import { AuthProvider } from "@/contexts/AuthContext";
+import { GroupProvider } from "@/contexts/GroupContext";
 import { WatchTogetherProvider } from "@/contexts/WatchTogetherContext";
 import "./globals.css";
 
@@ -21,10 +22,12 @@ export default function RootLayout({
     >
       <body className="min-h-full flex flex-col">
         <AuthProvider>
-          <Header />
-          <WatchTogetherProvider>
-            {children}
-          </WatchTogetherProvider>
+          <GroupProvider>
+            <Header />
+            <WatchTogetherProvider>
+              {children}
+            </WatchTogetherProvider>
+          </GroupProvider>
         </AuthProvider>
       </body>
     </html>

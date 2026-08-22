@@ -8,11 +8,12 @@ import GroupCreateModal from "@/app/components/GroupCreateModal/GroupCreateModal
 import GroupListModal from "@/app/components/GroupListModal/GroupListModal";
 import GroupSettingsModal from "@/app/components/GroupSettingsModal/GroupSettingsModal";
 import { useGroupChatRooms } from "@/hooks/useGroupChatRooms";
-import { createGroup, joinGroup } from "@/lib/api/groups";
-import { mockMyGroups } from "@/mock/groups";
+import { useGroups } from "@/hooks/useGroups";
+import { createGroup, joinGroup, type ApiGroup, type GetGroupsResponse } from "@/lib/api/groups";
+import { useAuth } from "@/contexts/AuthContext";
+import { useGroup } from "@/contexts/GroupContext";
 import styles from "./Sidebar.module.css";
 
-const groupId = "4bb618e1-1fc2-457b-b635-bde0b1df667b";
 const defaultGroupImage = "/image/no-image.png";
 
 type Props = {
@@ -27,19 +28,37 @@ type Group = {
     image: string;
 };
 
+function toGroup(group: ApiGroup): Group {
+    return {
+        id: group.id,
+        name: group.name,
+        member_count: group.member_count ?? group.memberCount ?? 1,
+        image: group.image ?? group.image_url ?? group.avatar_url ?? defaultGroupImage,
+    };
+}
+
 export default function Sidebar({
     selectedChannelId,
     onSelectChannel,
 }: Props) {
     const router = useRouter();
-    const { data: chatRoomsResponse } = useGroupChatRooms(groupId);
-    const channels = chatRoomsResponse?.chat_rooms ?? [];
+    const { session, isLoading: isAuthLoading } = useAuth();
+    const { selectedGroupId, setSelectedGroupId } = useGroup();
     const [isGroupListOpen, setIsGroupListOpen] = useState(false);
     const [isGroupCreateOpen, setIsGroupCreateOpen] = useState(false);
     const [selectedGroup, setSelectedGroup] = useState<Group | null>(null);
     const [fallbackSelectedChannelId, setFallbackSelectedChannelId] =
         useState<string | undefined>();
     const activeChannelId = selectedChannelId ?? fallbackSelectedChannelId;
+    const {
+        data: groupsResponse,
+        mutate: mutateGroups,
+    } = useGroups(Boolean(session?.access_token) && !isAuthLoading);
+    const groups = (groupsResponse?.groups ?? []).map(toGroup);
+    const currentGroup = groups.find((group) => group.id === selectedGroupId) ?? groups[0];
+    const currentGroupId = currentGroup?.id;
+    const { data: chatRoomsResponse } = useGroupChatRooms(currentGroupId);
+    const channels = chatRoomsResponse?.chat_rooms ?? [];
 
     const handleSelectChannel = (chatRoomId: string) => {
         if (onSelectChannel) {
@@ -54,14 +73,6 @@ export default function Sidebar({
 
         router.push(`/chat?${params.toString()}`);
     };
-
-    const [groups, setGroups] = useState<Group[]>(
-        mockMyGroups.groups.map((group) => ({
-            ...group,
-            image: defaultGroupImage,
-        }))
-    );
-    const currentGroup = groups[0];
 
     return (
         <>
@@ -126,6 +137,7 @@ export default function Sidebar({
             {isGroupListOpen && (
                 <GroupListModal
                     groups={groups}
+                    selectedGroupId={currentGroupId}
                     onClose={() => setIsGroupListOpen(false)}
                     onAddClick={() => {
                         if (groups.length >= 3) {
@@ -140,16 +152,23 @@ export default function Sidebar({
                     }}
                     onJoinClick={async (joinedGroupId) => {
                         const response = await joinGroup(joinedGroupId);
+                        const joinedGroup = toGroup(response.group);
 
-                        setGroups((prevGroups) => [
-                            ...prevGroups,
-                            {
-                                id: response.group.id,
-                                name: response.group.name,
-                                member_count: 1,
-                                image: defaultGroupImage,
-                            },
-                        ]);
+                        setSelectedGroupId(joinedGroup.id);
+                        await mutateGroups((currentData): GetGroupsResponse => {
+                            const currentGroups = currentData?.groups ?? [];
+                            const exists = currentGroups.some((group) => group.id === joinedGroup.id);
+
+                            return {
+                                groups: exists
+                                    ? currentGroups
+                                    : [...currentGroups, response.group],
+                            };
+                        }, false);
+                    }}
+                    onSelectGroup={(group) => {
+                        setSelectedGroupId(group.id);
+                        setIsGroupListOpen(false);
                     }}
                     onGroupClick={(group) => setSelectedGroup(group)}
                 />
@@ -167,16 +186,21 @@ export default function Sidebar({
                     onClose={() => setIsGroupCreateOpen(false)}
                     onCreateGroup={async (name, image) => {
                         const response = await createGroup(name);
+                        const createdGroup = toGroup({
+                            ...response.group,
+                            image,
+                        });
 
-                        setGroups((prevGroups) => [
-                            ...prevGroups,
-                            {
-                                id: response.group.id,
-                                name: response.group.name,
-                                member_count: 1,
-                                image,
-                            },
-                        ]);
+                        setSelectedGroupId(createdGroup.id);
+                        await mutateGroups((currentData): GetGroupsResponse => ({
+                            groups: [
+                                ...(currentData?.groups ?? []),
+                                {
+                                    ...response.group,
+                                    image,
+                                },
+                            ],
+                        }), false);
 
                         setIsGroupCreateOpen(false);
                         setIsGroupListOpen(true);

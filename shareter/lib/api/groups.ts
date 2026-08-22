@@ -16,8 +16,19 @@ export type GroupChatRoomsResponse = {
 export type ApiGroup = {
   id: string;
   name: string;
-  monthlyGoal: number;
-  createdAt: string;
+  monthlyGoal?: number;
+  monthly_goal?: number;
+  createdAt?: string;
+  created_at?: string;
+  memberCount?: number;
+  member_count?: number;
+  image?: string | null;
+  image_url?: string | null;
+  avatar_url?: string | null;
+};
+
+export type GetGroupsResponse = {
+  groups: ApiGroup[];
 };
 
 export type CreateGroupResponse = {
@@ -27,6 +38,19 @@ export type CreateGroupResponse = {
 export type JoinGroupResponse = {
   group: ApiGroup;
 };
+
+export async function getGroups(): Promise<GetGroupsResponse> {
+  const res = await apiFetch("/groups");
+
+  if (!res.ok) {
+    throw new Error(await getErrorMessage(res));
+  }
+
+  const data = await res.json();
+  console.log("[getGroups] data", data);
+
+  return data;
+}
 
 export async function createGroup(name: string): Promise<CreateGroupResponse> {
   const res = await apiFetch("/groups", {

@@ -8,13 +8,13 @@ import Loading from "../components/Loading/Loading";
 import MovieCard from "../components/MovieCard/MovieCard";
 import Sidebar from "../components/Sidebar/Sidebar";
 import { getMovies } from "@/lib/api/movies";
+import { useGroup } from "@/contexts/GroupContext";
 import type { MoviesResponse } from "@/types/movies";
 import styles from "./page.module.css";
 
-const groupId = "4bb618e1-1fc2-457b-b635-bde0b1df667b";
-
 export default function SearchPage() {
     const router = useRouter();
+    const { selectedGroupId } = useGroup();
     const [query, setQuery] = useState("");
     const [keyword, setKeyword] = useState("");
 
@@ -47,8 +47,10 @@ export default function SearchPage() {
     };
 
     const handleMovieClick = (movieId: string) => {
+        if (!selectedGroupId) return;
+
         const params = new URLSearchParams({
-            group_id: groupId,
+            group_id: selectedGroupId,
         });
 
         router.push(`/movie/${movieId}?${params.toString()}`);

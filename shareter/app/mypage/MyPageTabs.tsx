@@ -4,11 +4,11 @@ import { useCallback, useEffect, useState } from "react";
 import { useRouter } from "next/navigation";
 import MovieCard from "../components/MovieCard/MovieCard";
 import { getFavoriteMovies, getMovieStatus } from "@/lib/api/users";
+import { useGroup } from "@/contexts/GroupContext";
 import type { Movie, MoviesResponse } from "@/types/movies";
 import styles from "./page.module.css";
 
 const tabs = ["お気に入り", "視聴済み", "誰かと見たい"];
-const groupId = "4bb618e1-1fc2-457b-b635-bde0b1df667b";
 
 function toMovies(response: MoviesResponse | Movie[]): Movie[] {
     return Array.isArray(response) ? response : response.movies;
@@ -16,6 +16,7 @@ function toMovies(response: MoviesResponse | Movie[]): Movie[] {
 
 export default function MyPageTabs() {
     const router = useRouter();
+    const { selectedGroupId } = useGroup();
     const [activeTab, setActiveTab] = useState(tabs[0]);
     const [movieList, setMovieList] = useState<Movie[]>([]);
     const [isLoading, setIsLoading] = useState(false);
@@ -93,8 +94,10 @@ export default function MyPageTabs() {
     };
 
     const handleMovieClick = (movieId: string) => {
+        if (!selectedGroupId) return;
+
         const params = new URLSearchParams({
-            group_id: groupId,
+            group_id: selectedGroupId,
         });
 
         router.push(`/movie/${movieId}?${params.toString()}`);
