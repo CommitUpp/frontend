@@ -28,11 +28,6 @@ export default function MyPageTabs() {
             const response = await getMovieStatus(status);
             const nextMovies = toMovies(response);
 
-            console.log("[MyPageTabs] getMovieStatus response", {
-                status,
-                movies: nextMovies,
-            });
-
             setMovieList(nextMovies);
         } catch (error) {
             console.error("[MyPageTabs] getMovieStatus failed", {
@@ -46,7 +41,6 @@ export default function MyPageTabs() {
     };
 
     const handleFavoriteClick = () => {
-        console.log("お気に入りタブがクリックされました");
         setActiveTab("お気に入り");
         fetchFavoriteMovies();
     };
@@ -57,10 +51,6 @@ export default function MyPageTabs() {
         try {
             const response = await getFavoriteMovies();
             const nextMovies = toMovies(response);
-
-            console.log("[MyPageTabs] getFavoriteMovies response", {
-                movies: nextMovies,
-            });
 
             setMovieList(nextMovies);
         } catch (error) {
@@ -76,13 +66,11 @@ export default function MyPageTabs() {
     }, [fetchFavoriteMovies]);
 
     const handleWatchedClick = () => {
-        console.log("視聴済みタブがクリックされました");
         setActiveTab("視聴済み");
         fetchMoviesByStatus("watched");
     };
 
     const handleWantToWatchClick = () => {
-        console.log("誰かと見たいタブがクリックされました");
         setActiveTab("誰かと見たい");
         fetchMoviesByStatus("wanna_watch");
     };
