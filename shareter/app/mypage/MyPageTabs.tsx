@@ -41,7 +41,6 @@ export default function MyPageTabs() {
     };
 
     const handleFavoriteClick = () => {
-        console.log("お気に入りタブがクリックされました");
         setActiveTab("お気に入り");
         fetchFavoriteMovies();
     };
@@ -67,13 +66,11 @@ export default function MyPageTabs() {
     }, [fetchFavoriteMovies]);
 
     const handleWatchedClick = () => {
-        console.log("視聴済みタブがクリックされました");
         setActiveTab("視聴済み");
         fetchMoviesByStatus("watched");
     };
 
     const handleWantToWatchClick = () => {
-        console.log("誰かと見たいタブがクリックされました");
         setActiveTab("誰かと見たい");
         fetchMoviesByStatus("wanna_watch");
     };
