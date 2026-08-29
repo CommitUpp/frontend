@@ -404,3 +404,143 @@
     width: 100%;
     height: auto;
 }
+
+.how_to_use_section {
+    position: relative;
+    width: 100%;
+    padding: 170px 120px 200px;
+    background-color: #0a0708;
+    overflow: hidden;
+    background-image: url("/image/howtouse_bg.png");
+    background-position: center;
+    background-size: contain;
+    background-repeat: no-repeat;
+}
+
+.how_to_use_heading {
+    margin: 0 0 140px;
+    color: #ffffff;
+    font-family: Arial, Helvetica, sans-serif;
+    font-size: 24px;
+    font-weight: 700;
+    letter-spacing: 0.18em;
+    text-align: center;
+}
+
+.how_to_use_list {
+    display: flex;
+    flex-direction: column;
+    gap: 160px;
+    max-width: 1280px;
+    margin: 0 auto;
+}
+
+.how_to_use_row {
+    position: relative;
+    z-index: 1;
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    gap: 60px;
+}
+
+.how_to_use_row_reverse {
+    flex-direction: row-reverse;
+}
+
+.how_to_use_image {
+    position: relative;
+    z-index: 2;
+    flex: 0 0 44%;
+    max-width: 560px;
+}
+
+.how_to_use_image img {
+    display: block;
+    width: 100%;
+    height: auto;
+    border-radius: 6px;
+    box-shadow: 0 30px 70px rgba(0, 0, 0, 0.5);
+}
+
+.how_to_use_text {
+    position: relative;
+    z-index: 2;
+    flex: 0 0 44%;
+    max-width: 480px;
+}
+
+.how_to_use_subheading {
+    margin: 0;
+    color: #ffffff;
+    font-family:
+        "A P-OTF A1 Mincho StdN",
+        "A1 Mincho",
+        "Yu Mincho",
+        "Hiragino Mincho ProN",
+        serif;
+    font-size: 26px;
+    font-weight: 700;
+}
+
+.how_to_use_description {
+    margin: 24px 0 0;
+    color: #ffffff;
+    font-family:
+        "A P-OTF A1 Mincho StdN",
+        "A1 Mincho",
+        "Yu Mincho",
+        "Hiragino Mincho ProN",
+        serif;
+    font-size: 16px;
+    font-weight: 400;
+    line-height: 1.9;
+}
+
+.how_to_use_number {
+    position: absolute;
+    z-index: 0;
+    bottom: -90px;
+    right: 18%;
+    color: rgba(255, 255, 255, 0.06);
+    font-family: Arial, Helvetica, sans-serif;
+    font-size: 220px;
+    font-weight: 700;
+    line-height: 1;
+    pointer-events: none;
+    user-select: none;
+}
+
+.how_to_use_row_reverse .how_to_use_number {
+    right: auto;
+    left: 18%;
+}
+
+
+/* footer */
+.footer {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    width: 100%;
+    padding: 46px 0px 54px;
+    background: linear-gradient(90deg, #858585 0%, #CBCBCB 50%, #858585 100%);
+    text-align: center;
+}
+
+.footer_text {
+    margin: 0 0 28px;
+    color: #1a1a1a;
+    font-family:
+        "A P-OTF A1 Mincho StdN",
+        "A1 Mincho",
+        "Yu Mincho",
+        "Hiragino Mincho ProN",
+        serif;
+    font-size: 24px;
+    font-weight: 600;
+}
+
+.footer_button {
+    margin-top: 0;
+}
