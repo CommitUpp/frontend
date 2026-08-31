@@ -18,6 +18,25 @@ export default function LandingPage() {
     }
   };
 
+
+  const scrollToSection = (id: string) => {
+    const element = document.getElementById(id);
+
+    if (element) {
+      const offset = id === "how_to_use" ? 100 : 0;
+
+      const elementPosition =
+        element.getBoundingClientRect().top + window.scrollY;
+
+      window.scrollTo({
+        top: elementPosition - offset,
+        behavior: "smooth",
+      });
+    }
+  };
+
+
+
   return (
     <AuthGate authenticatedPath="/home">
       <main className={styles.page}>
@@ -36,18 +55,26 @@ export default function LandingPage() {
           </header>
 
           <nav className={styles.navigation}>
-            <a href="#about" className={styles.navigation_link}>
+            <button
+              type="button"
+              className={styles.navigation_link}
+              onClick={() => scrollToSection("about")}
+            >
               ABOUT
-            </a>
+            </button>
 
-            <a href="#how_to_use" className={styles.navigation_link}>
+            <button
+              type="button"
+              className={styles.navigation_link}
+              onClick={() => scrollToSection("how_to_use")}
+            >
               HOW TO USE
-            </a>
+            </button>
 
             <button
               type="button"
               className={styles.login_link}
-              onClick={loginHandler}
+              onClick={() => scrollToSection("login")}
             >
               LOGIN
             </button>
@@ -82,17 +109,14 @@ export default function LandingPage() {
                       fill="#EA4335"
                       d="M24 9.5c3.54 0 6.71 1.22 9.21 3.6l6.85-6.85C35.9 2.38 30.47 0 24 0 14.62 0 6.51 5.38 2.56 13.22l7.98 6.19C12.43 13.72 17.74 9.5 24 9.5z"
                     />
-
                     <path
                       fill="#4285F4"
                       d="M46.98 24.55c0-1.57-.15-3.09-.38-4.55H24v9.02h12.94c-.58 2.96-2.26 5.48-4.78 7.18l7.73 6c4.51-4.18 7.09-10.36 7.09-17.65z"
                     />
-
                     <path
                       fill="#FBBC05"
                       d="M10.53 28.59c-.48-1.45-.76-2.99-.76-4.59s.27-3.14.76-4.59l-7.98-6.19C.92 16.46 0 20.12 0 24c0 3.88.92 7.54 2.56 10.78l7.97-6.19z"
                     />
-
                     <path
                       fill="#34A853"
                       d="M24 48c6.48 0 11.93-2.13 15.89-5.81l-7.73-6c-2.15 1.45-4.92 2.3-8.16 2.3-6.26 0-11.57-4.22-13.47-9.91l-7.98 6.19C6.51 42.62 14.62 48 24 48z"
@@ -109,11 +133,8 @@ export default function LandingPage() {
         </section>
 
 
-        <section
-          id="about"
-          className={styles.before_sheater_section}
-        >
-          {/* 左側の写真 */}
+        {/* BEFORE SHEATER  */}
+        <section className={styles.before_sheater_section}>
           <div className={styles.before_sheater_image}>
             <img
               src="/image/before_sheater.jpg"
@@ -121,8 +142,6 @@ export default function LandingPage() {
             />
           </div>
 
-
-          {/* 写真・黒背景の上に文字を配置 */}
           <div className={styles.before_sheater_content}>
             <h2 className={styles.before_sheater_heading}>
               BEFORE SHEATER
@@ -144,8 +163,12 @@ export default function LandingPage() {
           </div>
         </section>
 
-        {/* abaut */}
-        <section id="about" className={styles.about_section}>
+
+        {/* ABOUT */}
+        <section
+          id="about"
+          className={styles.about_section}
+        >
           <div className={styles.about_content}>
             <p className={styles.about_label}>ABOUT</p>
 
@@ -210,17 +233,30 @@ export default function LandingPage() {
           </div>
         </section>
 
-        <section className={styles.how_to_use_section}>
-          <h2 className={styles.how_to_use_heading}>HOW TO USE</h2>
+
+        {/* HOW TO USE */}
+        <section
+          id="how_to_use"
+          className={styles.how_to_use_section}
+        >
+          <h2 className={styles.how_to_use_heading}>
+            HOW TO USE
+          </h2>
 
           <div className={styles.how_to_use_list}>
             <div className={styles.how_to_use_row}>
               <div className={styles.how_to_use_image}>
-                <img src="/image/howtouse_01.png" alt="チャット画面" />
+                <img
+                  src="/image/howtouse_watch.png"
+                  alt="チャット画面"
+                />
               </div>
 
               <div className={styles.how_to_use_text}>
-                <h3 className={styles.how_to_use_subheading}>同時視聴</h3>
+                <h3 className={styles.how_to_use_subheading}>
+                  同時視聴
+                </h3>
+
                 <p className={styles.how_to_use_description}>
                   同じ映画を、同じ瞬間に。
                   <br />
@@ -235,11 +271,17 @@ export default function LandingPage() {
               className={`${styles.how_to_use_row} ${styles.how_to_use_row_reverse}`}
             >
               <div className={styles.how_to_use_image}>
-                <img src="/image/howtouse_02.png" alt="作品検索画面" />
+                <img
+                  src="/image/howtouse_serch.png"
+                  alt="作品検索画面"
+                />
               </div>
 
               <div className={styles.how_to_use_text}>
-                <h3 className={styles.how_to_use_subheading}>作品選択</h3>
+                <h3 className={styles.how_to_use_subheading}>
+                  作品選択
+                </h3>
+
                 <p className={styles.how_to_use_description}>
                   一人の「見たい」が、みんなの「見たい」に。
                   <br />
@@ -250,13 +292,17 @@ export default function LandingPage() {
 
             <div className={styles.how_to_use_row}>
               <div className={styles.how_to_use_image}>
-                <img src="/image/howtouse_03.png" alt="作品ごとのチャット画面" />
+                <img
+                  src="/image/howtouse_chat.png"
+                  alt="作品ごとのチャット画面"
+                />
               </div>
 
               <div className={styles.how_to_use_text}>
                 <h3 className={styles.how_to_use_subheading}>
                   作品ごとのチャット
                 </h3>
+
                 <p className={styles.how_to_use_description}>
                   見終わったあとも、映画の余韻をみんなで。
                   <br />
@@ -268,12 +314,19 @@ export default function LandingPage() {
             </div>
           </div>
         </section>
+
       </main>
 
-      <footer className={styles.footer}>
+
+      {/* FOOTER / LOGIN */}
+      <footer
+        id="login"
+        className={styles.footer}
+      >
         <p className={styles.footer_text}>
           友人と映画を観る準備をはじめませんか？
         </p>
+
         <button
           type="button"
           className={`${styles.gsi_material_button} ${styles.footer_button}`}
