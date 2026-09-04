@@ -35,7 +35,7 @@ export default function Home() {
   const { session } = useAuth();
   const { selectedGroupId } = useGroup();
 
-  const { data: moviesResponse } = useSWR<MoviesResponse>("movies", getMovies, {
+  const { data: moviesResponse } = useSWR<MoviesResponse>("movies", () => getMovies(), {
     onError: (error) => {
       console.error("[Home] getMovies failed", error);
     },
