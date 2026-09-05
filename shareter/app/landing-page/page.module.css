@@ -1,24 +1,29 @@
 /* セレクション時の色 */
-::selection {
+.page::selection,
+.page *::selection {
     background-color: rgba(255, 255, 255, 0.25);
     color: #ffffff;
 }
 
 /* スクロールバー（Webkit系ブラウザ） */
-::-webkit-scrollbar {
+.page::-webkit-scrollbar,
+.page *::-webkit-scrollbar {
     width: 10px;
 }
 
-::-webkit-scrollbar-track {
+.page::-webkit-scrollbar-track,
+.page *::-webkit-scrollbar-track {
     background: #0a0708;
 }
 
-::-webkit-scrollbar-thumb {
+.page::-webkit-scrollbar-thumb,
+.page *::-webkit-scrollbar-thumb {
     background: #4a4442;
     border-radius: 10px;
 }
 
-::-webkit-scrollbar-thumb:hover {
+.page::-webkit-scrollbar-thumb:hover,
+.page *::-webkit-scrollbar-thumb:hover {
     background: #6a6260;
 }
 
