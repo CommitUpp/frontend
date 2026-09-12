@@ -1,12 +1,15 @@
 "use client";
 
-import { useCallback, useMemo } from "react";
+import { useCallback, useMemo, useState } from "react";
 import { useRouter } from "next/navigation";
 import useSWR from "swr";
 import LiveArea from "../components/live/LiveArea";
 import Sidebar from "../components/Sidebar/Sidebar";
 import AuthGate from "../components/AuthGate/AuthGate";
 import MovieCard from "../components/MovieCard/MovieCard";
+import MatchingNotification, {
+  type MatchingNotificationData,
+} from "../components/MatchingNotification/MatchingNotification";
 import { getGroupMovies } from "@/lib/api/groups";
 import { getMovies } from "@/lib/api/movies";
 import { useAuth } from "@/contexts/AuthContext";
@@ -34,8 +37,9 @@ export default function Home() {
   const router = useRouter();
   const { session } = useAuth();
   const { selectedGroupId } = useGroup();
+  const [dismissedMatchKey, setDismissedMatchKey] = useState<string | null>(null);
 
-  const { data: moviesResponse } = useSWR<MoviesResponse>("movies", getMovies, {
+  const { data: moviesResponse } = useSWR<MoviesResponse>("movies", () => getMovies(), {
     onError: (error) => {
       console.error("[Home] getMovies failed", error);
     },
@@ -57,6 +61,24 @@ export default function Home() {
 
   const movies = useMemo(() => moviesResponse?.movies ?? [], [moviesResponse]);
   const groupMovies = useMemo(() => groupMoviesResponse?.movies ?? [], [groupMoviesResponse]);
+  const matchedMovie = groupMovies[0];
+  const matchKey = matchedMovie ? `${selectedGroupId ?? "no-group"}-${matchedMovie.movie_id}` : null;
+  const shouldShowMatchingModal = Boolean(matchedMovie && matchKey !== dismissedMatchKey);
+  const matchingNotification = useMemo<MatchingNotificationData | null>(() => {
+    if (!matchedMovie || !matchKey) return null;
+
+    return {
+      id: matchKey,
+      movie: {
+        title: matchedMovie.title,
+        thumbnailUrl: matchedMovie.trailer_url || "/image/no-image.png",
+      },
+      participants: matchedMovie.watched_member.map((member, index) => ({
+        name: `Member ${index + 1}`,
+        imageUrl: member.avatar_url || "/image/no-image.png",
+      })),
+    };
+  }, [matchKey, matchedMovie]);
 
   const rows = useMemo(() => {
     return movieRows
@@ -78,6 +100,19 @@ export default function Home() {
 
     router.push(`/movie/${movieId}?${params.toString()}`);
   }, [selectedGroupId, router]);
+
+  const handleMatchingModalClose = useCallback(() => {
+    if (!matchKey) return;
+
+    setDismissedMatchKey(matchKey);
+  }, [matchKey]);
+
+  const handleMatchingMovieClick = useCallback(() => {
+    if (!matchedMovie) return;
+
+    handleMatchingModalClose();
+    handleMovieClick(matchedMovie.movie_id);
+  }, [handleMatchingModalClose, handleMovieClick, matchedMovie]);
 
   return (
     <AuthGate unauthenticatedPath="/landing-page">
@@ -128,6 +163,14 @@ export default function Home() {
           ))}
         </div>
       </div>
+      {matchingNotification && matchedMovie && (
+        <MatchingNotification
+          matching={matchingNotification}
+          isOpen={shouldShowMatchingModal}
+          onClose={handleMatchingModalClose}
+          onStart={handleMatchingMovieClick}
+        />
+      )}
       </div>
     </AuthGate>
   );
